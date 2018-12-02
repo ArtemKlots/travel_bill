@@ -1,6 +1,7 @@
 package com.travelBill.api.events.core;
 
 import com.travelBill.api.transactions.core.TransactionList;
+import com.travelBill.api.users.User;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -24,6 +25,13 @@ public class Event {
     @Column
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+    @ManyToMany
+    @JoinTable(name = "events_users",
+            joinColumns = @JoinColumn(name = "event_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private List<User> members;
 
     public Long getId() {
         return id;

@@ -1,5 +1,6 @@
 package com.travelBill.api.transactions.core;
 
+import com.travelBill.api.events.core.Event;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -21,6 +22,10 @@ public class TransactionList {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "transactionList")
     private List<Transaction> transactions;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "event_id")
+    private Event event;
 
     public Long getId() {
         return id;
@@ -44,5 +49,13 @@ public class TransactionList {
 
     public void setTransactions(List<Transaction> transactions) {
         this.transactions = transactions;
+    }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
     }
 }

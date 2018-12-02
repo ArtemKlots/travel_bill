@@ -1,5 +1,6 @@
 package com.travelBill.api.transactions.core;
 
+import com.travelBill.api.users.User;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -20,6 +21,10 @@ public class Transaction {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "transaction_list_id")
     private TransactionList transactionList;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Long getId() {
         return id;
@@ -43,5 +48,13 @@ public class Transaction {
 
     public void setTransactionList(TransactionList transactionList) {
         this.transactionList = transactionList;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

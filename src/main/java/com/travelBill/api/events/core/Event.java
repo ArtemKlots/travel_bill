@@ -5,6 +5,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "events")
@@ -18,7 +19,7 @@ public class Event {
     private String title;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "event")
-    private TransactionList transactionList;
+    private List<TransactionList> transactionList;
 
     @Column
     @CreationTimestamp
@@ -40,11 +41,11 @@ public class Event {
         this.title = title;
     }
 
-    public TransactionList getTransactionList() {
+    public List<TransactionList> getTransactionList() {
         return transactionList;
     }
 
-    public void setTransactionList(TransactionList transactionList) {
+    public void setTransactionList(List<TransactionList> transactionList) {
         this.transactionList = transactionList;
     }
 

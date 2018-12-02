@@ -1,4 +1,4 @@
-package com.travelBill.api.events;
+package com.travelBill.api.events.core;
 
 import org.hibernate.annotations.CreationTimestamp;
 

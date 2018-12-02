@@ -47,4 +47,12 @@ public class Event {
     public void setTransactionList(TransactionList transactionList) {
         this.transactionList = transactionList;
     }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 }

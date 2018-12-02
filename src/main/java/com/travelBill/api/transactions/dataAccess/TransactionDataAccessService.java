@@ -1,6 +1,6 @@
 package com.travelBill.api.transactions.dataAccess;
 
-import com.travelBill.api.transactions.Transaction;
+import com.travelBill.api.transactions.core.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

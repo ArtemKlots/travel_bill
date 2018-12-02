@@ -1,4 +1,4 @@
-package com.travelBill.api.transactions;
+package com.travelBill.api.transactions.core;
 
 import org.hibernate.annotations.CreationTimestamp;
 

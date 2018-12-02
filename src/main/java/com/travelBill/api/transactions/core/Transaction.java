@@ -15,6 +15,12 @@ public class Transaction {
     private Long id;
 
     @Column
+    private String title;
+
+    @Column
+    private String amount;
+
+    @Column
     @CreationTimestamp
     private LocalDateTime createdAt;
 
@@ -32,6 +38,22 @@ public class Transaction {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getAmount() {
+        return amount;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
     }
 
     public LocalDateTime getCreatedAt() {

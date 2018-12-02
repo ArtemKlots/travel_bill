@@ -4,6 +4,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 //todo thing about better name
 @Entity
@@ -17,6 +18,9 @@ public class TransactionList {
     @Column
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "transactionList")
+    private List<Transaction> transactions;
 
     public Long getId() {
         return id;
@@ -32,5 +36,13 @@ public class TransactionList {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
     }
 }

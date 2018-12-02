@@ -17,6 +17,10 @@ public class Transaction {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "transaction_list_id")
+    private TransactionList transactionList;
+
     public Long getId() {
         return id;
     }
@@ -31,5 +35,13 @@ public class Transaction {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public TransactionList getTransactionList() {
+        return transactionList;
+    }
+
+    public void setTransactionList(TransactionList transactionList) {
+        this.transactionList = transactionList;
     }
 }

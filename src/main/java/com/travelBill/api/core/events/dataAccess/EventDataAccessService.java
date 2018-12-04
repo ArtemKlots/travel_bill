@@ -1,6 +1,6 @@
-package com.travelBill.api.events.dataAccess;
+package com.travelBill.api.core.events.dataAccess;
 
-import com.travelBill.api.events.core.Event;
+import com.travelBill.api.core.events.core.Event;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

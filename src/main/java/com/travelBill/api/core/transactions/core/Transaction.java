@@ -1,6 +1,6 @@
-package com.travelBill.api.transactions.core;
+package com.travelBill.api.core.transactions.core;
 
-import com.travelBill.api.users.User;
+import com.travelBill.api.core.users.User;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;

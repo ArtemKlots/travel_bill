@@ -1,6 +1,6 @@
-package com.travelBill.api.users;
+package com.travelBill.api.core.users;
 
-import com.travelBill.api.events.core.Event;
+import com.travelBill.api.core.events.core.Event;
 
 import javax.persistence.*;
 import java.util.List;

@@ -1,7 +1,7 @@
-package com.travelBill.api.events.web;
+package com.travelBill.api.middleware;
 
-import com.travelBill.api.events.core.Event;
-import com.travelBill.api.events.core.EventService;
+import com.travelBill.api.core.events.core.Event;
+import com.travelBill.api.core.events.core.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

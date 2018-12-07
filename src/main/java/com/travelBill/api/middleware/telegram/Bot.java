@@ -57,7 +57,7 @@ public class Bot extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
-        return "";
+        return System.getenv("TELEGRAM_KEY");
     }
 
     private SendMessage sendStart(Update update) {

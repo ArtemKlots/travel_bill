@@ -21,6 +21,8 @@ public class User {
     )
     private List<Event> events;
 
+    private Integer telegramId;
+
     @Column
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -43,6 +45,14 @@ public class User {
 
     public void setEvents(List<Event> events) {
         this.events = events;
+    }
+
+    public Integer getTelegramId() {
+        return telegramId;
+    }
+
+    public void setTelegramId(Integer telegramId) {
+        this.telegramId = telegramId;
     }
 
     public LocalDateTime getCreatedAt() {

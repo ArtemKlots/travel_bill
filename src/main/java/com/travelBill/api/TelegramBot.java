@@ -8,15 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Component
@@ -41,15 +41,11 @@ public class TelegramBot extends TelegramLongPollingBot {
             if (update.getMessage().getText().equals("/start")) {
                 message = sendStart(update);
             }
-        }
 
-        CallbackQuery callbackQuery = update.getCallbackQuery();
-        if (callbackQuery != null) {
-            if (callbackQuery.getData().equals("event_list")) {
-                message = sendEvents(callbackQuery);
+            if (update.getMessage().getText().toLowerCase().equals("show events")) {
+                message = sendEvents(update);
             }
         }
-
 
         try {
             execute(message);
@@ -74,33 +70,57 @@ public class TelegramBot extends TelegramLongPollingBot {
         SendMessage message = new SendMessage()
                 .setChatId(chat_id)
                 .setText("What would you like to do?");
-        InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
-        List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
 
-        List<InlineKeyboardButton> firstInlineRow = new ArrayList<>();
-        List<InlineKeyboardButton> secondInlineRow = new ArrayList<>();
+        ReplyKeyboardMarkup markup = new ReplyKeyboardMarkup();
+        List<KeyboardRow> keyboard = new ArrayList<>();
 
-        firstInlineRow.add(new InlineKeyboardButton().setText("See events list").setCallbackData("event_list"));
-        secondInlineRow.add(new InlineKeyboardButton().setText("Create a new event").setCallbackData("create_new_event"));
+        KeyboardRow createEventRow = new KeyboardRow();
+        createEventRow.add("Create event");
 
+        KeyboardRow seeEventsRow = new KeyboardRow();
+        seeEventsRow.add("Show events");
 
-        rowsInline.add(firstInlineRow);
-        rowsInline.add(secondInlineRow);
+        keyboard.add(createEventRow);
+        keyboard.add(seeEventsRow);
 
-        markupInline.setKeyboard(rowsInline);
-        message.setReplyMarkup(markupInline);
+        markup.setKeyboard(keyboard);
+
+        message.setReplyMarkup(markup);
+
         return message;
     }
 
-    private SendMessage sendEvents(CallbackQuery callbackQuery) {
-        long chat_id = callbackQuery.getMessage().getChatId();
-        SendMessage message = new SendMessage().setChatId(chat_id);
+    private SendMessage sendEvents(Update update) {
+        long chat_id = update.getMessage().getChatId();
 
         List<Event> events = eventService.getAll();
-        String eventsTitles = events.stream()
-                .map(Event::getTitle)
-                .collect(Collectors.joining(", "));
-        message.setText("Your events: \n" + eventsTitles);
-        return message;
+
+        InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
+
+        for (Event event : events) {
+            List<InlineKeyboardButton> row = new ArrayList<>();
+            row.add(new InlineKeyboardButton().setText(event.getTitle()).setCallbackData("switch_to " + event.getId()));
+            rowsInline.add(row);
+        }
+
+        markupInline.setKeyboard(rowsInline);
+
+        String messageText;
+        switch (events.size()) {
+            case (0):
+                messageText = "Sorry, but you still have no events";
+                break;
+            case (1):
+                messageText = "Here is your event:";
+                break;
+            default:
+                messageText = "Here are your events:";
+        }
+
+        return new SendMessage()
+                .setChatId(chat_id)
+                .setText(messageText)
+                .setReplyMarkup(markupInline);
     }
 }

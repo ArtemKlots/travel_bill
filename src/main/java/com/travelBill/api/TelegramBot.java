@@ -3,6 +3,7 @@ package com.travelBill.api;
 import com.travelBill.api.core.Event;
 import com.travelBill.api.core.User;
 import com.travelBill.api.event.EventService;
+import com.travelBill.api.telegram.TelegramEventService;
 import com.travelBill.api.telegram.TelegramUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,11 +25,13 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     private final EventService eventService;
     private final TelegramUserService telegramUserService;
+    private final TelegramEventService telegramEventService;
 
     @Autowired
-    public TelegramBot(EventService eventService, TelegramUserService telegramUserService) {
+    public TelegramBot(EventService eventService, TelegramUserService telegramUserService, TelegramEventService telegramEventService) {
         this.eventService = eventService;
         this.telegramUserService = telegramUserService;
+        this.telegramEventService = telegramEventService;
     }
 
     @Override
@@ -44,6 +47,22 @@ public class TelegramBot extends TelegramLongPollingBot {
 
             if (update.getMessage().getText().toLowerCase().equals("show events")) {
                 message = sendEvents(update);
+            }
+
+            if (update.getMessage().getText().startsWith("/create")) {
+                long chat_id = update.getMessage().getChatId();
+                String eventName = update
+                        .getMessage()
+                        .getText()
+                        .replaceFirst("(?i)/create", "")
+                        .trim(); // (?i) - case insensitive
+
+                Event event = telegramEventService.create(eventName);
+                message = new SendMessage()
+                        .setChatId(chat_id)
+                        .setText(String.format("Event %s has been created. Now it is your current event", event.getTitle()));
+
+
             }
         }
 
@@ -74,14 +93,14 @@ public class TelegramBot extends TelegramLongPollingBot {
         ReplyKeyboardMarkup markup = new ReplyKeyboardMarkup();
         List<KeyboardRow> keyboard = new ArrayList<>();
 
-        KeyboardRow createEventRow = new KeyboardRow();
-        createEventRow.add("Create event");
+        KeyboardRow currentEventRow = new KeyboardRow();
+        currentEventRow.add("Show current event");
 
         KeyboardRow seeEventsRow = new KeyboardRow();
         seeEventsRow.add("Show events");
 
-        keyboard.add(createEventRow);
         keyboard.add(seeEventsRow);
+        keyboard.add(currentEventRow);
 
         markup.setKeyboard(keyboard);
 

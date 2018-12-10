@@ -1,7 +1,9 @@
 package com.travelBill.api;
 
 import com.travelBill.api.core.Event;
+import com.travelBill.api.core.User;
 import com.travelBill.api.event.EventService;
+import com.travelBill.api.telegram.TelegramUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -21,18 +23,24 @@ import java.util.stream.Collectors;
 public class TelegramBot extends TelegramLongPollingBot {
 
     private final EventService eventService;
+    private final TelegramUserService telegramUserService;
 
     @Autowired
-    public TelegramBot(EventService eventService) {
+    public TelegramBot(EventService eventService, TelegramUserService telegramUserService) {
         this.eventService = eventService;
+        this.telegramUserService = telegramUserService;
     }
 
     @Override
     public void onUpdateReceived(Update update) {
 
         SendMessage message = null;
-        if (update.getMessage() != null && update.getMessage().getText().equals("/start")) {
-            message = sendStart(update);
+        if (update.getMessage() != null) {
+            User user = telegramUserService.setupUser(update.getMessage().getFrom());
+
+            if (update.getMessage().getText().equals("/start")) {
+                message = sendStart(update);
+            }
         }
 
         CallbackQuery callbackQuery = update.getCallbackQuery();

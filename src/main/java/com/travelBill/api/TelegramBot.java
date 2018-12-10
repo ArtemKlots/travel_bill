@@ -1,37 +1,27 @@
 package com.travelBill.api;
 
-import com.travelBill.api.core.Event;
 import com.travelBill.api.core.User;
-import com.travelBill.api.event.EventService;
-import com.travelBill.api.telegram.TelegramEventService;
 import com.travelBill.api.telegram.TelegramUserService;
+import com.travelBill.api.telegram.scenario.ScenarioManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Component
 public class TelegramBot extends TelegramLongPollingBot {
 
-    private final EventService eventService;
     private final TelegramUserService telegramUserService;
-    private final TelegramEventService telegramEventService;
+    private final ScenarioManager scenarioManager;
 
     @Autowired
-    public TelegramBot(EventService eventService, TelegramUserService telegramUserService, TelegramEventService telegramEventService) {
-        this.eventService = eventService;
+    public TelegramBot(TelegramUserService telegramUserService, ScenarioManager scenarioManager) {
         this.telegramUserService = telegramUserService;
-        this.telegramEventService = telegramEventService;
+        this.scenarioManager = scenarioManager;
     }
 
     @Override
@@ -39,30 +29,23 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         SendMessage message = null;
         if (update.getMessage() != null) {
-            User user = telegramUserService.setupUser(update.getMessage().getFrom());
+            Message updateMessage = update.getMessage();
+            User user = telegramUserService.setupUser(updateMessage.getFrom());
 
-            if (update.getMessage().getText().equals("/start")) {
-                message = sendStart(update);
+            boolean isStartSignal = updateMessage.getText().equals("/start");
+            boolean isShowEventsSignal = updateMessage.getText().toLowerCase().equals("show events");
+            boolean isCreateEventSignal = updateMessage.getText().startsWith("/create");
+
+            if (isStartSignal) {
+                message = scenarioManager.performInitialScenatio(update);
             }
 
-            if (update.getMessage().getText().toLowerCase().equals("show events")) {
-                message = sendEvents(update);
+            if (isShowEventsSignal) {
+                message = scenarioManager.getAllEvents(update);
             }
 
-            if (update.getMessage().getText().startsWith("/create")) {
-                long chat_id = update.getMessage().getChatId();
-                String eventName = update
-                        .getMessage()
-                        .getText()
-                        .replaceFirst("(?i)/create", "")
-                        .trim(); // (?i) - case insensitive
-
-                Event event = telegramEventService.create(eventName);
-                message = new SendMessage()
-                        .setChatId(chat_id)
-                        .setText(String.format("Event %s has been created. Now it is your current event", event.getTitle()));
-
-
+            if (isCreateEventSignal) {
+                message = scenarioManager.createEvent(update);
             }
         }
 
@@ -81,65 +64,5 @@ public class TelegramBot extends TelegramLongPollingBot {
     @Override
     public String getBotToken() {
         return System.getenv("TELEGRAM_KEY");
-    }
-
-    private SendMessage sendStart(Update update) {
-        long chat_id = update.getMessage().getChatId();
-
-        SendMessage message = new SendMessage()
-                .setChatId(chat_id)
-                .setText("What would you like to do?");
-
-        ReplyKeyboardMarkup markup = new ReplyKeyboardMarkup();
-        List<KeyboardRow> keyboard = new ArrayList<>();
-
-        KeyboardRow currentEventRow = new KeyboardRow();
-        currentEventRow.add("Show current event");
-
-        KeyboardRow seeEventsRow = new KeyboardRow();
-        seeEventsRow.add("Show events");
-
-        keyboard.add(seeEventsRow);
-        keyboard.add(currentEventRow);
-
-        markup.setKeyboard(keyboard);
-
-        message.setReplyMarkup(markup);
-
-        return message;
-    }
-
-    private SendMessage sendEvents(Update update) {
-        long chat_id = update.getMessage().getChatId();
-
-        List<Event> events = eventService.getAll();
-
-        InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
-        List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
-
-        for (Event event : events) {
-            List<InlineKeyboardButton> row = new ArrayList<>();
-            row.add(new InlineKeyboardButton().setText(event.getTitle()).setCallbackData("switch_to " + event.getId()));
-            rowsInline.add(row);
-        }
-
-        markupInline.setKeyboard(rowsInline);
-
-        String messageText;
-        switch (events.size()) {
-            case (0):
-                messageText = "Sorry, but you still have no events";
-                break;
-            case (1):
-                messageText = "Here is your event:";
-                break;
-            default:
-                messageText = "Here are your events:";
-        }
-
-        return new SendMessage()
-                .setChatId(chat_id)
-                .setText(messageText)
-                .setReplyMarkup(markupInline);
     }
 }

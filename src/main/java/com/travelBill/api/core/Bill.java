@@ -1,16 +1,15 @@
-package com.travelBill.api.core.transactions.core;
+package com.travelBill.api.core;
 
-import com.travelBill.api.core.events.core.Event;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-//todo thing about better name
+
 @Entity
-@Table(name = "transaction_lists")
-public class TransactionList {
+@Table(name = "bill")
+public class Bill {
     @Id
     @GeneratedValue
     @Column
@@ -20,7 +19,7 @@ public class TransactionList {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "transactionList")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bill")
     private List<Transaction> transactions;
 
     @ManyToOne(fetch = FetchType.LAZY)

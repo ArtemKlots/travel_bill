@@ -1,7 +1,7 @@
-package com.travelBill.api.middleware.telegram;
+package com.travelBill.api;
 
-import com.travelBill.api.core.events.core.Event;
-import com.travelBill.api.core.events.core.EventService;
+import com.travelBill.api.core.Event;
+import com.travelBill.api.event.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -18,12 +18,12 @@ import java.util.stream.Collectors;
 
 
 @Component
-public class Bot extends TelegramLongPollingBot {
+public class TelegramBot extends TelegramLongPollingBot {
 
     private final EventService eventService;
 
     @Autowired
-    public Bot(EventService eventService) {
+    public TelegramBot(EventService eventService) {
         this.eventService = eventService;
     }
 

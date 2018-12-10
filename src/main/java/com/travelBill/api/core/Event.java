@@ -1,7 +1,5 @@
-package com.travelBill.api.core.events.core;
+package com.travelBill.api.core;
 
-import com.travelBill.api.core.transactions.core.TransactionList;
-import com.travelBill.api.core.users.User;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -20,7 +18,7 @@ public class Event {
     private String title;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "event")
-    private List<TransactionList> transactionList;
+    private List<Bill> bills;
 
     @Column
     @CreationTimestamp
@@ -49,12 +47,12 @@ public class Event {
         this.title = title;
     }
 
-    public List<TransactionList> getTransactionList() {
-        return transactionList;
+    public List<Bill> getBills() {
+        return bills;
     }
 
-    public void setTransactionList(List<TransactionList> transactionList) {
-        this.transactionList = transactionList;
+    public void setBills(List<Bill> bills) {
+        this.bills = bills;
     }
 
     public LocalDateTime getCreatedAt() {

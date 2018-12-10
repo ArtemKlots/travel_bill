@@ -1,19 +1,19 @@
-package com.travelBill.api.core.transactions.dataAccess;
+package com.travelBill.api.transaction;
 
-import com.travelBill.api.core.transactions.core.Transaction;
+import com.travelBill.api.core.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class TransactionDataAccessService {
+public class TransactionService {
 
     private final TransactionRepository transactionRepository;
 
     @Autowired
-    public TransactionDataAccessService(TransactionRepository transactionRepository) {
-        this.transactionRepository = transactionRepository;
+    public TransactionService(TransactionRepository TransactionRepository) {
+        this.transactionRepository = TransactionRepository;
     }
 
     public List<Transaction> getAll() {

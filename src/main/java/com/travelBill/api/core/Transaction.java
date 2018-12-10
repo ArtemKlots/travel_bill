@@ -1,6 +1,5 @@
-package com.travelBill.api.core.transactions.core;
+package com.travelBill.api.core;
 
-import com.travelBill.api.core.users.User;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -25,8 +24,8 @@ public class Transaction {
     private LocalDateTime createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "transaction_list_id")
-    private TransactionList transactionList;
+    @JoinColumn(name = "bill_id")
+    private Bill bill;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -64,12 +63,12 @@ public class Transaction {
         this.createdAt = createdAt;
     }
 
-    public TransactionList getTransactionList() {
-        return transactionList;
+    public Bill getBill() {
+        return bill;
     }
 
-    public void setTransactionList(TransactionList transactionList) {
-        this.transactionList = transactionList;
+    public void setBill(Bill bill) {
+        this.bill = bill;
     }
 
     public User getUser() {

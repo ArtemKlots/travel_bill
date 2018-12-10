@@ -1,6 +1,6 @@
-package com.travelBill.api.core.events.dataAccess;
+package com.travelBill.api.event;
 
-import com.travelBill.api.core.events.core.Event;
+import com.travelBill.api.core.Event;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface EventRepository extends JpaRepository<Event, Long> {

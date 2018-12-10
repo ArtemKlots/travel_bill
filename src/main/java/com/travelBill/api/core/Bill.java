@@ -1,6 +1,7 @@
 package com.travelBill.api.core;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -10,18 +11,19 @@ import java.time.LocalDateTime;
 public class Bill {
     @Id
     @GeneratedValue
-    @Column
     private Long id;
 
-    @Column
     private String title;
 
-    @Column
     private String amount;
 
     @Column
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+    @Column
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id")
@@ -77,5 +79,13 @@ public class Bill {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

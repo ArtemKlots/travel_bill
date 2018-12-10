@@ -12,7 +12,7 @@ public class User {
     private Long id;
 
     @ManyToMany
-    @JoinTable(name = "events_users",
+    @JoinTable(name = "event_user",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "event_id")
     )

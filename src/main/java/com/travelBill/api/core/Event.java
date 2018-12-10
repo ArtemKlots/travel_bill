@@ -21,6 +21,10 @@ public class Event {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "event")
     private List<Bill> bills;
 
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private User owner;
+
     @Column
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -58,6 +62,14 @@ public class Event {
 
     public void setBills(List<Bill> bills) {
         this.bills = bills;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 
     public LocalDateTime getCreatedAt() {

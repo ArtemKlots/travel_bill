@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ShowEventsListScenario {
     static SendMessage perform(EventContext eventContext) {
-        List<Event> events = eventContext.telegramEventService.getAll();
+        List<Event> events = eventContext.eventService.getAll();
 
         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
@@ -36,7 +36,7 @@ public class ShowEventsListScenario {
         }
 
         return new SendMessage()
-                .setChatId(eventContext.chatId)
+                .setChatId(eventContext.getChatId())
                 .setText(messageText)
                 .setReplyMarkup(markupInline);
     }

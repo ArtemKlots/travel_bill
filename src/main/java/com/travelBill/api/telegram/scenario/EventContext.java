@@ -1,19 +1,18 @@
 package com.travelBill.api.telegram.scenario;
 
-import com.travelBill.api.telegram.TelegramEventService;
+import com.travelBill.api.core.User;
+import com.travelBill.api.event.EventService;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-public class EventContext {
-    TelegramEventService telegramEventService;
+class EventContext {
+    EventService eventService;
     Update update;
-    Long chatId;
+    User currentUser;
 
-    public EventContext() {
+    EventContext() {
     }
 
-    EventContext(TelegramEventService telegramEventService, Update update) {
-        this.telegramEventService = telegramEventService;
-        this.update = update;
-        this.chatId = update.getMessage().getChatId();
+    Long getChatId() {
+        return update.getMessage().getChatId();
     }
 }

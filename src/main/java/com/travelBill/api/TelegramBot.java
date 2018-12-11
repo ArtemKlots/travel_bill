@@ -33,8 +33,9 @@ public class TelegramBot extends TelegramLongPollingBot {
             User currentUser = telegramUserService.setupUser(updateMessage.getFrom());
 
             boolean isStartSignal = updateMessage.getText().equals("/start");
-            boolean isShowEventsSignal = updateMessage.getText().toLowerCase().equals("show events");
             boolean isCreateEventSignal = updateMessage.getText().startsWith("/create");
+            boolean isShowEventsSignal = updateMessage.getText().toLowerCase().equals("show events");
+            boolean isShowCurrentEventSignal = updateMessage.getText().toLowerCase().equals("show current event");
 
             if (isStartSignal) {
                 message = scenarioManager.performInitialScenatio(update);
@@ -46,6 +47,10 @@ public class TelegramBot extends TelegramLongPollingBot {
 
             if (isCreateEventSignal) {
                 message = scenarioManager.createEvent(update, currentUser);
+            }
+
+            if (isShowCurrentEventSignal) {
+                message = scenarioManager.getCurrentEvent(update, currentUser);
             }
         }
 

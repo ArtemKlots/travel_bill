@@ -34,8 +34,12 @@ public class EventService {
         event = create(event);
 
         creator.setCurrentEvent(event);
-        userRepository.save(creator);
+        userService.save(creator);
 
         return event;
+    }
+
+    public Event getCurrentEvent(User user) {
+        return user.getCurrentEvent();
     }
 }

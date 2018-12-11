@@ -32,6 +32,11 @@ public class ScenarioManager {
         return ShowEventsListScenario.perform(eventContext);
     }
 
+    public SendMessage getCurrentEvent(Update update, User currentUser) {
+        EventContext eventContext = getEventContext(update, currentUser);
+        return ShowCurrentEventScenario.perform(eventContext);
+    }
+
 
     private EventContext getEventContext(Update update, User currentUser) {
         EventContext context = new EventContext();

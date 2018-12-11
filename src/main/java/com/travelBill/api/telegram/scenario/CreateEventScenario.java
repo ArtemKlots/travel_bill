@@ -15,11 +15,7 @@ class CreateEventScenario {
 
     private static Event createEvent(EventContext eventContext) {
         String eventName = getEventName(eventContext);
-
-        Event newEvent = new Event();
-        newEvent.setTitle(eventName);
-        newEvent.setOwner(eventContext.currentUser);
-        return eventContext.eventService.create(newEvent);
+        return eventContext.eventService.create(eventName, eventContext.currentUser);
     }
 
     private static String getEventName(EventContext eventContext) {

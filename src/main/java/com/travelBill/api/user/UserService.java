@@ -15,7 +15,7 @@ public class UserService {
         return userRepository.findUserByTelegramId(id);
     }
 
-    public User create(User user) {
+    public User save(User user) {
         return userRepository.save(user);
     }
 }

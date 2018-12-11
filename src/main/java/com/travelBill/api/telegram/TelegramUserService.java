@@ -26,6 +26,6 @@ public class TelegramUserService {
         newUser.setTelegramId(telegramUser.getId());
         newUser.setFirstName(telegramUser.getFirstName());
         newUser.setLastName(telegramUser.getLastName());
-        return userService.create(newUser);
+        return userService.save(newUser);
     }
 }

@@ -2,7 +2,7 @@ package com.travelBill.api.event;
 
 import com.travelBill.api.core.Event;
 import com.travelBill.api.core.User;
-import com.travelBill.api.user.UserRepository;
+import com.travelBill.api.user.UserService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -12,11 +12,11 @@ import java.util.List;
 @Transactional
 public class EventService {
     private final EventRepository eventRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public EventService(EventRepository eventRepository, UserRepository userRepository) {
+    public EventService(EventRepository eventRepository, UserService userService) {
         this.eventRepository = eventRepository;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     public List<Event> getAll() {

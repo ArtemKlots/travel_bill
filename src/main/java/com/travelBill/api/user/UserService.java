@@ -11,7 +11,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User byTelegramId(Integer id) {
+    public User findUserByTelegramId(Integer id) {
         return userRepository.findUserByTelegramId(id);
     }
 

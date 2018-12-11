@@ -13,7 +13,7 @@ public class TelegramUserService {
     }
 
     public User setupUser(org.telegram.telegrambots.meta.api.objects.User telegramUser) {
-        User user = userService.byTelegramId(telegramUser.getId());
+        User user = userService.findUserByTelegramId(telegramUser.getId());
         if (user == null) {
             user = createFromTelegramUser(telegramUser);
         }

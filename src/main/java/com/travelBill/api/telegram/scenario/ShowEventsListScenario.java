@@ -17,7 +17,7 @@ public class ShowEventsListScenario {
 
         for (Event event : events) {
             List<InlineKeyboardButton> row = new ArrayList<>();
-            row.add(new InlineKeyboardButton().setText(event.getTitle()).setCallbackData("switch_to " + event.getId()));
+            row.add(new InlineKeyboardButton().setText(event.getTitle()).setCallbackData("switch_to_event" + event.getId()));
             rowsInline.add(row);
         }
 

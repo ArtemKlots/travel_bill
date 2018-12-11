@@ -13,6 +13,10 @@ class EventContext {
     }
 
     Long getChatId() {
-        return update.getMessage().getChatId();
+        if (update.getMessage() != null) {
+            return update.getMessage().getChatId();
+        } else {
+            return update.getCallbackQuery().getMessage().getChatId();
+        }
     }
 }

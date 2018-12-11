@@ -5,6 +5,7 @@ import com.travelBill.api.core.User;
 import com.travelBill.api.user.UserService;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -23,6 +24,11 @@ public class EventService {
         return this.eventRepository.findAll();
     }
 
+    public Event findById(Long id) throws EntityNotFoundException {
+        return this.eventRepository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
+    }
+
     public Event create(Event event) {
         return eventRepository.save(event);
     }
@@ -33,13 +39,17 @@ public class EventService {
         event.setOwner(creator);
         event = create(event);
 
-        creator.setCurrentEvent(event);
-        userService.save(creator);
+        switchCurrentEvent(creator, event);
 
         return event;
     }
 
     public Event getCurrentEvent(User user) {
         return user.getCurrentEvent();
+    }
+
+    public void switchCurrentEvent(User user, Event event) {
+        user.setCurrentEvent(event);
+        userService.save(user);
     }
 }

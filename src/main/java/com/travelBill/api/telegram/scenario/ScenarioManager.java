@@ -2,7 +2,6 @@ package com.travelBill.api.telegram.scenario;
 
 import com.travelBill.api.core.User;
 import com.travelBill.api.event.EventService;
-import com.travelBill.api.telegram.TelegramUserService;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -11,11 +10,9 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 public class ScenarioManager {
 
     private final EventService eventService;
-    private final TelegramUserService telegramUserService;
 
-    public ScenarioManager(EventService eventService, TelegramUserService telegramUserService) {
+    public ScenarioManager(EventService eventService) {
         this.eventService = eventService;
-        this.telegramUserService = telegramUserService;
     }
 
     public SendMessage performInitialScenatio(Update update) {
@@ -35,6 +32,11 @@ public class ScenarioManager {
     public SendMessage getCurrentEvent(Update update, User currentUser) {
         EventContext eventContext = getEventContext(update, currentUser);
         return ShowCurrentEventScenario.perform(eventContext);
+    }
+
+    public SendMessage switchCurrentEvent(Update update, User currentUser) {
+        EventContext eventContext = getEventContext(update, currentUser);
+        return SwitchCurrentEventScenario.perform(eventContext);
     }
 
 

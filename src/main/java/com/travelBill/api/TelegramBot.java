@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -51,6 +52,15 @@ public class TelegramBot extends TelegramLongPollingBot {
 
             if (isShowCurrentEventSignal) {
                 message = scenarioManager.getCurrentEvent(update, currentUser);
+            }
+        } else {
+            User currentUser = telegramUserService.setupUser(update.getCallbackQuery().getFrom());
+            CallbackQuery callbackQuery = update.getCallbackQuery();
+
+            boolean isSwitchingEventSignal = callbackQuery.getData().toLowerCase().startsWith("switch_to_event");
+
+            if (isSwitchingEventSignal) {
+                message = scenarioManager.switchCurrentEvent(update, currentUser);
             }
         }
 

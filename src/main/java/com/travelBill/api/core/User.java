@@ -27,6 +27,10 @@ public class User {
 
     private Integer telegramId;
 
+    @ManyToOne
+    @JoinColumn(name = "current_event_id")
+    private Event currentEvent;
+
     @Column
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -73,6 +77,14 @@ public class User {
 
     public void setTelegramId(Integer telegramId) {
         this.telegramId = telegramId;
+    }
+
+    public Event getCurrentEvent() {
+        return currentEvent;
+    }
+
+    public void setCurrentEvent(Event currentEvent) {
+        this.currentEvent = currentEvent;
     }
 
     public LocalDateTime getCreatedAt() {

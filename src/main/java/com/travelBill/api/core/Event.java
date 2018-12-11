@@ -18,7 +18,7 @@ public class Event {
     @NotBlank
     private String title;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "event")
+    @OneToMany(mappedBy = "event")
     private List<Bill> bills;
 
     @ManyToOne

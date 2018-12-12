@@ -1,4 +1,4 @@
-package com.travelBill.api.telegram.scenario;
+package com.travelBill.api.telegram.scenario.event;
 
 import com.travelBill.api.core.Event;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShowEventsListScenario {
-    static SendMessage perform(EventContext eventContext) {
+    public static SendMessage perform(EventContext eventContext) {
         Long userId = eventContext.currentUser.getId();
         List<Event> events = eventContext.eventService.getEventsByOwnerId(userId);
 

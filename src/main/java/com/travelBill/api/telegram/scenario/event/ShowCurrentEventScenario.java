@@ -1,11 +1,11 @@
-package com.travelBill.api.telegram.scenario;
+package com.travelBill.api.telegram.scenario.event;
 
 import com.travelBill.api.core.Event;
 import com.travelBill.api.core.User;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 public class ShowCurrentEventScenario {
-    static SendMessage perform(EventContext eventContext) {
+    public static SendMessage perform(EventContext eventContext) {
         User currentUser = eventContext.currentUser;
         Event event = currentUser.getCurrentEvent();
 

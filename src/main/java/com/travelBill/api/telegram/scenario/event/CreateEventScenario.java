@@ -1,11 +1,11 @@
-package com.travelBill.api.telegram.scenario;
+package com.travelBill.api.telegram.scenario.event;
 
 import com.travelBill.api.core.Event;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
-class CreateEventScenario {
+public class CreateEventScenario {
 
-    static SendMessage perform(EventContext eventContext) {
+    public static SendMessage perform(EventContext eventContext) {
         Event event = createEvent(eventContext);
 
         return new SendMessage()

@@ -24,6 +24,10 @@ public class EventService {
         return this.eventRepository.findAll();
     }
 
+    public List<Event> getEventsByOwnerId(Long id) {
+        return this.eventRepository.getEventsByOwnerId(id);
+    }
+
     public Event findById(Long id) throws EntityNotFoundException {
         return this.eventRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);

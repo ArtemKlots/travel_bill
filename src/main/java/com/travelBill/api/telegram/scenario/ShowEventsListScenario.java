@@ -10,7 +10,8 @@ import java.util.List;
 
 public class ShowEventsListScenario {
     static SendMessage perform(EventContext eventContext) {
-        List<Event> events = eventContext.eventService.getAll();
+        Long userId = eventContext.currentUser.getId();
+        List<Event> events = eventContext.eventService.getEventsByOwnerId(userId);
 
         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();

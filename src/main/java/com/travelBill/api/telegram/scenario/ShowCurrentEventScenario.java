@@ -7,7 +7,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 public class ShowCurrentEventScenario {
     static SendMessage perform(EventContext eventContext) {
         User currentUser = eventContext.currentUser;
-        Event event = eventContext.eventService.getCurrentEvent(currentUser);
+        Event event = currentUser.getCurrentEvent();
 
         String responseMessage = String.format("Your current event is \"%s\"", event.getTitle());
 

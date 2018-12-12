@@ -48,10 +48,6 @@ public class EventService {
         return event;
     }
 
-    public Event getCurrentEvent(User user) {
-        return user.getCurrentEvent();
-    }
-
     public void switchCurrentEvent(User user, Event event) {
         user.setCurrentEvent(event);
         userService.save(user);

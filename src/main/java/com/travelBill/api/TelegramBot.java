@@ -1,14 +1,12 @@
 package com.travelBill.api;
 
 import com.travelBill.api.core.User;
+import com.travelBill.api.telegram.ActionRouter;
 import com.travelBill.api.telegram.TelegramUserService;
-import com.travelBill.api.telegram.scenario.ScenarioManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
-import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
@@ -17,52 +15,18 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 public class TelegramBot extends TelegramLongPollingBot {
 
     private final TelegramUserService telegramUserService;
-    private final ScenarioManager scenarioManager;
+    private final ActionRouter actionRouter;
 
     @Autowired
-    public TelegramBot(TelegramUserService telegramUserService, ScenarioManager scenarioManager) {
+    public TelegramBot(TelegramUserService telegramUserService, ActionRouter actionRouter) {
         this.telegramUserService = telegramUserService;
-        this.scenarioManager = scenarioManager;
+        this.actionRouter = actionRouter;
     }
 
     @Override
     public void onUpdateReceived(Update update) {
-
-        SendMessage message = null;
-        if (update.getMessage() != null) {
-            Message updateMessage = update.getMessage();
-            User currentUser = telegramUserService.setupUser(updateMessage.getFrom());
-
-            boolean isStartSignal = updateMessage.getText().equals("/start");
-            boolean isCreateEventSignal = updateMessage.getText().startsWith("/create");
-            boolean isShowEventsSignal = updateMessage.getText().toLowerCase().equals("show events");
-            boolean isShowCurrentEventSignal = updateMessage.getText().toLowerCase().equals("show current event");
-
-            if (isStartSignal) {
-                message = scenarioManager.performInitialScenatio(update);
-            }
-
-            if (isShowEventsSignal) {
-                message = scenarioManager.getAllEvents(update, currentUser);
-            }
-
-            if (isCreateEventSignal) {
-                message = scenarioManager.createEvent(update, currentUser);
-            }
-
-            if (isShowCurrentEventSignal) {
-                message = scenarioManager.getCurrentEvent(update, currentUser);
-            }
-        } else {
-            User currentUser = telegramUserService.setupUser(update.getCallbackQuery().getFrom());
-            CallbackQuery callbackQuery = update.getCallbackQuery();
-
-            boolean isSwitchingEventSignal = callbackQuery.getData().toLowerCase().startsWith("switch_to_event");
-
-            if (isSwitchingEventSignal) {
-                message = scenarioManager.switchCurrentEvent(update, currentUser);
-            }
-        }
+        User currentUser = setupUser(update);
+        SendMessage message = actionRouter.delegateAction(update, currentUser);
 
         try {
             execute(message);
@@ -79,5 +43,16 @@ public class TelegramBot extends TelegramLongPollingBot {
     @Override
     public String getBotToken() {
         return System.getenv("TELEGRAM_KEY");
+    }
+
+
+    private User setupUser(Update update) {
+        User currentUser = null;
+        if (update.getMessage() != null) {
+            currentUser = telegramUserService.setupUser(update.getMessage().getFrom());
+        } else if (update.getCallbackQuery() != null) {
+            currentUser = telegramUserService.setupUser(update.getCallbackQuery().getFrom());
+        }
+        return currentUser;
     }
 }

@@ -23,7 +23,7 @@ public class SwitchCurrentEventScenario {
                     .setText("Sorry, but I cant understand your instruction :(");
         }
 
-        String responseMessage = String.format("Your current event is \"%s\"", event.getTitle());
+        String responseMessage = String.format("You have selected \"%s\" as the current event", event.getTitle());
 
         return new SendMessage()
                 .setChatId(eventContext.getChatId())

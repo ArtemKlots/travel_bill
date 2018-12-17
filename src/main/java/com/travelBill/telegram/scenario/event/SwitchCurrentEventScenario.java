@@ -6,8 +6,12 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 import javax.persistence.EntityNotFoundException;
 
-public class SwitchCurrentEventScenario {
-    public static SendMessage perform(EventContext eventContext) {
+public class SwitchCurrentEventScenario extends AbstractEventScenario {
+    SwitchCurrentEventScenario(EventContext eventContext) {
+        super(eventContext);
+    }
+
+    public SendMessage perform() {
         User currentUser = eventContext.currentUser;
         String callbackQueryCommand = eventContext.update.getCallbackQuery().getData();
         String stringEventId = callbackQueryCommand.split("switch_to_event")[1];

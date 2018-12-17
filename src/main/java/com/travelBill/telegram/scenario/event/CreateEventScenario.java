@@ -3,9 +3,13 @@ package com.travelBill.telegram.scenario.event;
 import com.travelBill.api.core.event.Event;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
-public class CreateEventScenario {
+public class CreateEventScenario extends AbstractEventScenario {
+    CreateEventScenario(EventContext eventContext) {
+        super(eventContext);
+    }
 
-    public static SendMessage perform(EventContext eventContext) {
+    @Override
+    public SendMessage perform() {
         Event event = createEvent(eventContext);
 
         return new SendMessage()

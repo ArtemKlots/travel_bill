@@ -8,8 +8,13 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShowEventsListScenario {
-    public static SendMessage perform(EventContext eventContext) {
+public class ShowEventsListScenario extends AbstractEventScenario {
+    ShowEventsListScenario(EventContext eventContext) {
+        super(eventContext);
+    }
+
+    @Override
+    public SendMessage perform() {
         Long userId = eventContext.currentUser.getId();
         List<Event> events = eventContext.eventService.getEventsByOwnerId(userId);
 

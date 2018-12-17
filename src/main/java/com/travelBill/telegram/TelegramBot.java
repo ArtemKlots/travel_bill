@@ -1,8 +1,7 @@
-package com.travelBill;
+package com.travelBill.telegram;
 
 import com.travelBill.api.core.user.User;
-import com.travelBill.telegram.ActionRouter;
-import com.travelBill.telegram.TelegramUserService;
+import com.travelBill.telegram.scenario.ScenarioFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -15,18 +14,19 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 public class TelegramBot extends TelegramLongPollingBot {
 
     private final TelegramUserService telegramUserService;
-    private final ActionRouter actionRouter;
+    //todo is it ok to inject a factory?
+    private final ScenarioFactory scenarioFactory;
 
     @Autowired
-    public TelegramBot(TelegramUserService telegramUserService, ActionRouter actionRouter) {
+    public TelegramBot(TelegramUserService telegramUserService, ScenarioFactory scenarioFactory) {
         this.telegramUserService = telegramUserService;
-        this.actionRouter = actionRouter;
+        this.scenarioFactory = scenarioFactory;
     }
 
     @Override
     public void onUpdateReceived(Update update) {
         User currentUser = setupUser(update);
-        SendMessage message = actionRouter.delegateAction(update, currentUser);
+        SendMessage message = scenarioFactory.getScenario(update, currentUser).perform();
 
         try {
             execute(message);

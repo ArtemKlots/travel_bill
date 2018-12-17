@@ -1,8 +1,8 @@
-package com.travelBill.api.telegram.scenario;
+package com.travelBill.telegram.scenario;
 
-import com.travelBill.api.core.User;
-import com.travelBill.api.event.EventService;
-import com.travelBill.api.telegram.scenario.event.*;
+import com.travelBill.api.core.event.EventService;
+import com.travelBill.api.core.user.User;
+import com.travelBill.telegram.scenario.event.*;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;

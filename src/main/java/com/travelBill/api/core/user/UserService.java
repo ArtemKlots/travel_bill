@@ -1,6 +1,5 @@
-package com.travelBill.api.user;
+package com.travelBill.api.core.user;
 
-import com.travelBill.api.core.User;
 import org.springframework.stereotype.Service;
 
 @Service

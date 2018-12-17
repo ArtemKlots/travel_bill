@@ -1,8 +1,7 @@
-package com.travelBill.api.event;
+package com.travelBill.api.core.event;
 
-import com.travelBill.api.core.Event;
-import com.travelBill.api.core.User;
-import com.travelBill.api.user.UserService;
+import com.travelBill.api.core.user.User;
+import com.travelBill.api.core.user.UserService;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;

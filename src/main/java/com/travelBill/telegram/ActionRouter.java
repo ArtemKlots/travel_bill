@@ -1,7 +1,7 @@
-package com.travelBill.api.telegram;
+package com.travelBill.telegram;
 
-import com.travelBill.api.core.User;
-import com.travelBill.api.telegram.scenario.ScenarioManager;
+import com.travelBill.api.core.user.User;
+import com.travelBill.telegram.scenario.ScenarioManager;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;

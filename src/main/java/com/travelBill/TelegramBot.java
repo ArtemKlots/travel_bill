@@ -1,8 +1,8 @@
-package com.travelBill.api;
+package com.travelBill;
 
-import com.travelBill.api.core.User;
-import com.travelBill.api.telegram.ActionRouter;
-import com.travelBill.api.telegram.TelegramUserService;
+import com.travelBill.api.core.user.User;
+import com.travelBill.telegram.ActionRouter;
+import com.travelBill.telegram.TelegramUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;

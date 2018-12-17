@@ -1,4 +1,4 @@
-package com.travelBill.api.telegram.scenario;
+package com.travelBill.telegram.scenario;
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;

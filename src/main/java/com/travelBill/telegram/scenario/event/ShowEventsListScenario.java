@@ -1,6 +1,6 @@
-package com.travelBill.api.telegram.scenario.event;
+package com.travelBill.telegram.scenario.event;
 
-import com.travelBill.api.core.Event;
+import com.travelBill.api.core.event.Event;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;

@@ -14,7 +14,7 @@ public class CreateEventScenario extends AbstractEventScenario {
 
         return new SendMessage()
                 .setChatId(eventContext.getChatId())
-                .setText(String.format("Event %s has been created. Now it is your current event", event.getTitle()));
+                .setText(String.format("Event \"%s\" has been created. Now it is your current event", event.getTitle()));
     }
 
     private static Event createEvent(EventContext eventContext) {

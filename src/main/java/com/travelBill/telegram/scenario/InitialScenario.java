@@ -8,9 +8,15 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import java.util.ArrayList;
 import java.util.List;
 
-public class InitialScenario {
+public class InitialScenario implements Scenario {
+    private Update update;
 
-    public static SendMessage perform(Update update) {
+    InitialScenario(Update update) {
+        this.update = update;
+    }
+
+    @Override
+    public SendMessage perform() {
         long chat_id = update.getMessage().getChatId();
 
         SendMessage message = new SendMessage()

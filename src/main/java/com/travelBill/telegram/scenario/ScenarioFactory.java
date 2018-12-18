@@ -25,8 +25,7 @@ public class ScenarioFactory {
             boolean isStartSignal = update.getMessage().getText().equals("/start");
 
             if (isStartSignal) {
-                //todo fix it
-                InitialScenario.perform(update);
+                return new InitialScenario(update);
             }
             return null;
         }

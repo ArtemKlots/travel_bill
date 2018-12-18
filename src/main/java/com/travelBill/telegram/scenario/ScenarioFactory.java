@@ -2,7 +2,6 @@ package com.travelBill.telegram.scenario;
 
 import com.travelBill.api.core.event.EventService;
 import com.travelBill.api.core.user.User;
-import com.travelBill.telegram.scenario.event.EventActions;
 import com.travelBill.telegram.scenario.event.EventContext;
 import com.travelBill.telegram.scenario.event.EventScenarioFactory;
 import org.springframework.stereotype.Service;
@@ -16,18 +15,25 @@ public class ScenarioFactory {
         this.eventService = eventService;
     }
 
-    //todo refacor
     public Scenario getScenario(Update update, User currentUser) {
-        if (EventActions.isEventAction(update)) {
-            EventContext eventContext = getEventContext(update, currentUser);
-            return new EventScenarioFactory().getScenario(eventContext);
-        } else {
-            boolean isStartSignal = update.getMessage().getText().equals("/start");
+        ScenarioTypes type = ScenarioTypes.defineType(update);
 
-            if (isStartSignal) {
+        if (type == null) {
+            return new UnknownScenario(update);
+        }
+
+        return selectScenario(type, update, currentUser);
+    }
+
+    private Scenario selectScenario(ScenarioTypes type, Update update, User currentUser) {
+        switch (type) {
+            case START:
                 return new InitialScenario(update);
-            }
-            return null;
+            case EVENT:
+                EventContext eventContext = getEventContext(update, currentUser);
+                return new EventScenarioFactory().getScenario(eventContext);
+            default:
+                return new UnknownScenario(update);
         }
     }
 

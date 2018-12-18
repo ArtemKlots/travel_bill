@@ -2,6 +2,8 @@ package com.travelBill.telegram.scenario;
 
 import com.travelBill.api.core.event.EventService;
 import com.travelBill.api.core.user.User;
+import com.travelBill.telegram.scenario.common.Scenario;
+import com.travelBill.telegram.scenario.common.ScenarioTypes;
 import com.travelBill.telegram.scenario.event.EventContext;
 import com.travelBill.telegram.scenario.event.EventScenarioFactory;
 import org.springframework.stereotype.Service;

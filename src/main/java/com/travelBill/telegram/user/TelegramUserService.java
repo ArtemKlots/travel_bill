@@ -1,4 +1,4 @@
-package com.travelBill.telegram;
+package com.travelBill.telegram.user;
 
 import com.travelBill.api.core.user.User;
 import com.travelBill.api.core.user.UserService;

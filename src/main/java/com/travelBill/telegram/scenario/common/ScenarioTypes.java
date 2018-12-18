@@ -1,4 +1,4 @@
-package com.travelBill.telegram.scenario;
+package com.travelBill.telegram.scenario.common;
 
 import com.travelBill.telegram.scenario.event.EventActions;
 import org.telegram.telegrambots.meta.api.objects.Update;

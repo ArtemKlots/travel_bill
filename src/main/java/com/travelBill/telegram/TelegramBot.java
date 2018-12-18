@@ -2,6 +2,7 @@ package com.travelBill.telegram;
 
 import com.travelBill.api.core.user.User;
 import com.travelBill.telegram.scenario.ScenarioFactory;
+import com.travelBill.telegram.user.TelegramUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;

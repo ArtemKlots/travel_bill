@@ -7,7 +7,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 public class UnknownScenario implements Scenario {
     private Update update;
 
-    UnknownScenario(Update update) {
+    public UnknownScenario(Update update) {
         this.update = update;
     }
 

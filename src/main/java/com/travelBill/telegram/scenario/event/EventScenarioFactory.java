@@ -1,9 +1,20 @@
 package com.travelBill.telegram.scenario.event;
 
-public class EventScenarioFactory {
-    public AbstractEventScenario getScenario(EventContext eventContext) {
+import com.travelBill.telegram.scenario.UnknownScenario;
+import com.travelBill.telegram.scenario.common.Scenario;
 
-        switch (EventActions.defineType(eventContext.update)) {
+public class EventScenarioFactory {
+    public Scenario getScenario(EventContext eventContext) {
+        EventActions type = EventActions.defineType(eventContext.update);
+        if (type == null) {
+            return new UnknownScenario(eventContext.update);
+        }
+
+        return selectScenario(eventContext, type);
+    }
+
+    private Scenario selectScenario(EventContext eventContext, EventActions type) {
+        switch (type) {
             case SHOW_ALL:
                 return new ShowEventsListScenario(eventContext);
             case CREATE:
@@ -13,7 +24,7 @@ public class EventScenarioFactory {
             case SWITCH:
                 return new SwitchCurrentEventScenario(eventContext);
             default:
-                throw new RuntimeException("Cant choose a scenario");
+                return new UnknownScenario(eventContext.update);
         }
     }
 }

@@ -1,7 +1,9 @@
 package com.travelBill.telegram;
 
 import com.travelBill.api.core.user.User;
+import com.travelBill.telegram.exceptions.UserIsNotSetUpException;
 import com.travelBill.telegram.scenario.ScenarioFactory;
+import com.travelBill.telegram.scenario.UnknownScenario;
 import com.travelBill.telegram.user.TelegramUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,13 +28,13 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        User currentUser = setupUser(update);
-        SendMessage message = scenarioFactory.getScenario(update, currentUser).perform();
-
         try {
+            User currentUser = setupUser(update);
+            SendMessage message = scenarioFactory.getScenario(update, currentUser).perform();
             execute(message);
-        } catch (TelegramApiException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            respondWithError(update);
         }
     }
 
@@ -47,13 +49,26 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
 
-    private User setupUser(Update update) {
-        User currentUser = null;
-        if (update.getMessage() != null) {
-            currentUser = telegramUserService.setupUser(update.getMessage().getFrom());
-        } else if (update.getCallbackQuery() != null) {
-            currentUser = telegramUserService.setupUser(update.getCallbackQuery().getFrom());
+    private User setupUser(Update update) throws UserIsNotSetUpException {
+        org.telegram.telegrambots.meta.api.objects.User user;
+        if (update.hasMessage()) {
+            user = update.getMessage().getFrom();
+
+        } else if (update.hasCallbackQuery()) {
+            user = update.getCallbackQuery().getFrom();
+        } else {
+            throw new UserIsNotSetUpException();
         }
-        return currentUser;
+
+        return telegramUserService.setupUser(user);
+    }
+
+    private void respondWithError(Update update) {
+        SendMessage message = new UnknownScenario(update).perform();
+        try {
+            execute(message);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
     }
 }

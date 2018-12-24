@@ -10,7 +10,8 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
+import static com.rainerhahnekamp.sneakythrow.Sneaky.sneak;
 
 
 @Component
@@ -64,10 +65,6 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     private void respondWithError(Update update) {
         SendMessage message = new UnknownScenario(update).createMessage();
-        try {
-            execute(message);
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
-        }
+        sneak(() -> execute(message));
     }
 }

@@ -3,28 +3,33 @@ package com.travelBill.telegram.scenario.event;
 import com.travelBill.telegram.scenario.UnknownScenario;
 import com.travelBill.telegram.scenario.common.Scenario;
 
+import static java.util.Objects.isNull;
+
 public class EventScenarioFactory {
     public Scenario createScenario(EventContext eventContext) {
-        EventActions type = EventActions.defineType(eventContext.update);
-        if (type == null) {
-            return new UnknownScenario(eventContext.update);
+        EventScenarioHelper eventScenarioHelper = new EventScenarioHelper(eventContext.update);
+        Scenario selectedScenario = null;
+
+        if (eventScenarioHelper.isShowEventsSignal()) {
+            selectedScenario = new ShowEventsListScenario(eventContext);
         }
 
-        return selectScenario(eventContext, type);
-    }
-
-    private Scenario selectScenario(EventContext eventContext, EventActions type) {
-        switch (type) {
-            case SHOW_ALL:
-                return new ShowEventsListScenario(eventContext);
-            case CREATE:
-                return new CreateEventScenario(eventContext);
-            case SHOW_CURRENT:
-                return new ShowCurrentEventScenario(eventContext);
-            case SWITCH:
-                return new SwitchCurrentEventScenario(eventContext);
-            default:
-                return new UnknownScenario(eventContext.update);
+        if (eventScenarioHelper.isCreateEventSignal()) {
+            selectedScenario = new CreateEventScenario(eventContext);
         }
+
+        if (eventScenarioHelper.isShowCurrentEventSignal()) {
+            selectedScenario = new ShowCurrentEventScenario(eventContext);
+        }
+
+        if (eventScenarioHelper.isSwitchingEventSignal()) {
+            selectedScenario = new SwitchCurrentEventScenario(eventContext);
+        }
+
+        if (isNull(selectedScenario)) {
+            selectedScenario = new UnknownScenario(eventContext.update);
+        }
+
+        return selectedScenario;
     }
 }

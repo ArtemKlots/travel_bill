@@ -17,7 +17,6 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 public class TelegramBot extends TelegramLongPollingBot {
 
     private final TelegramUserService telegramUserService;
-    //todo is it ok to inject a factory?
     private final ScenarioFactory scenarioFactory;
 
     @Autowired

@@ -13,7 +13,7 @@ public class EventContext {
     }
 
     public Long getChatId() {
-        if (update.getMessage() != null) {
+        if (update.hasMessage()) {
             return update.getMessage().getChatId();
         } else {
             return update.getCallbackQuery().getMessage().getChatId();

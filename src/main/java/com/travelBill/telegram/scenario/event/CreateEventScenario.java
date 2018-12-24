@@ -10,11 +10,19 @@ public class CreateEventScenario extends AbstractEventScenario {
 
     @Override
     public SendMessage createMessage() {
-        Event event = createEvent(eventContext);
+        Event event;
+        String textMessage;
+
+        if (!getEventName(eventContext).equals("")) {
+            event = createEvent(eventContext);
+            textMessage = String.format("Event \"%s\" has been created. Now it is your current event", event.getTitle());
+        } else {
+            textMessage = "Sorry, but I cant create event without title";
+        }
 
         return new SendMessage()
                 .setChatId(eventContext.getChatId())
-                .setText(String.format("Event \"%s\" has been created. Now it is your current event", event.getTitle()));
+                .setText(textMessage);
     }
 
     private static Event createEvent(EventContext eventContext) {

@@ -17,6 +17,6 @@ public class UnknownScenario implements Scenario {
 
         return new SendMessage()
                 .setChatId(chat_id)
-                .setText("Sorry, but I can't understand you :( Could you try again?");
+                .setText("Sorry, but I can't understand you :( Could you rephrase please?");
     }
 }

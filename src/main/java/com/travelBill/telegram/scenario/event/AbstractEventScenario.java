@@ -10,5 +10,5 @@ public abstract class AbstractEventScenario implements Scenario {
         this.eventContext = eventContext;
     }
 
-    public abstract SendMessage perform();
+    public abstract SendMessage createMessage();
 }

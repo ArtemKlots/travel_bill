@@ -30,7 +30,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         try {
             User currentUser = setupUser(update);
-            SendMessage message = scenarioFactory.getScenario(update, currentUser).perform();
+            SendMessage message = scenarioFactory.createScenario(update, currentUser).createMessage();
             execute(message);
         } catch (Exception e) {
             e.printStackTrace();
@@ -64,7 +64,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
     private void respondWithError(Update update) {
-        SendMessage message = new UnknownScenario(update).perform();
+        SendMessage message = new UnknownScenario(update).createMessage();
         try {
             execute(message);
         } catch (TelegramApiException e) {

@@ -9,7 +9,7 @@ public class CreateEventScenario extends AbstractEventScenario {
     }
 
     @Override
-    public SendMessage perform() {
+    public SendMessage createMessage() {
         Event event = createEvent(eventContext);
 
         return new SendMessage()

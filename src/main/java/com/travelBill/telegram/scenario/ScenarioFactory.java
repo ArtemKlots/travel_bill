@@ -17,7 +17,7 @@ public class ScenarioFactory {
         this.eventService = eventService;
     }
 
-    public Scenario getScenario(Update update, User currentUser) {
+    public Scenario createScenario(Update update, User currentUser) {
         ScenarioTypes type = ScenarioTypes.defineType(update);
 
         if (type == null) {
@@ -33,7 +33,7 @@ public class ScenarioFactory {
                 return new InitialScenario(update);
             case EVENT:
                 EventContext eventContext = getEventContext(update, currentUser);
-                return new EventScenarioFactory().getScenario(eventContext);
+                return new EventScenarioFactory().createScenario(eventContext);
             default:
                 return new UnknownScenario(update);
         }

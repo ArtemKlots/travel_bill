@@ -14,7 +14,7 @@ public class ShowEventsListScenario extends AbstractEventScenario {
     }
 
     @Override
-    public SendMessage perform() {
+    public SendMessage createMessage() {
         Long userId = eventContext.currentUser.getId();
         List<Event> events = eventContext.eventService.getEventsByOwnerId(userId);
 

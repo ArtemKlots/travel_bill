@@ -12,7 +12,7 @@ public class UnknownScenario implements Scenario {
     }
 
     @Override
-    public SendMessage perform() {
+    public SendMessage createMessage() {
         long chat_id = update.getMessage().getChatId();
 
         return new SendMessage()

@@ -11,7 +11,7 @@ public class SwitchCurrentEventScenario extends AbstractEventScenario {
         super(eventContext);
     }
 
-    public SendMessage perform() {
+    public SendMessage createMessage() {
         User currentUser = eventContext.currentUser;
         String callbackQueryCommand = eventContext.update.getCallbackQuery().getData();
         String stringEventId = callbackQueryCommand.split("switch_to_event")[1];

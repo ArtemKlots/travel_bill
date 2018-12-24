@@ -10,7 +10,7 @@ public class ShowCurrentEventScenario extends AbstractEventScenario {
     }
 
     @Override
-    public SendMessage perform() {
+    public SendMessage createMessage() {
         User currentUser = eventContext.currentUser;
         Event event = currentUser.getCurrentEvent();
 

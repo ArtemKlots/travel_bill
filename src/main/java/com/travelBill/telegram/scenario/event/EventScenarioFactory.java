@@ -4,7 +4,7 @@ import com.travelBill.telegram.scenario.UnknownScenario;
 import com.travelBill.telegram.scenario.common.Scenario;
 
 public class EventScenarioFactory {
-    public Scenario getScenario(EventContext eventContext) {
+    public Scenario createScenario(EventContext eventContext) {
         EventActions type = EventActions.defineType(eventContext.update);
         if (type == null) {
             return new UnknownScenario(eventContext.update);

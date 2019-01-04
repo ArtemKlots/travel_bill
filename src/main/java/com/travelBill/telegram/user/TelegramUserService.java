@@ -1,7 +1,7 @@
-package com.travelBill.api.telegram;
+package com.travelBill.telegram.user;
 
-import com.travelBill.api.core.User;
-import com.travelBill.api.user.UserService;
+import com.travelBill.api.core.user.User;
+import com.travelBill.api.core.user.UserService;
 import org.springframework.stereotype.Service;
 
 @Service

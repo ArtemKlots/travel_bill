@@ -1,6 +1,5 @@
-package com.travelBill.api.user;
+package com.travelBill.api.core.user;
 
-import com.travelBill.api.core.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

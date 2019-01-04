@@ -1,13 +1,17 @@
-package com.travelBill.api.telegram.scenario.event;
+package com.travelBill.telegram.scenario.event;
 
-import com.travelBill.api.core.Event;
-import com.travelBill.api.core.User;
+import com.travelBill.api.core.event.Event;
+import com.travelBill.api.core.user.User;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 import javax.persistence.EntityNotFoundException;
 
-public class SwitchCurrentEventScenario {
-    public static SendMessage perform(EventContext eventContext) {
+public class SwitchCurrentEventScenario extends AbstractEventScenario {
+    SwitchCurrentEventScenario(EventContext eventContext) {
+        super(eventContext);
+    }
+
+    public SendMessage createMessage() {
         User currentUser = eventContext.currentUser;
         String callbackQueryCommand = eventContext.update.getCallbackQuery().getData();
         String stringEventId = callbackQueryCommand.split("switch_to_event")[1];

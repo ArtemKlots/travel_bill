@@ -1,5 +1,6 @@
-package com.travelBill.api.core;
+package com.travelBill.api.core.user;
 
+import com.travelBill.api.core.event.Event;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 

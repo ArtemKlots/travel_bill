@@ -1,7 +1,7 @@
-package com.travelBill.api.telegram.scenario.event;
+package com.travelBill.telegram.scenario.event;
 
-import com.travelBill.api.core.User;
-import com.travelBill.api.event.EventService;
+import com.travelBill.api.core.event.EventService;
+import com.travelBill.api.core.user.User;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 public class EventContext {
@@ -13,7 +13,7 @@ public class EventContext {
     }
 
     public Long getChatId() {
-        if (update.getMessage() != null) {
+        if (update.hasMessage()) {
             return update.getMessage().getChatId();
         } else {
             return update.getCallbackQuery().getMessage().getChatId();

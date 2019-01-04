@@ -1,6 +1,6 @@
-package com.travelBill.api.telegram.scenario.event;
+package com.travelBill.telegram.scenario.event;
 
-import com.travelBill.api.core.Event;
+import com.travelBill.api.core.event.Event;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -8,11 +8,26 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShowEventsListScenario {
-    public static SendMessage perform(EventContext eventContext) {
+public class ShowEventsListScenario extends AbstractEventScenario {
+    ShowEventsListScenario(EventContext eventContext) {
+        super(eventContext);
+    }
+
+    @Override
+    public SendMessage createMessage() {
         Long userId = eventContext.currentUser.getId();
         List<Event> events = eventContext.eventService.getEventsByOwnerId(userId);
 
+        InlineKeyboardMarkup markup = createMarkup(events);
+        String messageText = getTextMessage(events);
+
+        return new SendMessage()
+                .setChatId(eventContext.getChatId())
+                .setText(messageText)
+                .setReplyMarkup(markup);
+    }
+
+    private InlineKeyboardMarkup createMarkup(List<Event> events) {
         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
 
@@ -23,7 +38,10 @@ public class ShowEventsListScenario {
         }
 
         markupInline.setKeyboard(rowsInline);
+        return markupInline;
+    }
 
+    private String getTextMessage(List<Event> events) {
         String messageText;
         switch (events.size()) {
             case (0):
@@ -35,10 +53,6 @@ public class ShowEventsListScenario {
             default:
                 messageText = "Here are your events:";
         }
-
-        return new SendMessage()
-                .setChatId(eventContext.getChatId())
-                .setText(messageText)
-                .setReplyMarkup(markupInline);
+        return messageText;
     }
 }

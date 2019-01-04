@@ -1,6 +1,5 @@
-package com.travelBill.api.bill;
+package com.travelBill.api.core.bill;
 
-import com.travelBill.api.core.Bill;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

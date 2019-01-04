@@ -1,6 +1,5 @@
-package com.travelBill.api.event;
+package com.travelBill.api.core.event;
 
-import com.travelBill.api.core.Event;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

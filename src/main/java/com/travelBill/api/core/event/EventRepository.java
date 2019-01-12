@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface EventRepository extends JpaRepository<Event, Long> {
     List<Event> getEventsByOwnerId(Long ownerId);
+
+    Event findByTelegramChatId(Long ownerId);
 }

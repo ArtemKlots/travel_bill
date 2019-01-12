@@ -19,4 +19,8 @@ public class EventContext {
             return update.getCallbackQuery().getMessage().getChatId();
         }
     }
+
+    public Boolean isGroupOrSuperGroupChat() {
+        return update.getMessage().getChat().isGroupChat() || update.getMessage().getChat().isSuperGroupChat();
+    }
 }

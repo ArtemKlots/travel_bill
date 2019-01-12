@@ -32,14 +32,20 @@ public class EventServiceImpl implements EventService {
                 .orElseThrow(EntityNotFoundException::new);
     }
 
+    @Override
+    public Event findByTelegramChatId(Long id) throws EntityNotFoundException {
+        return eventRepository.findByTelegramChatId(id);
+    }
+
     public Event create(Event event) {
         return eventRepository.save(event);
     }
 
-    public Event create(String title, User creator) {
+    public Event create(String title, User creator, Long chatId) {
         Event event = new Event();
         event.setTitle(title);
         event.setOwner(creator);
+        event.setTelegramChatId(chatId);
         event = create(event);
 
         switchCurrentEvent(creator, event);

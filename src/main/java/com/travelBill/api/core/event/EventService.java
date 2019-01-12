@@ -12,9 +12,11 @@ public interface EventService {
 
     Event findById(Long id) throws EntityNotFoundException;
 
+    Event findByTelegramChatId(Long id) throws EntityNotFoundException;
+
     Event create(Event event);
 
-    Event create(String title, User creator);
+    Event create(String title, User creator, Long chatId);
 
     void switchCurrentEvent(User user, Event event);
 }

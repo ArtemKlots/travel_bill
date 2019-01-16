@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
@@ -17,7 +18,7 @@ public class Bill {
 
     private String title;
 
-    private String amount;
+    private double amount;
 
     @Column
     @CreationTimestamp
@@ -27,10 +28,12 @@ public class Bill {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "event_id")
     private Event event;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -51,11 +54,11 @@ public class Bill {
         this.title = title;
     }
 
-    public String getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(String amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 

@@ -18,4 +18,8 @@ public class BillService {
     public List<Bill> getAll() {
         return billRepository.findAll();
     }
+
+    public Bill save(Bill bill) {
+        return billRepository.save(bill);
+    }
 }

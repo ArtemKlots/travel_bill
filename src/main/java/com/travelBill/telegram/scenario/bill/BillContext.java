@@ -1,13 +1,16 @@
-package com.travelBill.telegram.scenario.event;
+package com.travelBill.telegram.scenario.bill;
 
+import com.travelBill.api.core.bill.BillService;
 import com.travelBill.api.core.event.EventService;
 import com.travelBill.api.core.user.User;
 import com.travelBill.telegram.scenario.Context;
-import org.telegram.telegrambots.meta.api.objects.Update;
 
-public class EventContext extends Context {
+public class BillContext extends Context {
     public EventService eventService;
-    public Update update;
+    public BillService billService;
     public User currentUser;
+
+    public BillContext() {
+    }
 
 }

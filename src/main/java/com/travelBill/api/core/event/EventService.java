@@ -14,9 +14,11 @@ public interface EventService {
 
     Event findByTelegramChatId(Long id) throws EntityNotFoundException;
 
-    Event create(Event event);
+    Event save(Event event);
 
-    Event create(String title, User creator, Long chatId);
+    Event save(String title, User creator, Long chatId);
+
+    Event addMember(Event event, User member);
 
     void switchCurrentEvent(User user, Event event);
 }

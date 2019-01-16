@@ -13,7 +13,7 @@ public class CreateEventScenario extends AbstractEventScenario {
     @Override
     public SendMessage createMessage() {
         Event event;
-        Event existingEvent = findEventForChat(eventContext.getChatId());
+        Event existingEvent = eventContext.eventService.findByTelegramChatId(eventContext.getChatId());
 
         String textMessage;
         if (!eventContext.isGroupOrSuperGroupChat()) {
@@ -22,7 +22,7 @@ public class CreateEventScenario extends AbstractEventScenario {
             textMessage = String.format("This chat already linked with an event \"%s\"", existingEvent.getTitle());
         } else if (!getEventName(eventContext).equals("")) {
             event = createEvent(eventContext);
-            textMessage = String.format("Event \"%s\" has been created. Now it is your current event", event.getTitle());
+            textMessage = String.format("Event \"%s\" has been created. Use /join to join the event", event.getTitle());
         } else {
             textMessage = "Sorry, but I cant create event without title";
         }
@@ -34,7 +34,7 @@ public class CreateEventScenario extends AbstractEventScenario {
 
     private static Event createEvent(EventContext eventContext) {
         String eventName = getEventName(eventContext);
-        return eventContext.eventService.create(eventName, eventContext.currentUser, eventContext.getChatId());
+        return eventContext.eventService.save(eventName, eventContext.currentUser, eventContext.getChatId());
     }
 
     private static String getEventName(EventContext eventContext) {
@@ -45,7 +45,4 @@ public class CreateEventScenario extends AbstractEventScenario {
                 .trim();
     }
 
-    private Event findEventForChat(Long id) {
-        return eventContext.eventService.findByTelegramChatId(id);
-    }
 }

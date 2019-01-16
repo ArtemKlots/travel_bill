@@ -26,6 +26,10 @@ public class EventScenarioFactory {
             selectedScenario = new SwitchCurrentEventScenario(eventContext);
         }
 
+        if (eventScenarioHelper.isJoinEventsSignal()) {
+            selectedScenario = new JoinEventScenario(eventContext);
+        }
+
         if (isNull(selectedScenario)) {
             selectedScenario = new UnknownScenario(eventContext.update);
         }

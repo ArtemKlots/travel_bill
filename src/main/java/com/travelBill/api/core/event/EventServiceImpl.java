@@ -37,20 +37,25 @@ public class EventServiceImpl implements EventService {
         return eventRepository.findByTelegramChatId(id);
     }
 
-    public Event create(Event event) {
+    public Event save(Event event) {
         return eventRepository.save(event);
     }
 
-    public Event create(String title, User creator, Long chatId) {
+    public Event save(String title, User creator, Long chatId) {
         Event event = new Event();
         event.setTitle(title);
         event.setOwner(creator);
         event.setTelegramChatId(chatId);
-        event = create(event);
+        event = save(event);
 
         switchCurrentEvent(creator, event);
 
         return event;
+    }
+
+    public Event addMember(Event event, User member) {
+        event.getMembers().add(member);
+        return save(event);
     }
 
     public void switchCurrentEvent(User user, Event event) {

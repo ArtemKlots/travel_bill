@@ -13,6 +13,7 @@ public class EventScenarioHelper {
         return isCreateEventSignal()
                 || isShowCurrentEventSignal()
                 || isShowEventsSignal()
+                || isJoinEventsSignal()
                 || isSwitchingEventSignal();
     }
 
@@ -26,6 +27,10 @@ public class EventScenarioHelper {
 
     boolean isShowCurrentEventSignal() {
         return update.hasMessage() && update.getMessage().getText().toLowerCase().equals("show current event");
+    }
+
+    boolean isJoinEventsSignal() {
+        return update.hasMessage() && update.getMessage().getText().toLowerCase().startsWith("/join");
     }
 
     boolean isSwitchingEventSignal() {

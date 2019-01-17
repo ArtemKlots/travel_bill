@@ -10,10 +10,10 @@ public class BillScenarioResolver {
     }
 
     public boolean isBillAction() {
-        return isAddContributionSignal();
+        return isAddBillSignal();
     }
 
-    boolean isAddContributionSignal() {
+    boolean isAddBillSignal() {
         return update.hasMessage() && update.getMessage().getText().startsWith("/add");
     }
 }

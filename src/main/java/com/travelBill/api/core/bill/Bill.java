@@ -16,8 +16,8 @@ public class Bill {
     @GeneratedValue
     private Long id;
 
-    private String title;
-
+    private String purpose;
+    private String currency;
     private double amount;
 
     @Column
@@ -46,12 +46,20 @@ public class Bill {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getPurpose() {
+        return purpose;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public void setPurpose(String purpose) {
+        this.purpose = purpose;
     }
 
     public double getAmount() {

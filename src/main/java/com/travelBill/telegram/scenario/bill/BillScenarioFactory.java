@@ -7,8 +7,8 @@ public class BillScenarioFactory {
         BillScenarioResolver billScenarioResolver = new BillScenarioResolver(billContext.update);
         Scenario selectedScenario = null;
 
-        if (billScenarioResolver.isAddContributionSignal()) {
-            selectedScenario = new AddContributionScenario(billContext);
+        if (billScenarioResolver.isAddBillSignal()) {
+            selectedScenario = new AddBillScenario(billContext);
         }
 
         return selectedScenario;

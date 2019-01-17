@@ -5,8 +5,8 @@ import com.travelBill.api.core.event.Event;
 import com.travelBill.api.core.user.User;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
-public class AddContributionScenario extends AbstractBillScenario {
-    AddContributionScenario(BillContext billContext) {
+public class AddBillScenario extends AbstractBillScenario {
+    AddBillScenario(BillContext billContext) {
         super(billContext);
     }
 

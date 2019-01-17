@@ -19,7 +19,7 @@ public class AddBillScenario extends AbstractBillScenario {
         bill.setEvent(event);
         bill.setUser(user);
         bill.setAmount(10);
-        bill.setTitle("Some payment");
+        bill.setPurpose("Some payment");
 
         billContext.billService.save(bill);
 

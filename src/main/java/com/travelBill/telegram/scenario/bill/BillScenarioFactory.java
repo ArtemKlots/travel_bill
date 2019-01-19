@@ -1,6 +1,7 @@
 package com.travelBill.telegram.scenario.bill;
 
-import com.travelBill.telegram.scenario.common.Scenario;
+import com.travelBill.telegram.scenario.common.context.BillContext;
+import com.travelBill.telegram.scenario.common.scenario.Scenario;
 
 public class BillScenarioFactory {
     public Scenario createScenario(BillContext billContext) {

@@ -3,10 +3,11 @@ package com.travelBill.telegram.scenario.bill;
 import com.travelBill.api.core.bill.Bill;
 import com.travelBill.api.core.event.Event;
 import com.travelBill.api.core.user.User;
+import com.travelBill.telegram.scenario.common.context.BillContext;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 public class AddBillScenario extends AbstractBillScenario {
-    AddBillScenario(BillContext billContext) {
+    public AddBillScenario(BillContext billContext) {
         super(billContext);
     }
 

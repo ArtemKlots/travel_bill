@@ -2,10 +2,13 @@ package com.travelBill.telegram.scenario.event;
 
 import com.travelBill.api.core.event.Event;
 import com.travelBill.api.core.user.User;
+import com.travelBill.telegram.scenario.common.context.EventContext;
+import com.travelBill.telegram.scenario.common.scenario.AbstractEventScenario;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 import static java.util.Objects.isNull;
 
+@Deprecated
 public class ShowCurrentEventScenario extends AbstractEventScenario {
     ShowCurrentEventScenario(EventContext eventContext) {
         super(eventContext);

@@ -2,6 +2,7 @@ package com.travelBill.telegram.scenario.group;
 
 import com.travelBill.api.core.user.User;
 import com.travelBill.telegram.scenario.UnknownScenario;
+import com.travelBill.telegram.scenario.bill.AddBillCommandParser;
 import com.travelBill.telegram.scenario.bill.AddBillScenario;
 import com.travelBill.telegram.scenario.common.context.BillContext;
 import com.travelBill.telegram.scenario.common.context.ContextProvider;
@@ -31,16 +32,14 @@ public class GroupScenarioFactory {
             selectedScenario = new CreateEventScenario(eventContext);
         }
 
+        if (isContribution(update)) {
+            selectedScenario = new AddBillScenario(billContext);
+        }
+
         if (isCommand(update)) {
 
             if (eventScenarioHelper.isJoinEventsSignal()) {
                 selectedScenario = new JoinEventScenario(eventContext);
-            }
-
-        } else {
-            if (isContribution()) {
-
-                selectedScenario = new AddBillScenario(billContext);
             }
         }
 
@@ -51,7 +50,11 @@ public class GroupScenarioFactory {
         return selectedScenario;
     }
 
-    private boolean isContribution() {
+    private boolean isContribution(Update update) {
+        if (update.hasMessage() && update.getMessage().hasText()) {
+            String text = update.getMessage().getText();
+            return AddBillCommandParser.isContribution(text);
+        }
         return false;
     }
 

@@ -15,7 +15,7 @@ import java.util.List;
 @Table(name = "event")
 public class Event {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank

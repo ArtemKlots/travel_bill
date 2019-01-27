@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Table(name = "bill")
 public class Bill {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
     private Long id;
 
     private String purpose;

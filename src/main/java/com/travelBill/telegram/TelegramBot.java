@@ -1,6 +1,7 @@
 package com.travelBill.telegram;
 
 import com.travelBill.api.core.user.User;
+import com.travelBill.config.ApplicationConfiguration;
 import com.travelBill.telegram.exceptions.UserIsNotSetUpException;
 import com.travelBill.telegram.scenario.ScenarioFactory;
 import com.travelBill.telegram.scenario.UnknownScenario;
@@ -45,7 +46,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
-        return System.getenv("TELEGRAM_KEY");
+        return ApplicationConfiguration.getTelegramApiKey();
     }
 
 

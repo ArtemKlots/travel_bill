@@ -2,13 +2,15 @@ package com.travelBill.telegram.scenario.group;
 
 import com.travelBill.api.core.user.User;
 import com.travelBill.telegram.scenario.UnknownScenario;
-import com.travelBill.telegram.scenario.bill.AddBillCommandParser;
-import com.travelBill.telegram.scenario.bill.AddBillScenario;
 import com.travelBill.telegram.scenario.common.context.BillContext;
 import com.travelBill.telegram.scenario.common.context.ContextProvider;
 import com.travelBill.telegram.scenario.common.context.EventContext;
 import com.travelBill.telegram.scenario.common.scenario.EventScenarioHelper;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
+import com.travelBill.telegram.scenario.group.bill.AddBillCommandParser;
+import com.travelBill.telegram.scenario.group.bill.AddBillScenario;
+import com.travelBill.telegram.scenario.group.event.CreateEventScenario;
+import com.travelBill.telegram.scenario.group.event.JoinEventScenario;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Update;
 

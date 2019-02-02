@@ -4,9 +4,15 @@ import com.travelBill.api.core.event.Event;
 import com.travelBill.telegram.scenario.common.context.EventContext;
 import com.travelBill.telegram.scenario.common.scenario.AbstractEventScenario;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class JoinEventScenario extends AbstractEventScenario {
-    JoinEventScenario(EventContext eventContext) {
+    public JoinEventScenario(EventContext eventContext) {
         super(eventContext);
     }
 
@@ -23,6 +29,21 @@ public class JoinEventScenario extends AbstractEventScenario {
 
         return new SendMessage()
                 .setChatId(eventContext.getChatId())
-                .setText(responseMessage);
+                .setText(responseMessage)
+                .setReplyMarkup(createMarkup());
+    }
+
+    private ReplyKeyboard createMarkup() {
+        ReplyKeyboardMarkup markup = new ReplyKeyboardMarkup();
+        List<KeyboardRow> keyboard = new ArrayList<>();
+
+        KeyboardRow showDebtsRow = new KeyboardRow();
+        showDebtsRow.add("Show debts");
+
+        keyboard.add(showDebtsRow);
+
+        markup.setKeyboard(keyboard);
+        markup.setResizeKeyboard(true);
+        return markup;
     }
 }

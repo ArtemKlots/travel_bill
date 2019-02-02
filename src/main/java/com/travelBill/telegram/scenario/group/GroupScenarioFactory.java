@@ -9,6 +9,7 @@ import com.travelBill.telegram.scenario.common.scenario.EventScenarioHelper;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
 import com.travelBill.telegram.scenario.group.bill.AddBillCommandParser;
 import com.travelBill.telegram.scenario.group.bill.AddBillScenario;
+import com.travelBill.telegram.scenario.group.bill.ShowDebtsScenario;
 import com.travelBill.telegram.scenario.group.event.CreateEventScenario;
 import com.travelBill.telegram.scenario.group.event.JoinEventScenario;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,13 @@ public class GroupScenarioFactory {
 
             if (eventScenarioHelper.isJoinEventsSignal()) {
                 selectedScenario = new JoinEventScenario(eventContext);
+            }
+        }
+
+        if (update.hasMessage() && update.getMessage().hasText()) {
+            String plainText = update.getMessage().getText();
+            if (plainText.equals("Show debts")) {
+                selectedScenario = new ShowDebtsScenario(billContext);
             }
         }
 

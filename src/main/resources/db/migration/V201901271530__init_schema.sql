@@ -8,7 +8,7 @@ CREATE TABLE `bill` (
   `currency` varchar(255) DEFAULT NULL,
   `purpose` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 CREATE TABLE `event` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -18,17 +18,19 @@ CREATE TABLE `event` (
   `owner_id` bigint(20) DEFAULT NULL,
   `telegram_chat_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 CREATE TABLE `event_user` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `event_id` bigint(20) NOT NULL,
-  `user_id` bigint(20) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `user_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 
 CREATE TABLE `hibernate_sequence` (
   `next_val` bigint(20) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 
 CREATE TABLE `user` (
@@ -40,11 +42,11 @@ CREATE TABLE `user` (
   `updated_at` datetime DEFAULT NULL,
   `current_event_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
-ALTER TABLE bill ADD FOREIGN KEY (event_id) REFERENCES event(event_id);
-ALTER TABLE bill ADD FOREIGN KEY (user_id) REFERENCES user(user_id);
-ALTER TABLE event ADD FOREIGN KEY (owner_id) REFERENCES user(owner_id);
-ALTER TABLE event_user ADD FOREIGN KEY (user_id) REFERENCES user(user_id);
-ALTER TABLE event_user ADD FOREIGN KEY (event_id) REFERENCES event(event_id);
-ALTER TABLE user ADD FOREIGN KEY (current_event_id) REFERENCES event(event_id);
+ALTER TABLE bill ADD CONSTRAINT fk_bill_event_event_id FOREIGN KEY (event_id) REFERENCES event(id);
+ALTER TABLE bill ADD CONSTRAINT fk_bill_user_user_id FOREIGN KEY (user_id) REFERENCES user(id);
+ALTER TABLE event ADD CONSTRAINT fk_event_user_owner_id FOREIGN KEY (owner_id) REFERENCES user(id);
+ALTER TABLE event_user ADD CONSTRAINT fk_event_user_user_user_id FOREIGN KEY (user_id) REFERENCES user(id);
+ALTER TABLE event_user ADD CONSTRAINT fk_event_user_event_event_id FOREIGN KEY (event_id) REFERENCES event(id);
+ALTER TABLE user ADD CONSTRAINT fk_user_event_current_event_id FOREIGN KEY (current_event_id) REFERENCES event(id);

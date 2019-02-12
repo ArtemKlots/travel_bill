@@ -1,5 +1,12 @@
 ## Setup environment
 
+#### Database
+
+To configure database connection you should set up the following environment variables:
+* SPRING_DATASOURCE_URL (e.g. jdbc:mysql://localhost:3306/travel_bill?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true)
+* SPRING_DATASOURCE_USERNAME
+* SPRING_DATASOURCE_PASSWORD
+
 #### Telegram api key
 
 To make bot to communicate with Telegram you should register your bot with @BotFather and set  TELEGRAM_KEY environment variable

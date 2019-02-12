@@ -20,11 +20,13 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     private final TelegramUserService telegramUserService;
     private final ScenarioFactory scenarioFactory;
+    private final ApplicationConfiguration applicationConfiguration;
 
     @Autowired
-    public TelegramBot(TelegramUserService telegramUserService, ScenarioFactory scenarioFactory) {
+    public TelegramBot(TelegramUserService telegramUserService, ScenarioFactory scenarioFactory, ApplicationConfiguration applicationConfiguration) {
         this.telegramUserService = telegramUserService;
         this.scenarioFactory = scenarioFactory;
+        this.applicationConfiguration = applicationConfiguration;
     }
 
     @Override
@@ -46,7 +48,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
-        return ApplicationConfiguration.getTelegramApiKey();
+        return applicationConfiguration.getTelegramKey();
     }
 
 

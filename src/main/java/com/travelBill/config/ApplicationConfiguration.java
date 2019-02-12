@@ -1,31 +1,27 @@
 package com.travelBill.config;
 
-import static org.springframework.util.StringUtils.isEmpty;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.NotEmpty;
+
+
+@ConfigurationProperties
+@Component
+@Validated
 public class ApplicationConfiguration {
+    @Value("${TELEGRAM_KEY}")
+    @NotEmpty
+    private String telegramKey;
 
-    public static String getTelegramApiKey() {
-        return getEnvironmentVariable("TELEGRAM_KEY");
+
+    public String getTelegramKey() {
+        return telegramKey;
     }
 
-    public static String getDbUser() {
-        return getEnvironmentVariable("DB_USER");
-    }
-
-    public static String getDbPassword() {
-        return getEnvironmentVariable("DB_PASSWORD");
-    }
-
-    public static String getDbUrl() {
-        return getEnvironmentVariable("DB_URL");
-    }
-
-    private static String getEnvironmentVariable(String name) {
-        String key = System.getenv(name);
-        if (isEmpty(key)) {
-            throw new WrongApplicationConfigurationException(name + " wasn't provided");
-        } else {
-            return key;
-        }
+    public void setTelegramKey(String telegramKey) {
+        this.telegramKey = telegramKey;
     }
 }

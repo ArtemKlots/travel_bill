@@ -11,11 +11,13 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 @Entity
 @Table(name = "event")
 public class Event {
     @Id
-    @GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
+    @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
     @NotBlank

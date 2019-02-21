@@ -18,7 +18,7 @@ public class LifecycleSupporter {
         this.applicationConfiguration = applicationConfiguration;
     }
 
-    @Scheduled(fixedRate = 40 * 60 * 1000)
+    @Scheduled(fixedRate = 10 * 60 * 1000)
     public void resetLifecycle() {
         try {
             URL url = new URL(applicationConfiguration.getLifecycleUrl());

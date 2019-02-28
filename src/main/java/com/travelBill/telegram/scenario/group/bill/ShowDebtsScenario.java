@@ -1,7 +1,7 @@
 package com.travelBill.telegram.scenario.group.bill;
 
 import com.travelBill.api.core.bill.Bill;
-import com.travelBill.api.core.bill.debtCalculator.DebtCalculator;
+import com.travelBill.api.core.bill.debtCalculator.DeprecatedDebtCalculator;
 import com.travelBill.api.core.event.Event;
 import com.travelBill.api.core.user.User;
 import com.travelBill.telegram.scenario.common.context.BillContext;
@@ -26,7 +26,7 @@ public class ShowDebtsScenario extends AbstractBillScenario {
         Event event = billContext.eventService.findByTelegramChatId(telegramChatId);
         List<Bill> bills = event.getBills();
         List<User> users = event.getMembers();
-        DebtCalculator debtCalculator = new DebtCalculator();
+        DeprecatedDebtCalculator debtCalculator = new DeprecatedDebtCalculator();
 
         Map<String, List<Bill>> billsDividedByCurrency = bills.stream()
                 .collect(Collectors.groupingBy(Bill::getCurrency));

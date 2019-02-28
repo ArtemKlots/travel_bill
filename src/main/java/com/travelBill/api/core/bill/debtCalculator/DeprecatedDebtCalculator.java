@@ -6,7 +6,7 @@ import com.travelBill.api.core.user.User;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class DebtCalculator {
+public class DeprecatedDebtCalculator {
 
     public Map<User, Map<User, Double>> getDebts(List<User> users, List<Bill> bills) {
         double amount = bills.stream().mapToDouble(Bill::getAmount).sum();

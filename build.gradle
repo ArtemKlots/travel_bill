@@ -31,6 +31,8 @@ dependencies {
 	compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.13'
 	compile "org.telegram:telegrambots:4.1"
 	compile('com.github.xabgesagtx:telegram-spring-boot-starter:0.19')
+	// https://mvnrepository.com/artifact/io.github.benas/random-beans
+	compile group: 'io.github.benas', name: 'random-beans', version: '3.7.0'
 	// https://mvnrepository.com/artifact/com.rainerhahnekamp/sneakythrow
 	compile group: 'com.rainerhahnekamp', name: 'sneakythrow', version: '1.1.0'
 	compile "org.flywaydb:flyway-core:5.2.4"

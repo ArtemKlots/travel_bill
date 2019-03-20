@@ -4,6 +4,7 @@ import com.travelBill.api.core.bill.Bill;
 import com.travelBill.api.core.bill.debtCalculator.DebtCalculator;
 import com.travelBill.api.core.event.Event;
 import com.travelBill.api.core.user.User;
+import com.travelBill.telegram.scenario.common.AbstractBillScenario;
 import com.travelBill.telegram.scenario.common.context.BillContext;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 

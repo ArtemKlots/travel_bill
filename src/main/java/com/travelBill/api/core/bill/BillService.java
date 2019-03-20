@@ -6,4 +6,6 @@ public interface BillService {
     List<Bill> getAll();
 
     Bill save(Bill bill);
+
+    List<Bill> selectByUserIdOrderByCreatedAt(Long id);
 }

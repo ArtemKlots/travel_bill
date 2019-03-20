@@ -23,4 +23,7 @@ public class BillServiceImpl implements BillService {
         return billRepository.save(bill);
     }
 
+    public List<Bill> selectByUserIdOrderByCreatedAt(Long id) {
+        return billRepository.selectByUserIdOrderByCreatedAt(id);
+    }
 }

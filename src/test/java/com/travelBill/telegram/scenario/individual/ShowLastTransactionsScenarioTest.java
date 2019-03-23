@@ -8,7 +8,6 @@ import com.travelBill.telegram.formatter.bill.LastTransactionsListFormatter;
 import com.travelBill.telegram.scenario.common.context.BillContext;
 import io.github.benas.randombeans.EnhancedRandomBuilder;
 import io.github.benas.randombeans.api.EnhancedRandom;
-import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -44,7 +43,7 @@ public class ShowLastTransactionsScenarioTest {
     @Test
     void showLastTransactionsScenario_shouldReturnMessage_forFoundTransactions() {
         List<Bill> bills = EnhancedRandom.randomListOf(5, Bill.class);
-        when(billService.selectByUserIdOrderByCreatedAt(user.getId())).thenReturn(bills);
+        when(billService.selectTop10ByUserIdOrderByCreatedAtDesc(user.getId())).thenReturn(bills);
 
         ShowLastTransactionsScenario scenario = new ShowLastTransactionsScenario(billContext, formatter);
         SendMessage message = scenario.createMessage();
@@ -57,7 +56,7 @@ public class ShowLastTransactionsScenarioTest {
     @Test
     void showLastTransactionsScenario_shouldReturn_validSendMessage() {
         Bill bill = random.nextObject(Bill.class);
-        when(billService.selectByUserIdOrderByCreatedAt(user.getId())).thenReturn(Collections.singletonList(bill));
+        when(billService.selectTop10ByUserIdOrderByCreatedAtDesc(user.getId())).thenReturn(Collections.singletonList(bill));
 
         SendMessage resultMessage = new ShowLastTransactionsScenario(billContext, formatter).createMessage();
 
@@ -77,7 +76,7 @@ public class ShowLastTransactionsScenarioTest {
     @Test
     void showLastTransactionsScenario_shouldReturnMessageWithSourceChatId() {
         Bill bill = random.nextObject(Bill.class);
-        when(billService.selectByUserIdOrderByCreatedAt(any())).thenReturn(Collections.singletonList(bill));
+        when(billService.selectTop10ByUserIdOrderByCreatedAtDesc(any())).thenReturn(Collections.singletonList(bill));
 
         String expectedChatId = billContext.getChatId().toString();
         String actualChatId = new ShowLastTransactionsScenario(billContext, formatter).createMessage().getChatId();
@@ -86,8 +85,16 @@ public class ShowLastTransactionsScenarioTest {
     }
 
     @Test
-    @Ignore
-    void showLastTransactionsScenario_shouldShowOnlyLastTransactions() {
+    void showLastTransactionsScenario_shouldGetOnlyLastTransactions() {
+        new ShowLastTransactionsScenario(billContext, formatter).createMessage();
 
+        verify(billService, times(1)).selectTop10ByUserIdOrderByCreatedAtDesc(any());
+    }
+
+    @Test
+    void showLastTransactionsScenario_shouldGetOnlyLastTransactions_forConcreteUser() {
+        new ShowLastTransactionsScenario(billContext, formatter).createMessage();
+
+        verify(billService, times(1)).selectTop10ByUserIdOrderByCreatedAtDesc(user.getId());
     }
 }

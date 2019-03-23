@@ -7,5 +7,5 @@ public interface BillService {
 
     Bill save(Bill bill);
 
-    List<Bill> selectByUserIdOrderByCreatedAt(Long id);
+    List<Bill> selectTop10ByUserIdOrderByCreatedAtDesc(Long id);
 }

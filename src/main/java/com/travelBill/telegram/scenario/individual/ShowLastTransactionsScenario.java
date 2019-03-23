@@ -19,7 +19,7 @@ public class ShowLastTransactionsScenario extends AbstractBillScenario {
 
     @Override
     public SendMessage createMessage() {
-        List<Bill> bills = billContext.billService.selectByUserIdOrderByCreatedAt(billContext.currentUser.getId());
+        List<Bill> bills = billContext.billService.selectTop10ByUserIdOrderByCreatedAtDesc(billContext.currentUser.getId());
         SendMessage message = new SendMessage();
 
         String content = formatter.format(bills);

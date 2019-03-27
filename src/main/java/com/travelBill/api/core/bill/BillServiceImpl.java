@@ -24,6 +24,6 @@ public class BillServiceImpl implements BillService {
     }
 
     public List<Bill> selectTop10ByUserIdOrderByCreatedAtDesc(Long id) {
-        return billRepository.selectTop10ByUserIdOrderByCreatedAtDesc(id);
+        return billRepository.findTop10ByUserIdOrderByCreatedAtDesc(id);
     }
 }

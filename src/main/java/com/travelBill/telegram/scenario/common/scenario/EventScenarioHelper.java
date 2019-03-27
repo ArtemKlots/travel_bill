@@ -2,6 +2,7 @@ package com.travelBill.telegram.scenario.common.scenario;
 
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+@Deprecated
 public class EventScenarioHelper {
     private Update update;
 

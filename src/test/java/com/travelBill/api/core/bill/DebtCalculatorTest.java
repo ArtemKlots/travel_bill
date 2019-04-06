@@ -1,107 +1,58 @@
 package com.travelBill.api.core.bill;
 
-
+import com.travelBill.api.core.Debt;
 import com.travelBill.api.core.bill.debtCalculator.DebtCalculator;
+import com.travelBill.api.core.event.Event;
 import com.travelBill.api.core.user.User;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import io.github.benas.randombeans.EnhancedRandomBuilder;
+import io.github.benas.randombeans.api.EnhancedRandom;
+import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class DebtCalculatorTest {
-    private static DecimalFormat decimalFormat = new DecimalFormat(".##");
-    private DebtCalculator debtCalculator = new DebtCalculator();
-    private User user1, user2, user3;
-    private Bill bill1, bill2, bill3;
+public class DebtCalculatorTest {
 
-    @BeforeEach
-    void prepareUsers() {
-        user1 = new User();
-        user2 = new User();
-        user3 = new User();
-
-        user1.setId(1L);
-        user2.setId(2L);
-        user3.setId(3L);
-    }
-
-    @BeforeEach
-    void prepareBills() {
-        bill1 = new Bill();
-        bill2 = new Bill();
-        bill3 = new Bill();
-    }
+    public static final String USD = "USD";
+    private EnhancedRandom random = EnhancedRandomBuilder.aNewEnhancedRandomBuilder().build();
 
     @Test
-    void shouldResolveDebtsBetweenThreePersonWithOneBillPerPerson() {
-        List<User> users = new ArrayList<>();
+    public void calculate_shouldReturnDebts_forEvent() {
+        DebtCalculator calculator = new DebtCalculator();
+
+        User john = random.nextObject(User.class);
+        john.setFirstName("John");
+        User jane = random.nextObject(User.class);
+        jane.setFirstName("Jane");
+
         List<Bill> bills = new ArrayList<>();
+        Bill johnsBill = new Bill();
+        johnsBill.setUser(john);
+        johnsBill.setAmount(10);
+        johnsBill.setCurrency(USD);
+        bills.add(johnsBill);
 
-        bill1.setUser(user1);
-        bill1.setAmount(100);
+        Bill janesBill = new Bill();
+        janesBill.setUser(jane);
+        janesBill.setAmount(5);
+        janesBill.setCurrency(USD);
+        bills.add(janesBill);
 
-        bill2.setUser(user2);
-        bill2.setAmount(150);
+        Event event = random.nextObject(Event.class);
+        event.setBills(bills);
+        event.setMembers(Arrays.asList(john, jane));
 
-        bill3.setUser(user3);
-        bill3.setAmount(10);
+        List<Debt> expectedDebts = new ArrayList<>();
+        Debt janesDebt = random.nextObject(Debt.class);
+        janesDebt.amount = 2.5;
+        expectedDebts.add(janesDebt);
 
-        users.add(user1);
-        users.add(user2);
-        users.add(user3);
+        List<Debt> actualDebts = calculator.calculate(event);
 
-        bills.add(bill1);
-        bills.add(bill2);
-        bills.add(bill3);
-
-
-        Map<User, Map<User, Double>> result = debtCalculator.getDebts(users, bills);
-
-        assertEquals(result.size(), 1);
-        assertNotNull(result.get(user3));
-        assertEquals(result.get(user3).size(), 2);
-
-        String roundedValue1 = decimalFormat.format(result.get(user3).get(user1));
-        String roundedValue2 = decimalFormat.format(result.get(user3).get(user2));
-        assertEquals(roundedValue1, "13.33");
-        assertEquals(roundedValue2, "63.33");
-    }
-
-    @Test
-    void shouldResolveDebtsBetweenOnePayerAndOneDebtorWithSeveralBills() {
-        List<User> users = new ArrayList<>();
-        List<Bill> bills = new ArrayList<>();
-
-        bill1.setAmount(1000);
-        bill1.setUser(user1);
-
-        bill2.setAmount(737.5);
-        bill2.setUser(user1);
-
-        bill3.setUser(user2);
-        bill3.setAmount(15);
-
-        users.add(user1);
-        users.add(user2);
-
-        bills.add(bill1);
-        bills.add(bill2);
-        bills.add(bill3);
-
-
-        Map<User, Map<User, Double>> result = debtCalculator.getDebts(users, bills);
-
-        assertEquals(result.size(), 1);
-        assertNotNull(result.get(user2));
-        assertEquals(result.get(user2).size(), 1);
-
-        String roundedValue = decimalFormat.format(result.get(user2).get(user1));
-        assertEquals(roundedValue, "861.25");
+        assertEquals(expectedDebts.size(), actualDebts.size());
     }
 }

@@ -42,7 +42,7 @@ public class InitialScenario implements Scenario {
         lastTransactionRow.add("Show last transactions");
 
         keyboard.add(seeEventsRow);
-        keyboard.add(currentEventRow);
+//        keyboard.add(currentEventRow);
         keyboard.add(lastTransactionRow);
 
         markup.setKeyboard(keyboard);

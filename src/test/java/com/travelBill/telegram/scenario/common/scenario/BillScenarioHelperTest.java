@@ -22,7 +22,7 @@ class BillScenarioHelperTest {
     @Test
     void isShowLastTransactionsSignal_shouldReturnTrue_ifMessageIs_show_last_transactions() {
         when(message.hasText()).thenReturn(true);
-        when(message.getText()).thenReturn("/show_last_transactions");
+        when(message.getText()).thenReturn("Show last transactions");
         when(update.getMessage()).thenReturn(message);
         when(update.hasMessage()).thenReturn(true);
 

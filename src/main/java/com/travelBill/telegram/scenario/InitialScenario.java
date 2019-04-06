@@ -38,8 +38,12 @@ public class InitialScenario implements Scenario {
         KeyboardRow seeEventsRow = new KeyboardRow();
         seeEventsRow.add("Show events");
 
+        KeyboardRow lastTransactionRow = new KeyboardRow();
+        lastTransactionRow.add("Show last transactions");
+
         keyboard.add(seeEventsRow);
         keyboard.add(currentEventRow);
+        keyboard.add(lastTransactionRow);
 
         markup.setKeyboard(keyboard);
         return markup;

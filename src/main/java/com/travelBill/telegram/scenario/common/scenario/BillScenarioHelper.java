@@ -11,7 +11,7 @@ public class BillScenarioHelper {
     }
 
     public boolean isShowLastTransactionsSignal(Update update) {
-        return hasMessageAndText(update) && update.getMessage().getText().startsWith("/show_last_transactions");
+        return hasMessageAndText(update) && update.getMessage().getText().equals("Show last transactions");
     }
 
     // TODO: 27.03.19 Can be extracted

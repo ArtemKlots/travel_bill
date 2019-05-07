@@ -6,8 +6,8 @@ import com.travelBill.api.core.event.Event;
 import com.travelBill.api.core.user.User;
 import io.github.benas.randombeans.EnhancedRandomBuilder;
 import io.github.benas.randombeans.api.EnhancedRandom;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,7 +15,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class DebtCalculatorTest {
+class DebtCalculatorTest {
 
     private EnhancedRandom random = EnhancedRandomBuilder.aNewEnhancedRandomBuilder().build();
     private User john;
@@ -29,8 +29,8 @@ public class DebtCalculatorTest {
     private Bill judysBill;
     private Bill jamesBill;
 
-    @Before
-    public void setupUsersAndBills() {
+    @BeforeEach
+    void setupUsersAndBills() {
         john = random.nextObject(User.class);
         john.setFirstName("John");
 
@@ -60,7 +60,7 @@ public class DebtCalculatorTest {
     }
 
     @Test
-    public void calculate_shouldReturn2DebtsWithAmount5_for2DebtorsAnd1Payer() {
+    void calculate_shouldReturn2DebtsWithAmount5_for2DebtorsAnd1Payer() {
         DebtCalculator calculator = new DebtCalculator();
 
         List<Bill> bills = new ArrayList<>();
@@ -93,19 +93,11 @@ public class DebtCalculatorTest {
 
         List<Debt> actualDebts = calculator.calculate(event);
 
-        assertEquals(expectedDebts.size(), actualDebts.size());
-
-        assertEquals(expectedDebts.get(0).amount, actualDebts.get(0).amount);
-        assertEquals(expectedDebts.get(0).debtor.getId(), actualDebts.get(0).debtor.getId());
-        assertEquals(expectedDebts.get(0).payer.getId(), actualDebts.get(0).payer.getId());
-
-        assertEquals(expectedDebts.get(1).amount, actualDebts.get(1).amount);
-        assertEquals(expectedDebts.get(1).debtor.getId(), actualDebts.get(1).debtor.getId());
-        assertEquals(expectedDebts.get(1).payer.getId(), actualDebts.get(1).payer.getId());
+        assertEquals(expectedDebts, actualDebts);
     }
 
     @Test
-    public void calculate_shouldReturnTwoDebts_forOneDebtorAndTwoPayers() {
+    void calculate_shouldReturnTwoDebts_forOneDebtorAndTwoPayers() {
         DebtCalculator calculator = new DebtCalculator();
 
         List<Bill> bills = new ArrayList<>();
@@ -138,19 +130,11 @@ public class DebtCalculatorTest {
 
         List<Debt> actualDebts = calculator.calculate(event);
 
-        assertEquals(expectedDebts.size(), actualDebts.size());
-
-        assertEquals(expectedDebts.get(0).amount, actualDebts.get(0).amount);
-        assertEquals(expectedDebts.get(0).debtor.getId(), actualDebts.get(0).debtor.getId());
-        assertEquals(expectedDebts.get(0).payer.getId(), actualDebts.get(0).payer.getId());
-
-        assertEquals(expectedDebts.get(1).amount, actualDebts.get(1).amount);
-        assertEquals(expectedDebts.get(1).debtor.getId(), actualDebts.get(1).debtor.getId());
-        assertEquals(expectedDebts.get(1).payer.getId(), actualDebts.get(1).payer.getId());
+        assertEquals(expectedDebts, actualDebts);
     }
 
     @Test
-    public void calculate_shouldReturnDebtFor1Debtor_WhenPayerPaidBillsAndDebtorDidnt() {
+    void calculate_shouldReturnDebtFor1Debtor_WhenPayerPaidBillsAndDebtorDidnt() {
         DebtCalculator calculator = new DebtCalculator();
 
         List<Bill> bills = new ArrayList<>();
@@ -171,15 +155,11 @@ public class DebtCalculatorTest {
 
         List<Debt> actualDebts = calculator.calculate(event);
 
-        assertEquals(expectedDebts.size(), actualDebts.size());
-
-        assertEquals(expectedDebts.get(0).amount, actualDebts.get(0).amount);
-        assertEquals(expectedDebts.get(0).debtor.getId(), actualDebts.get(0).debtor.getId());
-        assertEquals(expectedDebts.get(0).payer.getId(), actualDebts.get(0).payer.getId());
+        assertEquals(expectedDebts, actualDebts);
     }
 
     @Test
-    public void calculate_shouldReturn4DebtsForOneDebtor_When5Payers() {
+    void calculate_shouldReturn4DebtsForOneDebtor_When5Payers() {
         DebtCalculator calculator = new DebtCalculator();
 
         List<Bill> bills = new ArrayList<>();
@@ -213,27 +193,11 @@ public class DebtCalculatorTest {
 
         List<Debt> actualDebts = calculator.calculate(event);
 
-        assertEquals(expectedDebts.size(), actualDebts.size());
-
-        assertEquals(expectedDebts.get(0).amount, actualDebts.get(0).amount);
-        assertEquals(expectedDebts.get(0).debtor.getId(), actualDebts.get(0).debtor.getId());
-        assertEquals(expectedDebts.get(0).payer.getId(), actualDebts.get(0).payer.getId());
-
-        assertEquals(expectedDebts.get(1).amount, actualDebts.get(1).amount);
-        assertEquals(expectedDebts.get(1).debtor.getId(), actualDebts.get(1).debtor.getId());
-        assertEquals(expectedDebts.get(1).payer.getId(), actualDebts.get(1).payer.getId());
-
-        assertEquals(expectedDebts.get(2).amount, actualDebts.get(2).amount);
-        assertEquals(expectedDebts.get(2).debtor.getId(), actualDebts.get(2).debtor.getId());
-        assertEquals(expectedDebts.get(2).payer.getId(), actualDebts.get(2).payer.getId());
-
-        assertEquals(expectedDebts.get(3).amount, actualDebts.get(3).amount);
-        assertEquals(expectedDebts.get(3).debtor.getId(), actualDebts.get(3).debtor.getId());
-        assertEquals(expectedDebts.get(3).payer.getId(), actualDebts.get(3).payer.getId());
+        assertEquals(expectedDebts, actualDebts);
     }
 
     @Test
-    public void calculate_shouldReturn3DebtsFor2DebtorAnd3Payers_WhenPayersPaid120And100And20() {
+    void calculate_shouldReturn3DebtsFor2DebtorAnd3Payers_WhenPayersPaid120And100And20() {
         DebtCalculator calculator = new DebtCalculator();
 
         List<Bill> bills = new ArrayList<>();
@@ -274,23 +238,11 @@ public class DebtCalculatorTest {
 
         List<Debt> actualDebts = calculator.calculate(event);
 
-        assertEquals(expectedDebts.size(), actualDebts.size());
-
-        assertEquals(expectedDebts.get(0).amount, actualDebts.get(0).amount);
-        assertEquals(expectedDebts.get(0).debtor.getId(), actualDebts.get(0).debtor.getId());
-        assertEquals(expectedDebts.get(0).payer.getId(), actualDebts.get(0).payer.getId());
-
-        assertEquals(expectedDebts.get(1).amount, actualDebts.get(1).amount);
-        assertEquals(expectedDebts.get(1).debtor.getId(), actualDebts.get(1).debtor.getId());
-        assertEquals(expectedDebts.get(1).payer.getId(), actualDebts.get(1).payer.getId());
-
-        assertEquals(expectedDebts.get(2).amount, actualDebts.get(2).amount);
-        assertEquals(expectedDebts.get(2).debtor.getId(), actualDebts.get(2).debtor.getId());
-        assertEquals(expectedDebts.get(2).payer.getId(), actualDebts.get(2).payer.getId());
+        assertEquals(expectedDebts, actualDebts);
     }
 
     @Test
-    public void calculate_shouldReturn2DebtsFor2DebtorsAnd3Payers_WhenFirstDebtorShouldPayDebtForFirstPayerOnly() {
+    void calculate_shouldReturn2DebtsFor2DebtorsAnd3Payers_WhenFirstDebtorShouldPayDebtForFirstPayerOnly() {
         DebtCalculator calculator = new DebtCalculator();
 
         List<Bill> bills = new ArrayList<>();
@@ -325,14 +277,6 @@ public class DebtCalculatorTest {
 
         List<Debt> actualDebts = calculator.calculate(event);
 
-        assertEquals(expectedDebts.size(), actualDebts.size());
-
-        assertEquals(expectedDebts.get(0).amount, actualDebts.get(0).amount);
-        assertEquals(expectedDebts.get(0).debtor.getId(), actualDebts.get(0).debtor.getId());
-        assertEquals(expectedDebts.get(0).payer.getId(), actualDebts.get(0).payer.getId());
-
-        assertEquals(expectedDebts.get(1).amount, actualDebts.get(1).amount);
-        assertEquals(expectedDebts.get(1).debtor.getId(), actualDebts.get(1).debtor.getId());
-        assertEquals(expectedDebts.get(1).payer.getId(), actualDebts.get(1).payer.getId());
+        assertEquals(expectedDebts, actualDebts);
     }
 }

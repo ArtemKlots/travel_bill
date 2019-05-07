@@ -10,6 +10,32 @@ public class Debt {
     public User payer;
     public double amount;
 
+    public static DebtBuilder newBuilder() {
+        return new Debt().new DebtBuilder();
+    }
+
+    public class DebtBuilder {
+        Debt debt = new Debt();
+
+        public DebtBuilder withDebtor(User user) {
+            debt.debtor = user;
+            return this;
+        }
+
+        public DebtBuilder withPayer(User payer) {
+            debt.payer = payer;
+            return this;
+        }
+
+        public DebtBuilder withAmount(double amount) {
+            debt.amount = amount;
+            return this;
+        }
+
+        public Debt build() {
+            return debt;
+        }
+    }
 
     @Override
     public boolean equals(Object o) {

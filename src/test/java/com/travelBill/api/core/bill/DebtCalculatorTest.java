@@ -17,17 +17,23 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DebtCalculatorTest {
 
-    private EnhancedRandom random = EnhancedRandomBuilder.aNewEnhancedRandomBuilder().build();
-    private User john;
-    private User jane;
-    private User judy;
-    private User james;
-    private User janie;
+    private final EnhancedRandom random = EnhancedRandomBuilder.aNewEnhancedRandomBuilder().build();
+    private DebtCalculator calculator;
+    private Event event;
+    private List<Bill> bills;
+    private List<Debt> expectedDebts;
 
-    private Bill johnsBill;
-    private Bill janesBill;
-    private Bill judysBill;
-    private Bill jamesBill;
+    private User john, jane, judy, james, janie;
+    private Bill johnsBill, janesBill, judysBill, jamesBill;
+
+    @BeforeEach
+    void setupContext() {
+        calculator = new DebtCalculator();
+        event = random.nextObject(Event.class);
+        bills = new ArrayList<>();
+        event.setBills(bills);
+        expectedDebts = new ArrayList<>();
+    }
 
     @BeforeEach
     void setupUsersAndBills() {
@@ -61,35 +67,28 @@ class DebtCalculatorTest {
 
     @Test
     void calculate_shouldReturn2DebtsWithAmount5_for2DebtorsAnd1Payer() {
-        DebtCalculator calculator = new DebtCalculator();
-
-        List<Bill> bills = new ArrayList<>();
         johnsBill.setAmount(20);
-        bills.add(johnsBill);
-
         janesBill.setAmount(5);
-        bills.add(janesBill);
-
         judysBill.setAmount(5);
-        bills.add(judysBill);
 
-        Event event = random.nextObject(Event.class);
-        event.setBills(bills);
+        bills.addAll(Arrays.asList(johnsBill, janesBill, judysBill));
         event.setMembers(Arrays.asList(john, jane, judy));
 
         List<Debt> expectedDebts = new ArrayList<>();
 
-        Debt janesDebt = random.nextObject(Debt.class);
-        janesDebt.amount = 5;
-        janesDebt.debtor = jane;
-        janesDebt.payer = john;
-        expectedDebts.add(janesDebt);
+        expectedDebts.add(
+                Debt.newBuilder()
+                        .withDebtor(jane)
+                        .withPayer(john)
+                        .withAmount(5)
+                        .build());
 
-        Debt judysDebt = random.nextObject(Debt.class);
-        judysDebt.amount = 5;
-        judysDebt.debtor = judy;
-        judysDebt.payer = john;
-        expectedDebts.add(judysDebt);
+        expectedDebts.add(
+                Debt.newBuilder()
+                        .withDebtor(judy)
+                        .withPayer(john)
+                        .withAmount(5)
+                        .build());
 
         List<Debt> actualDebts = calculator.calculate(event);
 
@@ -98,35 +97,26 @@ class DebtCalculatorTest {
 
     @Test
     void calculate_shouldReturnTwoDebts_forOneDebtorAndTwoPayers() {
-        DebtCalculator calculator = new DebtCalculator();
-
-        List<Bill> bills = new ArrayList<>();
         johnsBill.setAmount(25);
-        bills.add(johnsBill);
-
         janesBill.setAmount(25);
-        bills.add(janesBill);
-
         judysBill.setAmount(10);
-        bills.add(judysBill);
 
-        Event event = random.nextObject(Event.class);
-        event.setBills(bills);
+        bills.addAll(Arrays.asList(johnsBill, janesBill, judysBill));
         event.setMembers(Arrays.asList(john, jane, judy));
 
-        List<Debt> expectedDebts = new ArrayList<>();
+        expectedDebts.add(
+                Debt.newBuilder()
+                        .withDebtor(judy)
+                        .withPayer(john)
+                        .withAmount(5)
+                        .build());
 
-        Debt judysDebtForJohn = random.nextObject(Debt.class);
-        judysDebtForJohn.amount = 5;
-        judysDebtForJohn.debtor = judy;
-        judysDebtForJohn.payer = john;
-        expectedDebts.add(judysDebtForJohn);
-
-        Debt judysDebtForJane = random.nextObject(Debt.class);
-        judysDebtForJane.amount = 5;
-        judysDebtForJane.debtor = judy;
-        judysDebtForJane.payer = jane;
-        expectedDebts.add(judysDebtForJane);
+        expectedDebts.add(
+                Debt.newBuilder()
+                        .withDebtor(judy)
+                        .withPayer(jane)
+                        .withAmount(5)
+                        .build());
 
         List<Debt> actualDebts = calculator.calculate(event);
 
@@ -135,23 +125,17 @@ class DebtCalculatorTest {
 
     @Test
     void calculate_shouldReturnDebtFor1Debtor_WhenPayerPaidBillsAndDebtorDidnt() {
-        DebtCalculator calculator = new DebtCalculator();
-
-        List<Bill> bills = new ArrayList<>();
         johnsBill.setAmount(100);
         bills.add(johnsBill);
 
-        Event event = random.nextObject(Event.class);
-        event.setBills(bills);
         event.setMembers(Arrays.asList(john, jane));
 
-        List<Debt> expectedDebts = new ArrayList<>();
-
-        Debt debt = random.nextObject(Debt.class);
-        debt.amount = 50;
-        debt.debtor = jane;
-        debt.payer = john;
-        expectedDebts.add(debt);
+        expectedDebts.add(
+                Debt.newBuilder()
+                        .withDebtor(jane)
+                        .withPayer(john)
+                        .withAmount(50)
+                        .build());
 
         List<Debt> actualDebts = calculator.calculate(event);
 
@@ -160,36 +144,22 @@ class DebtCalculatorTest {
 
     @Test
     void calculate_shouldReturn4DebtsForOneDebtor_When5Payers() {
-        DebtCalculator calculator = new DebtCalculator();
-
-        List<Bill> bills = new ArrayList<>();
         johnsBill.setAmount(100);
-        bills.add(johnsBill);
-
         janesBill.setAmount(100);
-        bills.add(janesBill);
-
         judysBill.setAmount(100);
-        bills.add(judysBill);
-
         jamesBill.setAmount(100);
-        bills.add(jamesBill);
 
+        bills.addAll(Arrays.asList(johnsBill, janesBill, judysBill, jamesBill));
         //janie paid nothing
-
-        Event event = random.nextObject(Event.class);
-        event.setBills(bills);
         event.setMembers(Arrays.asList(john, jane, judy, james, janie));
 
-        List<Debt> expectedDebts = new ArrayList<>();
-
-        Arrays.asList(john, jane, judy, james).forEach(user -> {
-            Debt debt = random.nextObject(Debt.class);
-            debt.amount = 20;
-            debt.debtor = janie;
-            debt.payer = user;
-            expectedDebts.add(debt);
-        });
+        Arrays.asList(john, jane, judy, james).forEach(user -> expectedDebts.add(
+                Debt.newBuilder()
+                        .withDebtor(janie)
+                        .withPayer(user)
+                        .withAmount(20)
+                        .build()
+        ));
 
         List<Debt> actualDebts = calculator.calculate(event);
 
@@ -198,43 +168,34 @@ class DebtCalculatorTest {
 
     @Test
     void calculate_shouldReturn3DebtsFor2DebtorAnd3Payers_WhenPayersPaid120And100And20() {
-        DebtCalculator calculator = new DebtCalculator();
-
-        List<Bill> bills = new ArrayList<>();
         johnsBill.setAmount(120);
-        bills.add(johnsBill);
-
         janesBill.setAmount(100);
-        bills.add(janesBill);
-
         judysBill.setAmount(20);
-        bills.add(judysBill);
 
+        bills.addAll(Arrays.asList(johnsBill, janesBill, judysBill));
         //james paid nothing
-
-        Event event = random.nextObject(Event.class);
-        event.setBills(bills);
         event.setMembers(Arrays.asList(john, jane, judy, james));
 
-        List<Debt> expectedDebts = new ArrayList<>();
+        expectedDebts.add(
+                Debt.newBuilder()
+                        .withDebtor(judy)
+                        .withPayer(john)
+                        .withAmount(40)
+                        .build());
 
-        Debt judysDebt = random.nextObject(Debt.class);
-        judysDebt.amount = 40;
-        judysDebt.debtor = judy;
-        judysDebt.payer = john;
-        expectedDebts.add(judysDebt);
+        expectedDebts.add(
+                Debt.newBuilder()
+                        .withDebtor(james)
+                        .withPayer(john)
+                        .withAmount(20)
+                        .build());
 
-        Debt jamesDebtToJohn = random.nextObject(Debt.class);
-        jamesDebtToJohn.amount = 20;
-        jamesDebtToJohn.debtor = james;
-        jamesDebtToJohn.payer = john;
-        expectedDebts.add(jamesDebtToJohn);
-
-        Debt jamesDebtToJane = random.nextObject(Debt.class);
-        jamesDebtToJane.amount = 40;
-        jamesDebtToJane.debtor = james;
-        jamesDebtToJane.payer = jane;
-        expectedDebts.add(jamesDebtToJane);
+        expectedDebts.add(
+                Debt.newBuilder()
+                        .withDebtor(james)
+                        .withPayer(jane)
+                        .withAmount(40)
+                        .build());
 
         List<Debt> actualDebts = calculator.calculate(event);
 
@@ -243,37 +204,28 @@ class DebtCalculatorTest {
 
     @Test
     void calculate_shouldReturn2DebtsFor2DebtorsAnd3Payers_WhenFirstDebtorShouldPayDebtForFirstPayerOnly() {
-        DebtCalculator calculator = new DebtCalculator();
-
-        List<Bill> bills = new ArrayList<>();
         johnsBill.setAmount(120);
-        bills.add(johnsBill);
-
         janesBill.setAmount(100);
-        bills.add(janesBill);
-
         judysBill.setAmount(20);
-        bills.add(judysBill);
 
+        bills.addAll(Arrays.asList(johnsBill, janesBill, judysBill));
         //james paid nothing
 
-        Event event = random.nextObject(Event.class);
-        event.setBills(bills);
         event.setMembers(Arrays.asList(james, john, jane, judy));
 
-        List<Debt> expectedDebts = new ArrayList<>();
+        expectedDebts.add(
+                Debt.newBuilder()
+                        .withDebtor(james)
+                        .withPayer(john)
+                        .withAmount(60)
+                        .build());
 
-        Debt jamesDebtToJohn = random.nextObject(Debt.class);
-        jamesDebtToJohn.amount = 60;
-        jamesDebtToJohn.debtor = james;
-        jamesDebtToJohn.payer = john;
-        expectedDebts.add(jamesDebtToJohn);
-
-        Debt judysDebtToJane = random.nextObject(Debt.class);
-        judysDebtToJane.amount = 40;
-        judysDebtToJane.debtor = judy;
-        judysDebtToJane.payer = jane;
-        expectedDebts.add(judysDebtToJane);
+        expectedDebts.add(
+                Debt.newBuilder()
+                        .withDebtor(judy)
+                        .withPayer(jane)
+                        .withAmount(40)
+                        .build());
 
         List<Debt> actualDebts = calculator.calculate(event);
 

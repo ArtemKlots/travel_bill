@@ -96,7 +96,7 @@ class DebtCalculatorTest {
     }
 
     @Test
-    void calculate_shouldReturnTwoDebts_forOneDebtorAndTwoPayers() {
+    void calculate_shouldReturnTwoDebts_forPersonWhoPaidLess() {
         johnsBill.setAmount(25);
         janesBill.setAmount(25);
         judysBill.setAmount(10);
@@ -143,7 +143,7 @@ class DebtCalculatorTest {
     }
 
     @Test
-    void calculate_shouldReturn4DebtsForOneDebtor_When5Payers() {
+    void calculate_shouldReturn4DebtsForOneDebtor_When5PayersPaidSameAmount() {
         johnsBill.setAmount(100);
         janesBill.setAmount(100);
         judysBill.setAmount(100);

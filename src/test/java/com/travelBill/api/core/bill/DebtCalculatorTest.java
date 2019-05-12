@@ -167,7 +167,7 @@ class DebtCalculatorTest {
     }
 
     @Test
-    void calculate_shouldReturn3DebtsFor2DebtorAnd3Payers_WhenPayersPaid120And100And20() {
+    void calculate_shouldReturn3Debts_WhenOnePaidNothing() {
         johnsBill.setAmount(120);
         janesBill.setAmount(100);
         judysBill.setAmount(20);

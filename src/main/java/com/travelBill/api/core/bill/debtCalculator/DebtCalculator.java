@@ -11,21 +11,12 @@ import java.util.stream.Collectors;
 public class DebtCalculator {
     public List<Debt> calculate(Event event) {
         List<Debt> debts = new ArrayList<>();
-        double sum = event.getBills().stream().mapToDouble(Bill::getAmount).sum();
-        double coeficient = sum / event.getMembers().size();
+        double allBillsSum = event.getBills().stream().mapToDouble(Bill::getAmount).sum();
+        double averageContribution = allBillsSum / event.getMembers().size();
 
-        List<Balance> membersBalance = event.getMembers()
-                .stream()
-                .map(user -> getUserBalance(event, user))
-                .collect(Collectors.toList());
-
-        List<Balance> debtorsBalances = membersBalance.stream()
-                .filter(balance -> balance.amount < coeficient)
-                .collect(Collectors.toList());
-
-        List<Balance> payersBalances = membersBalance.stream()
-                .filter(balance -> balance.amount > coeficient)
-                .collect(Collectors.toList());
+        List<Balance> membersBalance = getAllMembersBalance(event);
+        List<Balance> debtorsBalances = getAllDebtorsBalances(averageContribution, membersBalance);
+        List<Balance> payersBalances = getAllPayersBalances(averageContribution, membersBalance);
 
         debtorsBalances.forEach(debtorBalance -> {
             payersBalances.forEach(payerBalance -> {
@@ -33,8 +24,8 @@ public class DebtCalculator {
                 debt.debtor = debtorBalance.contributor;
                 debt.payer = payerBalance.contributor;
 
-                double debtorDebt = coeficient - debtorBalance.amount;
-                double payerOverpay = payerBalance.amount - coeficient;
+                double debtorDebt = averageContribution - debtorBalance.amount;
+                double payerOverpay = payerBalance.amount - averageContribution;
 
                 if (debtorDebt == 0 || payerOverpay == 0) return;
 
@@ -54,6 +45,13 @@ public class DebtCalculator {
         return debts;
     }
 
+    private List<Balance> getAllMembersBalance(Event event) {
+        return event.getMembers()
+                .stream()
+                .map(user -> getUserBalance(event, user))
+                .collect(Collectors.toList());
+    }
+
     private Balance getUserBalance(Event event, User user) {
         List<Bill> userBills = event.getBills()
                 .stream()
@@ -63,5 +61,17 @@ public class DebtCalculator {
         debtCard.amount = userBills.stream().mapToDouble(Bill::getAmount).sum();
         debtCard.contributor = user;
         return debtCard;
+    }
+
+    private List<Balance> getAllDebtorsBalances(double averageContribution, List<Balance> membersBalance) {
+        return membersBalance.stream()
+                .filter(balance -> balance.amount < averageContribution)
+                .collect(Collectors.toList());
+    }
+
+    private List<Balance> getAllPayersBalances(double averageContribution, List<Balance> membersBalance) {
+        return membersBalance.stream()
+                .filter(balance -> balance.amount > averageContribution)
+                .collect(Collectors.toList());
     }
 }

@@ -1,7 +1,6 @@
 package com.travelBill.api.core.bill.debtCalculator;
 
 import com.travelBill.api.core.bill.Bill;
-import com.travelBill.api.core.event.Event;
 import com.travelBill.api.core.user.User;
 
 import java.util.ArrayList;
@@ -9,12 +8,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class DebtCalculator {
-    public List<Debt> calculate(Event event) {
+    public List<Debt> calculate(List<Bill> bills, List<User> members) {
         List<Debt> debts = new ArrayList<>();
-        double allBillsSum = event.getBills().stream().mapToDouble(Bill::getAmount).sum();
-        double averageContribution = allBillsSum / event.getMembers().size();
+        double allBillsSum = bills.stream().mapToDouble(Bill::getAmount).sum();
+        double averageContribution = allBillsSum / members.size();
 
-        List<Balance> membersBalance = getAllMembersBalance(event);
+        List<Balance> membersBalance = getAllMembersBalance(bills, members);
         List<Balance> debtorsBalances = getAllDebtorsBalances(averageContribution, membersBalance);
         List<Balance> payersBalances = getAllPayersBalances(averageContribution, membersBalance);
 
@@ -45,15 +44,15 @@ public class DebtCalculator {
         return debts;
     }
 
-    private List<Balance> getAllMembersBalance(Event event) {
-        return event.getMembers()
+    private List<Balance> getAllMembersBalance(List<Bill> bills, List<User> members) {
+        return members
                 .stream()
-                .map(user -> getUserBalance(event, user))
+                .map(user -> getUserBalance(bills, user))
                 .collect(Collectors.toList());
     }
 
-    private Balance getUserBalance(Event event, User user) {
-        List<Bill> userBills = event.getBills()
+    private Balance getUserBalance(List<Bill> bills, User user) {
+        List<Bill> userBills = bills
                 .stream()
                 .filter(bill -> bill.getUser().getId().equals(user.getId()))
                 .collect(Collectors.toList());

@@ -10,10 +10,8 @@ import io.github.benas.randombeans.api.EnhancedRandom;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Spy;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
@@ -24,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 
-@RunWith(MockitoJUnitRunner.class)
 @ExtendWith(MockitoExtension.class)
 class MultiCurrencyDebtCalculatorTest {
 
@@ -38,9 +35,7 @@ class MultiCurrencyDebtCalculatorTest {
     private Bill johnsDollarBill, janesDollarBill, judysDollarBill, jamesDollarBill;
     private Bill johnsEuroBill, janesEuroBill, judysEuroBill, jamesEuroBill;
 
-    @Spy
-    @InjectMocks
-    DebtCalculator spyDebtCalculator = new DebtCalculator();
+    @Spy @InjectMocks private DebtCalculator spyDebtCalculator;
 
     @BeforeEach
     void setupContext() {
@@ -71,7 +66,6 @@ class MultiCurrencyDebtCalculatorTest {
         johnsDollarBill = new Bill();
         johnsDollarBill.setUser(john);
         johnsDollarBill.setCurrency("USD");
-        ;
 
         janesDollarBill = new Bill();
         janesDollarBill.setUser(jane);
@@ -119,6 +113,7 @@ class MultiCurrencyDebtCalculatorTest {
 
         doReturn(new ArrayList<>()).when(spyDebtCalculator).calculate(any(), any());
 
+        spyDebtCalculator.calculate(new ArrayList<>(), new ArrayList<>());
         List<Debt> expectedDebts = new ArrayList<>();
 
         List<Debt> actualDebts = multiCurrencyDebtCalculator.calculate(new Event());

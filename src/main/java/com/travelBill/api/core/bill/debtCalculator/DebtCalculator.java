@@ -2,11 +2,13 @@ package com.travelBill.api.core.bill.debtCalculator;
 
 import com.travelBill.api.core.bill.Bill;
 import com.travelBill.api.core.user.User;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class DebtCalculator {
     public List<Debt> calculate(List<Bill> bills, List<User> members) {
         List<Debt> debts = new ArrayList<>();

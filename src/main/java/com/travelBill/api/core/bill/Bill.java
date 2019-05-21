@@ -103,4 +103,38 @@ public class Bill {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Bill bill = (Bill) o;
+
+        return new org.apache.commons.lang3.builder.EqualsBuilder()
+                .append(amount, bill.amount)
+                .append(id, bill.id)
+                .append(purpose, bill.purpose)
+                .append(currency, bill.currency)
+                .append(createdAt, bill.createdAt)
+                .append(updatedAt, bill.updatedAt)
+                .append(event, bill.event)
+                .append(user, bill.user)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new org.apache.commons.lang3.builder.HashCodeBuilder(17, 37)
+                .append(id)
+                .append(purpose)
+                .append(currency)
+                .append(amount)
+                .append(createdAt)
+                .append(updatedAt)
+                .append(event)
+                .append(user)
+                .toHashCode();
+    }
 }

@@ -105,4 +105,38 @@ public class User {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        return new org.apache.commons.lang3.builder.EqualsBuilder()
+                .append(id, user.id)
+                .append(firstName, user.firstName)
+                .append(lastName, user.lastName)
+                .append(events, user.events)
+                .append(telegramId, user.telegramId)
+                .append(currentEvent, user.currentEvent)
+                .append(createdAt, user.createdAt)
+                .append(updatedAt, user.updatedAt)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new org.apache.commons.lang3.builder.HashCodeBuilder(17, 37)
+                .append(id)
+                .append(firstName)
+                .append(lastName)
+                .append(events)
+                .append(telegramId)
+                .append(currentEvent)
+                .append(createdAt)
+                .append(updatedAt)
+                .toHashCode();
+    }
 }

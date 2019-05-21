@@ -4,6 +4,7 @@ import com.travelBill.api.core.event.Event;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -16,8 +17,13 @@ public class MultiCurrencyDebtCalculator {
     }
 
     public List<Debt> calculate(Event event) {
+        List<Debt> debts = new ArrayList<>();
+
+        event.getBills().forEach(bill -> {
+            debts.addAll(debtCalculator.calculate(Collections.singletonList(bill), event.getMembers()));
+        });
 
 
-        return new ArrayList<>();
+        return debts;
     }
 }

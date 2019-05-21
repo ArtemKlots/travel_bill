@@ -6,9 +6,10 @@ import java.util.Objects;
 
 public class Debt {
 
-    public User debtor;
-    public User payer;
-    public double amount;
+    User debtor;
+    User payer;
+    double amount;
+    private String currency;
 
     public static DebtBuilder newBuilder() {
         return new Debt().new DebtBuilder();
@@ -32,6 +33,11 @@ public class Debt {
             return this;
         }
 
+        public DebtBuilder withCurrency(String currency) {
+            debt.currency = currency;
+            return this;
+        }
+
         public Debt build() {
             return debt;
         }
@@ -43,12 +49,13 @@ public class Debt {
         if (!(o instanceof Debt)) return false;
         Debt debt = (Debt) o;
         return Double.compare(debt.amount, amount) == 0 &&
-                debtor.equals(debt.debtor) &&
-                payer.equals(debt.payer);
+                Objects.equals(debtor, debt.debtor) &&
+                Objects.equals(payer, debt.payer) &&
+                Objects.equals(currency, debt.currency);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(debtor, payer, amount);
+        return Objects.hash(debtor, payer, amount, currency);
     }
 }

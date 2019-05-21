@@ -10,22 +10,23 @@ import io.github.benas.randombeans.api.EnhancedRandom;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Spy;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
 class MultiCurrencyDebtCalculatorTest {
 
     private final EnhancedRandom random = EnhancedRandomBuilder.aNewEnhancedRandomBuilder().build();
+    private DebtCalculator mockDebtCalculator;
     private MultiCurrencyDebtCalculator multiCurrencyDebtCalculator;
     private Event event;
     private List<Bill> bills;
@@ -35,11 +36,12 @@ class MultiCurrencyDebtCalculatorTest {
     private Bill johnsDollarBill, janesDollarBill, judysDollarBill, jamesDollarBill;
     private Bill johnsEuroBill, janesEuroBill, judysEuroBill, jamesEuroBill;
 
-    @Spy @InjectMocks private DebtCalculator spyDebtCalculator;
+
 
     @BeforeEach
     void setupContext() {
-        multiCurrencyDebtCalculator = new MultiCurrencyDebtCalculator(spyDebtCalculator);
+        mockDebtCalculator = Mockito.mock(DebtCalculator.class);
+        multiCurrencyDebtCalculator = new MultiCurrencyDebtCalculator(mockDebtCalculator);
         event = random.nextObject(Event.class);
         bills = new ArrayList<>();
         event.setBills(bills);
@@ -99,26 +101,22 @@ class MultiCurrencyDebtCalculatorTest {
 
     @Test
     void calculate_shouldCallDebtCalculator() {
-        johnsDollarBill.setAmount(20);
-        janesDollarBill.setAmount(5);
-        judysDollarBill.setAmount(5);
+        Event event = new Event();
+        bills.addAll(Arrays.asList(johnsDollarBill, johnsEuroBill));
+        event.setMembers(Arrays.asList(john));
+        event.setBills(bills);
 
-        johnsEuroBill.setAmount(20);
-        janesEuroBill.setAmount(5);
-        judysEuroBill.setAmount(5);
+        Debt dollarDebt = Debt.newBuilder().withDebtor(john).withPayer(john).withCurrency("USD").build();
+        Debt euroDebt = Debt.newBuilder().withDebtor(john).withPayer(john).withCurrency("EUR").build();
 
-        bills.addAll(Arrays.asList(johnsDollarBill, janesDollarBill, judysDollarBill, johnsEuroBill, janesEuroBill, judysEuroBill));
-        event.setMembers(Arrays.asList(john, jane, judy));
+        doReturn(Arrays.asList(dollarDebt)).when(mockDebtCalculator).calculate(Collections.singletonList(johnsDollarBill), event.getMembers());
+        doReturn(Arrays.asList(euroDebt)).when(mockDebtCalculator).calculate(Collections.singletonList(johnsEuroBill), event.getMembers());
 
 
-        doReturn(new ArrayList<>()).when(spyDebtCalculator).calculate(any(), any());
+        List<Debt> actualResult = multiCurrencyDebtCalculator.calculate(event);
+        Mockito.verify(mockDebtCalculator, times(1)).calculate(Collections.singletonList(johnsDollarBill), event.getMembers());
+        Mockito.verify(mockDebtCalculator, times(1)).calculate(Collections.singletonList(johnsDollarBill), event.getMembers());
 
-        spyDebtCalculator.calculate(new ArrayList<>(), new ArrayList<>());
-        List<Debt> expectedDebts = new ArrayList<>();
-
-        List<Debt> actualDebts = multiCurrencyDebtCalculator.calculate(new Event());
-
-        assertEquals(expectedDebts, actualDebts);
-
+        assertEquals(Arrays.asList(dollarDebt, euroDebt), actualResult);
     }
 }

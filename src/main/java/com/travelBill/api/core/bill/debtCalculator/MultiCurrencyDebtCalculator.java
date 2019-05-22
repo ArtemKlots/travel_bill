@@ -1,11 +1,13 @@
 package com.travelBill.api.core.bill.debtCalculator;
 
+import com.travelBill.api.core.bill.Bill;
 import com.travelBill.api.core.event.Event;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class MultiCurrencyDebtCalculator {
@@ -19,9 +21,12 @@ public class MultiCurrencyDebtCalculator {
     public List<Debt> calculate(Event event) {
         List<Debt> debts = new ArrayList<>();
 
-        event.getBills().forEach(bill -> {
-            debts.addAll(debtCalculator.calculate(Collections.singletonList(bill), event.getMembers()));
-        });
+        Map<String, List<Bill>> billsDividedByCurrency = event.getBills().stream()
+                .collect(Collectors.groupingBy(Bill::getCurrency));
+
+        for (Map.Entry<String, List<Bill>> entry : billsDividedByCurrency.entrySet()) {
+            debts.addAll(debtCalculator.calculate(entry.getValue(), event.getMembers()));
+        }
 
 
         return debts;

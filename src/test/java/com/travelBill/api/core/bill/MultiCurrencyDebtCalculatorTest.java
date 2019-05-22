@@ -100,7 +100,7 @@ class MultiCurrencyDebtCalculatorTest {
     }
 
     @Test
-    void calculate_shouldCallDebtCalculator() {
+    void calculate_shouldCallDebtCalculator_forOnePerson() {
         Event event = new Event();
         bills.addAll(Arrays.asList(johnsDollarBill, johnsEuroBill));
         event.setMembers(Arrays.asList(john));
@@ -115,8 +115,32 @@ class MultiCurrencyDebtCalculatorTest {
 
         List<Debt> actualResult = multiCurrencyDebtCalculator.calculate(event);
         Mockito.verify(mockDebtCalculator, times(1)).calculate(Collections.singletonList(johnsDollarBill), event.getMembers());
-        Mockito.verify(mockDebtCalculator, times(1)).calculate(Collections.singletonList(johnsDollarBill), event.getMembers());
+        Mockito.verify(mockDebtCalculator, times(1)).calculate(Collections.singletonList(johnsEuroBill), event.getMembers());
 
-        assertEquals(Arrays.asList(dollarDebt, euroDebt), actualResult);
+        assertEquals(Arrays.asList(euroDebt, dollarDebt), actualResult);
+    }
+
+    @Test
+    void calculate_shouldRequestDebtCalculator_forTwoPersons() {
+        Event event = new Event();
+        bills.addAll(Arrays.asList(johnsDollarBill, janesEuroBill, johnsEuroBill));
+        event.setMembers(Arrays.asList(john));
+        event.setBills(bills);
+
+
+        Debt dollarDebt = Debt.newBuilder().withDebtor(john).withPayer(john).withCurrency("USD").build();
+        Debt euroDebt = Debt.newBuilder().withDebtor(john).withPayer(john).withCurrency("EUR").build();
+
+        doReturn(Arrays.asList(dollarDebt)).when(mockDebtCalculator).calculate(Arrays.asList(johnsDollarBill), event.getMembers());
+        //TODO find a way to avoid order
+        doReturn(Arrays.asList(euroDebt)).when(mockDebtCalculator).calculate(Arrays.asList(janesEuroBill, johnsEuroBill), event.getMembers());
+
+
+        List<Debt> actualResult = multiCurrencyDebtCalculator.calculate(event);
+        Mockito.verify(mockDebtCalculator, times(1)).calculate(Arrays.asList(johnsDollarBill), event.getMembers());
+        Mockito.verify(mockDebtCalculator, times(1)).calculate(Arrays.asList(janesEuroBill, johnsEuroBill), event.getMembers());
+
+        //TODO find a way to avoid order
+        assertEquals(Arrays.asList(euroDebt, dollarDebt), actualResult);
     }
 }

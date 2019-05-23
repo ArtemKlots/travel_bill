@@ -1,7 +1,8 @@
 package com.travelBill.telegram.scenario.group.bill;
 
-import com.travelBill.api.core.bill.Bill;
-import com.travelBill.api.core.bill.debtCalculator.DeprecatedDebtCalculator;
+import com.travelBill.api.core.bill.debtCalculator.Debt;
+import com.travelBill.api.core.bill.debtCalculator.DebtCalculator;
+import com.travelBill.api.core.bill.debtCalculator.MultiCurrencyDebtCalculator;
 import com.travelBill.api.core.event.Event;
 import com.travelBill.api.core.user.User;
 import com.travelBill.telegram.scenario.common.AbstractBillScenario;
@@ -25,38 +26,35 @@ public class ShowDebtsScenario extends AbstractBillScenario {
     public SendMessage createMessage() {
         Long telegramChatId = billContext.update.getMessage().getChatId();
         Event event = billContext.eventService.findByTelegramChatId(telegramChatId);
-        List<Bill> bills = event.getBills();
-        List<User> users = event.getMembers();
-        DeprecatedDebtCalculator debtCalculator = new DeprecatedDebtCalculator();
+        MultiCurrencyDebtCalculator debtCalculator = new MultiCurrencyDebtCalculator(new DebtCalculator());
 
-        Map<String, List<Bill>> billsDividedByCurrency = bills.stream()
-                .collect(Collectors.groupingBy(Bill::getCurrency));
+        List<Debt> debts = debtCalculator.calculate(event);
+        Map<User, List<Debt>> debtsByDebtor = debts.stream()
+                .collect(Collectors.groupingBy(Debt::getDebtor));
 
-        StringBuilder report = new StringBuilder();
-        for (Map.Entry<String, List<Bill>> entry : billsDividedByCurrency.entrySet()) {
-            Map<User, Map<User, Double>> debts = debtCalculator.getDebts(users, entry.getValue());
-            String reportChunk = makeDebtReport(debts, entry.getKey());
-            report.append(reportChunk);
-        }
+        String report = makeDebtReport(debtsByDebtor);
 
 
         return new SendMessage()
                 .setChatId(billContext.getChatId())
-                .setText(report.toString());
+                .setText(report);
     }
 
-    private String makeDebtReport(Map<User, Map<User, Double>> debts, String currency) {
+    //todo Refactor and extract to formatter
+    private String makeDebtReport(Map<User, List<Debt>> debts) {
         StringBuffer report = new StringBuffer();
 
-        debts.forEach((debtor, values) -> {
-            report.append(String.format("%s %s debts (%s): \n", debtor.getFirstName(), debtor.getLastName(), currency));
+        for (Map.Entry<User, List<Debt>> entry : debts.entrySet()) {
+            report.append(String.format("%s %s debts (%s): \n",
+                    entry.getKey().getFirstName(),
+                    entry.getKey().getLastName(),
+                    entry.getValue().get(0).getCurrency()));
 
-            values.forEach((creditor, amount) -> {
-                report.append(String.format(" -- %s %s to the %s %s \n", decimalFormat.format(amount), currency, creditor.getFirstName(), creditor.getLastName()));
+            entry.getValue().forEach(debt -> {
+                report.append(String.format(" -- %s %s to the %s %s \n", decimalFormat.format(debt.getAmount()), debt.getCurrency(), debt.getPayer().getFirstName(), debt.getPayer().getLastName()));
+                report.append("\n");
             });
-            report.append("\n");
-        });
-
+        }
         return report.toString();
     }
 }

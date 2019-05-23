@@ -7,6 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -109,34 +110,20 @@ public class User {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-
-        if (o == null || getClass() != o.getClass()) return false;
-
+        if (!(o instanceof User)) return false;
         User user = (User) o;
-
-        return new org.apache.commons.lang3.builder.EqualsBuilder()
-                .append(id, user.id)
-                .append(firstName, user.firstName)
-                .append(lastName, user.lastName)
-                .append(events, user.events)
-                .append(telegramId, user.telegramId)
-                .append(currentEvent, user.currentEvent)
-                .append(createdAt, user.createdAt)
-                .append(updatedAt, user.updatedAt)
-                .isEquals();
+        return Objects.equals(getId(), user.getId()) &&
+                Objects.equals(getFirstName(), user.getFirstName()) &&
+                Objects.equals(getLastName(), user.getLastName()) &&
+                Objects.equals(getEvents(), user.getEvents()) &&
+                Objects.equals(getTelegramId(), user.getTelegramId()) &&
+                Objects.equals(getCurrentEvent(), user.getCurrentEvent()) &&
+                Objects.equals(getCreatedAt(), user.getCreatedAt()) &&
+                Objects.equals(getUpdatedAt(), user.getUpdatedAt());
     }
 
     @Override
     public int hashCode() {
-        return new org.apache.commons.lang3.builder.HashCodeBuilder(17, 37)
-                .append(id)
-                .append(firstName)
-                .append(lastName)
-                .append(events)
-                .append(telegramId)
-                .append(currentEvent)
-                .append(createdAt)
-                .append(updatedAt)
-                .toHashCode();
+        return Objects.hash(getId(), getFirstName(), getLastName(), getEvents(), getTelegramId(), getCurrentEvent(), getCreatedAt(), getUpdatedAt());
     }
 }

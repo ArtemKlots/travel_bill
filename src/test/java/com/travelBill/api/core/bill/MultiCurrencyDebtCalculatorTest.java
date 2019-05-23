@@ -143,4 +143,20 @@ class MultiCurrencyDebtCalculatorTest {
         //TODO find a way to avoid order
         assertEquals(Arrays.asList(euroDebt, dollarDebt), actualResult);
     }
+
+    @Test
+    void calculate_shouldReturnDebtsWithCurrencies() {
+        Event event = new Event();
+        bills.addAll(Arrays.asList(johnsDollarBill, janesEuroBill, johnsEuroBill));
+        event.setMembers(Collections.singletonList(john));
+        event.setBills(bills);
+
+        doReturn(Collections.singletonList(new Debt())).when(mockDebtCalculator).calculate(Collections.singletonList(johnsDollarBill), event.getMembers());
+        doReturn(Collections.singletonList(new Debt())).when(mockDebtCalculator).calculate(Arrays.asList(janesEuroBill, johnsEuroBill), event.getMembers());
+
+        List<Debt> actualResult = multiCurrencyDebtCalculator.calculate(event);
+
+        assertEquals(actualResult.get(0).getCurrency(), "EUR");
+        assertEquals(actualResult.get(1).getCurrency(), "USD");
+    }
 }

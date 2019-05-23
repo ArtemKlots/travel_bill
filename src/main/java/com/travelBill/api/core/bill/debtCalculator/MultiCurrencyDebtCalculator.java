@@ -25,7 +25,9 @@ public class MultiCurrencyDebtCalculator {
                 .collect(Collectors.groupingBy(Bill::getCurrency));
 
         for (Map.Entry<String, List<Bill>> entry : billsDividedByCurrency.entrySet()) {
-            debts.addAll(debtCalculator.calculate(entry.getValue(), event.getMembers()));
+            List<Debt> result = debtCalculator.calculate(entry.getValue(), event.getMembers());
+            result.forEach(debt -> debt.setCurrency(entry.getKey()));
+            debts.addAll(result);
         }
 
 

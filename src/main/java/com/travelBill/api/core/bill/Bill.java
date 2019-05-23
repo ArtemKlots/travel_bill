@@ -8,6 +8,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -107,34 +108,20 @@ public class Bill {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-
-        if (o == null || getClass() != o.getClass()) return false;
-
+        if (!(o instanceof Bill)) return false;
         Bill bill = (Bill) o;
-
-        return new org.apache.commons.lang3.builder.EqualsBuilder()
-                .append(amount, bill.amount)
-                .append(id, bill.id)
-                .append(purpose, bill.purpose)
-                .append(currency, bill.currency)
-                .append(createdAt, bill.createdAt)
-                .append(updatedAt, bill.updatedAt)
-                .append(event, bill.event)
-                .append(user, bill.user)
-                .isEquals();
+        return Double.compare(bill.getAmount(), getAmount()) == 0 &&
+                Objects.equals(getId(), bill.getId()) &&
+                Objects.equals(getPurpose(), bill.getPurpose()) &&
+                Objects.equals(getCurrency(), bill.getCurrency()) &&
+                Objects.equals(getCreatedAt(), bill.getCreatedAt()) &&
+                Objects.equals(getUpdatedAt(), bill.getUpdatedAt()) &&
+                Objects.equals(getEvent(), bill.getEvent()) &&
+                Objects.equals(getUser(), bill.getUser());
     }
 
     @Override
     public int hashCode() {
-        return new org.apache.commons.lang3.builder.HashCodeBuilder(17, 37)
-                .append(id)
-                .append(purpose)
-                .append(currency)
-                .append(amount)
-                .append(createdAt)
-                .append(updatedAt)
-                .append(event)
-                .append(user)
-                .toHashCode();
+        return Objects.hash(getId(), getPurpose(), getCurrency(), getAmount(), getCreatedAt(), getUpdatedAt(), getEvent(), getUser());
     }
 }

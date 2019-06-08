@@ -90,7 +90,7 @@ class DebtCalculatorTest {
                         .withAmount(5)
                         .build());
 
-        List<Debt> actualDebts = calculator.calculate(event.getBills(), event.getMembers());
+        List<Debt> actualDebts = calculator.calculate(event);
 
         assertEquals(expectedDebts, actualDebts);
     }
@@ -118,7 +118,7 @@ class DebtCalculatorTest {
                         .withAmount(5)
                         .build());
 
-        List<Debt> actualDebts = calculator.calculate(event.getBills(), event.getMembers());
+        List<Debt> actualDebts = calculator.calculate(event);
 
         assertEquals(expectedDebts, actualDebts);
     }
@@ -137,7 +137,7 @@ class DebtCalculatorTest {
                         .withAmount(50)
                         .build());
 
-        List<Debt> actualDebts = calculator.calculate(event.getBills(), event.getMembers());
+        List<Debt> actualDebts = calculator.calculate(event);
 
         assertEquals(expectedDebts, actualDebts);
     }
@@ -161,7 +161,7 @@ class DebtCalculatorTest {
                         .build()
         ));
 
-        List<Debt> actualDebts = calculator.calculate(event.getBills(), event.getMembers());
+        List<Debt> actualDebts = calculator.calculate(event);
 
         assertEquals(expectedDebts, actualDebts);
     }
@@ -197,7 +197,7 @@ class DebtCalculatorTest {
                         .withAmount(40)
                         .build());
 
-        List<Debt> actualDebts = calculator.calculate(event.getBills(), event.getMembers());
+        List<Debt> actualDebts = calculator.calculate(event);
 
         assertEquals(expectedDebts, actualDebts);
     }
@@ -227,7 +227,7 @@ class DebtCalculatorTest {
                         .withAmount(40)
                         .build());
 
-        List<Debt> actualDebts = calculator.calculate(event.getBills(), event.getMembers());
+        List<Debt> actualDebts = calculator.calculate(event);
 
         assertEquals(expectedDebts, actualDebts);
     }

@@ -7,55 +7,64 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
 public class DebtCalculator {
     public List<Debt> calculate(Event event) {
         List<Debt> debts = new ArrayList<>();
-        double allBillsSum = event.getBills().stream().mapToDouble(Bill::getAmount).sum();
-        double averageContribution = allBillsSum / event.getMembers().size();
 
-        List<Balance> membersBalance = getAllMembersBalance(event);
-        List<Balance> debtorsBalances = getAllDebtorsBalances(averageContribution, membersBalance);
-        List<Balance> payersBalances = getAllPayersBalances(averageContribution, membersBalance);
+        Map<String, List<Bill>> billsDividedByCurrency = event.getBills().stream()
+                .collect(Collectors.groupingBy(Bill::getCurrency));
 
-        debtorsBalances.forEach(debtorBalance -> {
-            payersBalances.forEach(payerBalance -> {
-                Debt debt = new Debt();
-                debt.debtor = debtorBalance.contributor;
-                debt.payer = payerBalance.contributor;
+        for (Map.Entry<String, List<Bill>> entry : billsDividedByCurrency.entrySet()) {
 
-                double debtorDebt = averageContribution - debtorBalance.amount;
-                double payerOverpay = payerBalance.amount - averageContribution;
+            double allBillsSum = entry.getValue().stream().mapToDouble(Bill::getAmount).sum();
+            double averageContribution = allBillsSum / event.getMembers().size();
 
-                if (debtorDebt == 0 || payerOverpay == 0) return;
+            List<Balance> membersBalance = getAllMembersBalance(entry.getValue(), event.getMembers());
+            List<Balance> debtorsBalances = getAllDebtorsBalances(averageContribution, membersBalance);
+            List<Balance> payersBalances = getAllPayersBalances(averageContribution, membersBalance);
 
-                if (debtorDebt < payerOverpay) {
-                    payerBalance.amount -= debtorDebt;
-                    debtorBalance.amount += debtorDebt;
-                    debt.amount += debtorDebt;
-                } else {
-                    payerBalance.amount -= payerOverpay;
-                    debtorBalance.amount += payerOverpay;
-                    debt.amount += payerOverpay;
-                }
-                debts.add(debt);
+            debtorsBalances.forEach(debtorBalance -> {
+                payersBalances.forEach(payerBalance -> {
+                    Debt debt = new Debt();
+                    debt.debtor = debtorBalance.contributor;
+                    debt.payer = payerBalance.contributor;
+                    debt.setCurrency(entry.getKey());
+
+                    double debtorDebt = averageContribution - debtorBalance.amount;
+                    double payerOverpay = payerBalance.amount - averageContribution;
+
+                    if (debtorDebt == 0 || payerOverpay == 0) return;
+
+                    if (debtorDebt < payerOverpay) {
+                        payerBalance.amount -= debtorDebt;
+                        debtorBalance.amount += debtorDebt;
+                        debt.amount += debtorDebt;
+                    } else {
+                        payerBalance.amount -= payerOverpay;
+                        debtorBalance.amount += payerOverpay;
+                        debt.amount += payerOverpay;
+                    }
+                    debts.add(debt);
+                });
+
             });
-
-        });
+        }
         return debts;
     }
 
-    private List<Balance> getAllMembersBalance(Event event) {
-        return event.getMembers()
+    private List<Balance> getAllMembersBalance(List<Bill> bills, List<User> members) {
+        return members
                 .stream()
-                .map(user -> getUserBalance(event, user))
+                .map(user -> getUserBalance(bills, user))
                 .collect(Collectors.toList());
     }
 
-    private Balance getUserBalance(Event event, User user) {
-        List<Bill> userBills = event.getBills()
+    private Balance getUserBalance(List<Bill> bills, User user) {
+        List<Bill> userBills = bills
                 .stream()
                 .filter(bill -> bill.getUser().getId().equals(user.getId()))
                 .collect(Collectors.toList());

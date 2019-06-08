@@ -2,7 +2,6 @@ package com.travelBill.telegram.scenario.group.bill;
 
 import com.travelBill.api.core.bill.debtCalculator.Debt;
 import com.travelBill.api.core.bill.debtCalculator.DebtCalculator;
-import com.travelBill.api.core.bill.debtCalculator.MultiCurrencyDebtCalculator;
 import com.travelBill.api.core.event.Event;
 import com.travelBill.api.core.user.User;
 import com.travelBill.telegram.scenario.common.AbstractBillScenario;
@@ -26,7 +25,7 @@ public class ShowDebtsScenario extends AbstractBillScenario {
     public SendMessage createMessage() {
         Long telegramChatId = billContext.update.getMessage().getChatId();
         Event event = billContext.eventService.findByTelegramChatId(telegramChatId);
-        MultiCurrencyDebtCalculator debtCalculator = new MultiCurrencyDebtCalculator(new DebtCalculator());
+        DebtCalculator debtCalculator = new DebtCalculator();
 
         List<Debt> debts = debtCalculator.calculate(event);
         Map<User, List<Debt>> debtsByDebtor = debts.stream()
@@ -44,16 +43,20 @@ public class ShowDebtsScenario extends AbstractBillScenario {
     private String makeDebtReport(Map<User, List<Debt>> debts) {
         StringBuffer report = new StringBuffer();
 
-        for (Map.Entry<User, List<Debt>> entry : debts.entrySet()) {
-            report.append(String.format("%s %s debts (%s): \n",
-                    entry.getKey().getFirstName(),
-                    entry.getKey().getLastName(),
-                    entry.getValue().get(0).getCurrency()));
+        if (debts.size() > 0) {
+            for (Map.Entry<User, List<Debt>> entry : debts.entrySet()) {
+                report.append(String.format("%s %s debts (%s): \n",
+                        entry.getKey().getFirstName(),
+                        entry.getKey().getLastName(),
+                        entry.getValue().get(0).getCurrency()));
 
-            entry.getValue().forEach(debt -> {
-                report.append(String.format(" -- %s %s to the %s %s \n", decimalFormat.format(debt.getAmount()), debt.getCurrency(), debt.getPayer().getFirstName(), debt.getPayer().getLastName()));
-                report.append("\n");
-            });
+                entry.getValue().forEach(debt -> {
+                    report.append(String.format(" -- %s %s to the %s %s \n", decimalFormat.format(debt.getAmount()), debt.getCurrency(), debt.getPayer().getFirstName(), debt.getPayer().getLastName()));
+                    report.append("\n");
+                });
+            }
+        } else {
+            report.append("There are no debts between you");
         }
         return report.toString();
     }

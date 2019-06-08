@@ -105,6 +105,38 @@ public class Bill {
         this.updatedAt = updatedAt;
     }
 
+    public static Bill.BillBuilder newBuilder() {
+        return new Bill().new BillBuilder();
+    }
+
+    public class BillBuilder {
+        Bill bill = new Bill();
+
+        public BillBuilder withAmount(double amount) {
+            bill.amount = amount;
+            return this;
+        }
+
+        public BillBuilder withUser(User payer) {
+            bill.user = payer;
+            return this;
+        }
+
+        public BillBuilder withCurrency(String currency) {
+            bill.currency = currency;
+            return this;
+        }
+
+        public BillBuilder withEvent(Event event) {
+            bill.event = event;
+            return this;
+        }
+
+        public Bill build() {
+            return bill;
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

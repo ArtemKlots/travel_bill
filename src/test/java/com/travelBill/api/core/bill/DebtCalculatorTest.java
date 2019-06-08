@@ -25,6 +25,8 @@ class DebtCalculatorTest {
 
     private User john, jane, judy, james, janie;
     private Bill johnsBill, janesBill, judysBill, jamesBill;
+    private static String USD = "USD";
+    private static String EUR = "EUR";
 
     @BeforeEach
     void setupContext() {
@@ -52,17 +54,21 @@ class DebtCalculatorTest {
         janie = random.nextObject(User.class);
         janie.setFirstName("Janie");
 
-        johnsBill = new Bill();
+        johnsBill = Bill.newBuilder().withUser(john).withCurrency(USD).build();
         johnsBill.setUser(john);
+        johnsBill.setCurrency(USD);
 
         janesBill = new Bill();
         janesBill.setUser(jane);
+        janesBill.setCurrency(USD);
 
         judysBill = new Bill();
         judysBill.setUser(judy);
+        judysBill.setCurrency(USD);
 
         jamesBill = new Bill();
         jamesBill.setUser(james);
+        jamesBill.setCurrency(USD);
     }
 
     @Test
@@ -81,6 +87,7 @@ class DebtCalculatorTest {
                         .withDebtor(jane)
                         .withPayer(john)
                         .withAmount(5)
+                        .withCurrency(USD)
                         .build());
 
         expectedDebts.add(
@@ -88,6 +95,7 @@ class DebtCalculatorTest {
                         .withDebtor(judy)
                         .withPayer(john)
                         .withAmount(5)
+                        .withCurrency(USD)
                         .build());
 
         List<Debt> actualDebts = calculator.calculate(event);
@@ -109,6 +117,7 @@ class DebtCalculatorTest {
                         .withDebtor(judy)
                         .withPayer(john)
                         .withAmount(5)
+                        .withCurrency(USD)
                         .build());
 
         expectedDebts.add(
@@ -116,6 +125,7 @@ class DebtCalculatorTest {
                         .withDebtor(judy)
                         .withPayer(jane)
                         .withAmount(5)
+                        .withCurrency(USD)
                         .build());
 
         List<Debt> actualDebts = calculator.calculate(event);
@@ -135,6 +145,7 @@ class DebtCalculatorTest {
                         .withDebtor(jane)
                         .withPayer(john)
                         .withAmount(50)
+                        .withCurrency(USD)
                         .build());
 
         List<Debt> actualDebts = calculator.calculate(event);
@@ -158,6 +169,7 @@ class DebtCalculatorTest {
                         .withDebtor(janie)
                         .withPayer(user)
                         .withAmount(20)
+                        .withCurrency(USD)
                         .build()
         ));
 
@@ -181,6 +193,7 @@ class DebtCalculatorTest {
                         .withDebtor(judy)
                         .withPayer(john)
                         .withAmount(40)
+                        .withCurrency(USD)
                         .build());
 
         expectedDebts.add(
@@ -188,6 +201,7 @@ class DebtCalculatorTest {
                         .withDebtor(james)
                         .withPayer(john)
                         .withAmount(20)
+                        .withCurrency(USD)
                         .build());
 
         expectedDebts.add(
@@ -195,6 +209,7 @@ class DebtCalculatorTest {
                         .withDebtor(james)
                         .withPayer(jane)
                         .withAmount(40)
+                        .withCurrency(USD)
                         .build());
 
         List<Debt> actualDebts = calculator.calculate(event);
@@ -218,6 +233,7 @@ class DebtCalculatorTest {
                         .withDebtor(james)
                         .withPayer(john)
                         .withAmount(60)
+                        .withCurrency(USD)
                         .build());
 
         expectedDebts.add(
@@ -225,7 +241,54 @@ class DebtCalculatorTest {
                         .withDebtor(judy)
                         .withPayer(jane)
                         .withAmount(40)
+                        .withCurrency(USD)
                         .build());
+
+        List<Debt> actualDebts = calculator.calculate(event);
+
+        assertEquals(expectedDebts, actualDebts);
+    }
+
+    @Test
+    void calculate_shouldReturnDebtsInTwoCurrencies_WhenPeoplePaidInTwoCurrencies() {
+        bills.addAll(Arrays.asList(
+                Bill.newBuilder().withUser(john).withAmount(20).withCurrency(USD).build(),
+                Bill.newBuilder().withUser(jane).withAmount(5).withCurrency(USD).build(),
+                Bill.newBuilder().withUser(judy).withAmount(5).withCurrency(USD).build(),
+                Bill.newBuilder().withUser(john).withAmount(20).withCurrency(EUR).build(),
+                Bill.newBuilder().withUser(jane).withAmount(5).withCurrency(EUR).build(),
+                Bill.newBuilder().withUser(judy).withAmount(5).withCurrency(EUR).build()
+        ));
+
+        event.setMembers(Arrays.asList(john, jane, judy));
+
+        expectedDebts.addAll(Arrays.asList(
+                Debt.newBuilder()
+                        .withDebtor(jane)
+                        .withPayer(john)
+                        .withAmount(5)
+                        .withCurrency(EUR)
+                        .build(),
+                Debt.newBuilder()
+                        .withDebtor(judy)
+                        .withPayer(john)
+                        .withAmount(5)
+                        .withCurrency(EUR)
+                        .build(),
+                Debt.newBuilder()
+                        .withDebtor(jane)
+                        .withPayer(john)
+                        .withAmount(5)
+                        .withCurrency(USD)
+                        .build(),
+                Debt.newBuilder()
+                        .withDebtor(judy)
+                        .withPayer(john)
+                        .withAmount(5)
+                        .withCurrency(USD)
+                        .build()
+        ));
+
 
         List<Debt> actualDebts = calculator.calculate(event);
 

@@ -29,10 +29,11 @@ public class DebtCalculator {
 
             debtorsBalances.forEach(debtorBalance -> {
                 payersBalances.forEach(payerBalance -> {
-                    Debt debt = new Debt();
-                    debt.debtor = debtorBalance.contributor;
-                    debt.payer = payerBalance.contributor;
-                    debt.setCurrency(entry.getKey());
+                    Debt debt = Debt.newBuilder()
+                            .withDebtor(debtorBalance.contributor)
+                            .withPayer(payerBalance.contributor)
+                            .withCurrency(entry.getKey())
+                            .build();
 
                     double debtorDebt = averageContribution - debtorBalance.amount;
                     double payerOverpay = payerBalance.amount - averageContribution;

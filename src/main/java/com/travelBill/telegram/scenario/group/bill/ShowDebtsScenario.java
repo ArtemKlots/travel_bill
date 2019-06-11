@@ -50,7 +50,7 @@ public class ShowDebtsScenario extends AbstractBillScenario {
                         entry.getKey().getLastName()));
 
                 entry.getValue().forEach(debt -> {
-                    report.append(String.format(" -- %s %s to the %s %s \n", decimalFormat.format(debt.getAmount()), debt.getCurrency(), debt.getPayer().getFirstName(), debt.getPayer().getLastName()));
+                    report.append(String.format(" -- %s %s to %s %s \n", decimalFormat.format(debt.getAmount()), debt.getCurrency(), debt.getPayer().getFirstName(), debt.getPayer().getLastName()));
                     report.append("\n");
                 });
             }

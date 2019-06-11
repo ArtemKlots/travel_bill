@@ -45,10 +45,9 @@ public class ShowDebtsScenario extends AbstractBillScenario {
 
         if (debts.size() > 0) {
             for (Map.Entry<User, List<Debt>> entry : debts.entrySet()) {
-                report.append(String.format("%s %s debts (%s): \n",
+                report.append(String.format("%s %s debts: \n",
                         entry.getKey().getFirstName(),
-                        entry.getKey().getLastName(),
-                        entry.getValue().get(0).getCurrency()));
+                        entry.getKey().getLastName()));
 
                 entry.getValue().forEach(debt -> {
                     report.append(String.format(" -- %s %s to the %s %s \n", decimalFormat.format(debt.getAmount()), debt.getCurrency(), debt.getPayer().getFirstName(), debt.getPayer().getLastName()));

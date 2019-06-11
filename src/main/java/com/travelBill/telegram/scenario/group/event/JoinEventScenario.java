@@ -27,8 +27,8 @@ public class JoinEventScenario extends AbstractEventScenario {
 
             String responseMessage = String.format(
                     "Hello %s %s! Now I know that you are here and can receive your contributions :) \n\n" +
-                            "Use the following pattern to make a contribution: <how much> <currency> <purpose> (spaces are important!)\n\n" +
-                            "For example: 10 points to gryffindor",
+                            "Use the following pattern to make a contribution (spaces are important!): \n<how much> <currency> <purpose> \n\n" +
+                            "Example: 10 points to gryffindor",
                     eventContext.currentUser.getFirstName(),
                     eventContext.currentUser.getLastName()
             );

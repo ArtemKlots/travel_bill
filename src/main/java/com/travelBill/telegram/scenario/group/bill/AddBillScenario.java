@@ -17,7 +17,7 @@ public class AddBillScenario extends AbstractBillScenario {
         User user = billContext.currentUser;
         Event event = billContext.eventService.findByTelegramChatId(billContext.getChatId());
         String textMessage = billContext.update.getMessage().getText();
-        String responseMessage = "Done ;)";
+        String responseMessage = String.format("Done ;) %s were applied from %s %s", textMessage, user.getFirstName(), user.getLastName());
 
         try {
             Bill bill = AddBillCommandParser.parse(textMessage);

@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ShowDebtsScenario extends AbstractBillScenario {
-    private static DecimalFormat decimalFormat = new DecimalFormat(".##");
+    private static DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
     public ShowDebtsScenario(BillContext billContext) {
         super(billContext);

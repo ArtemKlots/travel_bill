@@ -26,11 +26,10 @@ public class JoinEventScenario extends AbstractEventScenario {
             eventContext.eventService.addMember(event, eventContext.currentUser);
 
             String responseMessage = String.format(
-                    "Hello %s %s! Now I know that you are here and can receive your contributions :) \n\n" +
+                    "Hello %s! Now I know that you are here and can receive your contributions :) \n\n" +
                             "Use the following pattern to make a contribution (spaces are important!): \n<how much> <currency> <purpose> \n\n" +
                             "Example: 10 points to gryffindor",
-                    eventContext.currentUser.getFirstName(),
-                    eventContext.currentUser.getLastName()
+                    eventContext.currentUser.getFullName()
             );
 
             return new SendMessage()
@@ -38,9 +37,8 @@ public class JoinEventScenario extends AbstractEventScenario {
                     .setText(responseMessage)
                     .setReplyMarkup(createMarkup());
         } else {
-            String message = String.format("Hmm... It seems I saw you in this chat. You are %s %s, right?",
-                    eventContext.currentUser.getFirstName(),
-                    eventContext.currentUser.getLastName());
+            String message = String.format("Hmm... It seems I saw you in this chat. You are %s, right?",
+                    eventContext.currentUser.getFullName());
 
             return new SendMessage()
                     .setChatId(eventContext.getChatId())

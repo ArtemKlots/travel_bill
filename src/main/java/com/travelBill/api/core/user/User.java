@@ -43,6 +43,25 @@ public class User {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    //todo should be here?
+    public String getFullName() {
+        String fullName = "";
+
+        if (firstName != null) {
+            fullName += firstName;
+        }
+
+        if (firstName != null && lastName != null) {
+            fullName += " ";
+        }
+
+        if (lastName != null) {
+            fullName += lastName;
+        }
+
+        return fullName;
+    }
+
     public Long getId() {
         return id;
     }

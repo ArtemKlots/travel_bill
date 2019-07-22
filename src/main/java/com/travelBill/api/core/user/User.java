@@ -7,6 +7,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
+
+import static javax.persistence.GenerationType.IDENTITY;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -41,6 +44,25 @@ public class User {
     @Column
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    //todo should be here?
+    public String getFullName() {
+        String fullName = "";
+
+        if (firstName != null) {
+            fullName += firstName;
+        }
+
+        if (firstName != null && lastName != null) {
+            fullName += " ";
+        }
+
+        if (lastName != null) {
+            fullName += lastName;
+        }
+
+        return fullName;
+    }
 
     public Long getId() {
         return id;
@@ -104,5 +126,25 @@ public class User {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return Objects.equals(getId(), user.getId()) &&
+                Objects.equals(getFirstName(), user.getFirstName()) &&
+                Objects.equals(getLastName(), user.getLastName()) &&
+                Objects.equals(getEvents(), user.getEvents()) &&
+                Objects.equals(getTelegramId(), user.getTelegramId()) &&
+                Objects.equals(getCurrentEvent(), user.getCurrentEvent()) &&
+                Objects.equals(getCreatedAt(), user.getCreatedAt()) &&
+                Objects.equals(getUpdatedAt(), user.getUpdatedAt());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getFirstName(), getLastName(), getEvents(), getTelegramId(), getCurrentEvent(), getCreatedAt(), getUpdatedAt());
     }
 }

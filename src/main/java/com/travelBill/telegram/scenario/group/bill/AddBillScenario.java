@@ -1,8 +1,9 @@
-package com.travelBill.telegram.scenario.bill;
+package com.travelBill.telegram.scenario.group.bill;
 
 import com.travelBill.api.core.bill.Bill;
 import com.travelBill.api.core.event.Event;
 import com.travelBill.api.core.user.User;
+import com.travelBill.telegram.scenario.common.AbstractBillScenario;
 import com.travelBill.telegram.scenario.common.context.BillContext;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
@@ -16,7 +17,7 @@ public class AddBillScenario extends AbstractBillScenario {
         User user = billContext.currentUser;
         Event event = billContext.eventService.findByTelegramChatId(billContext.getChatId());
         String textMessage = billContext.update.getMessage().getText();
-        String responseMessage = "Done ;)";
+        String responseMessage = String.format("Done ;) %s were accepted from %s %s", textMessage, user.getFirstName(), user.getLastName());
 
         try {
             Bill bill = AddBillCommandParser.parse(textMessage);

@@ -8,6 +8,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.Objects;
+
+import static javax.persistence.GenerationType.IDENTITY;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -102,5 +105,57 @@ public class Bill {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public static Bill.BillBuilder newBuilder() {
+        return new Bill().new BillBuilder();
+    }
+
+    public class BillBuilder {
+        Bill bill = new Bill();
+
+        public BillBuilder withAmount(double amount) {
+            bill.amount = amount;
+            return this;
+        }
+
+        public BillBuilder withUser(User payer) {
+            bill.user = payer;
+            return this;
+        }
+
+        public BillBuilder withCurrency(String currency) {
+            bill.currency = currency;
+            return this;
+        }
+
+        public BillBuilder withEvent(Event event) {
+            bill.event = event;
+            return this;
+        }
+
+        public Bill build() {
+            return bill;
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Bill)) return false;
+        Bill bill = (Bill) o;
+        return Double.compare(bill.getAmount(), getAmount()) == 0 &&
+                Objects.equals(getId(), bill.getId()) &&
+                Objects.equals(getPurpose(), bill.getPurpose()) &&
+                Objects.equals(getCurrency(), bill.getCurrency()) &&
+                Objects.equals(getCreatedAt(), bill.getCreatedAt()) &&
+                Objects.equals(getUpdatedAt(), bill.getUpdatedAt()) &&
+                Objects.equals(getEvent(), bill.getEvent()) &&
+                Objects.equals(getUser(), bill.getUser());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getPurpose(), getCurrency(), getAmount(), getCreatedAt(), getUpdatedAt(), getEvent(), getUser());
     }
 }

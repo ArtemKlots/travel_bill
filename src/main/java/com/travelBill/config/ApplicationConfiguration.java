@@ -16,6 +16,12 @@ public class ApplicationConfiguration {
     @NotEmpty
     private String telegramKey;
 
+    @Value("${LIFECYCLE_URL}")
+    private String lifecycleUrl;
+
+    @Value("${HEALTH_CHECK_URL}")
+    private String heathCheckUrl;
+
 
     public String getTelegramKey() {
         return telegramKey;
@@ -23,5 +29,21 @@ public class ApplicationConfiguration {
 
     public void setTelegramKey(String telegramKey) {
         this.telegramKey = telegramKey;
+    }
+
+    public String getLifecycleUrl() {
+        return lifecycleUrl;
+    }
+
+    public void setLifecycleUrl(String lifecycleUrl) {
+        this.lifecycleUrl = lifecycleUrl;
+    }
+
+    public String getHeathCheckUrl() {
+        return heathCheckUrl;
+    }
+
+    public void setHeathCheckUrl(String heathCheckUrl) {
+        this.heathCheckUrl = heathCheckUrl;
     }
 }

@@ -1,6 +1,7 @@
 package com.travelBill.telegram.scenario;
 
 import com.travelBill.api.core.user.User;
+import com.travelBill.telegram.TelegramUpdateUtils;
 import com.travelBill.telegram.scenario.common.scenario.InitialScenarioHelper;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
 import com.travelBill.telegram.scenario.group.GroupScenarioFactory;
@@ -14,15 +15,17 @@ import static java.util.Objects.isNull;
 public class ScenarioFactory {
     private final IndividualScenarioFactory individualScenarioFactory;
     private final GroupScenarioFactory groupScenarioFactory;
+    private final TelegramUpdateUtils telegramUpdateUtils;
 
-    public ScenarioFactory(IndividualScenarioFactory individualScenarioFactory, GroupScenarioFactory groupScenarioFactory) {
+    public ScenarioFactory(IndividualScenarioFactory individualScenarioFactory, GroupScenarioFactory groupScenarioFactory, TelegramUpdateUtils telegramUpdateUtils) {
         this.individualScenarioFactory = individualScenarioFactory;
         this.groupScenarioFactory = groupScenarioFactory;
+        this.telegramUpdateUtils = telegramUpdateUtils;
     }
 
     public Scenario createScenario(Update update, User currentUser) {
         Scenario scenario;
-        boolean isUserChat = update.getMessage().getChat().isUserChat();
+        boolean isUserChat = telegramUpdateUtils.getChat(update).isUserChat();
 
         if (InitialScenarioHelper.isStart(update)) {
             scenario = new InitialScenario(update);

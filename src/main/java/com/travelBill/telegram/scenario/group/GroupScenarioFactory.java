@@ -7,9 +7,7 @@ import com.travelBill.telegram.scenario.common.context.ContextProvider;
 import com.travelBill.telegram.scenario.common.context.EventContext;
 import com.travelBill.telegram.scenario.common.scenario.EventScenarioHelper;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
-import com.travelBill.telegram.scenario.group.bill.AddBillCommandParser;
-import com.travelBill.telegram.scenario.group.bill.AddBillScenario;
-import com.travelBill.telegram.scenario.group.bill.ShowDebtsScenario;
+import com.travelBill.telegram.scenario.group.bill.*;
 import com.travelBill.telegram.scenario.group.event.CreateEventScenario;
 import com.travelBill.telegram.scenario.group.event.JoinEventScenario;
 import org.springframework.stereotype.Service;
@@ -31,6 +29,13 @@ public class GroupScenarioFactory {
         BillContext billContext = contextProvider.getBillContext(update, currentUser);
         Scenario selectedScenario = null;
 
+        if (update.hasCallbackQuery()) {
+            if (update.getCallbackQuery().getData().startsWith("delete_bill")) {
+                selectedScenario = new DeleteBillScenario(billContext);
+            }
+        }
+
+
         if (isChatCreated(update)) {
             selectedScenario = new CreateEventScenario(eventContext);
         }
@@ -50,6 +55,10 @@ public class GroupScenarioFactory {
             String plainText = update.getMessage().getText();
             if (plainText.equals("Show debts")) {
                 selectedScenario = new ShowDebtsScenario(billContext);
+            }
+
+            if (plainText.equals("Delete bill")) {
+                selectedScenario = new ShowBillsToDeleteScenario(billContext);
             }
         }
 

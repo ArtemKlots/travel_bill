@@ -53,7 +53,11 @@ public class JoinEventScenario extends AbstractEventScenario {
         KeyboardRow showDebtsRow = new KeyboardRow();
         showDebtsRow.add("Show debts");
 
+        KeyboardRow deleteBillRow = new KeyboardRow();
+        deleteBillRow.add("Delete bill");
+
         keyboard.add(showDebtsRow);
+        keyboard.add(deleteBillRow);
 
         markup.setKeyboard(keyboard);
         markup.setResizeKeyboard(true);

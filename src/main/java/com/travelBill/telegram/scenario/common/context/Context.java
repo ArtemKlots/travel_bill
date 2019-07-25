@@ -6,11 +6,7 @@ public abstract class Context {
     public Update update;
 
     public Long getChatId() {
-        if (update.hasMessage()) {
-            return update.getMessage().getChatId();
-        } else {
-            return update.getCallbackQuery().getMessage().getChatId();
-        }
+        return new TelegramUpdateUtils().getChatId(update);
     }
 
     public Boolean isGroupOrSuperGroupChat() {

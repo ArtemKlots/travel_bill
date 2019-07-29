@@ -6,7 +6,6 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +22,7 @@ public class BotApi {
         this.httpService = httpService;
     }
 
-    public void deleteMessage(Long chatId, Integer messageId) throws IOException {
+    public void deleteMessage(Long chatId, Integer messageId) {
         List<NameValuePair> params = new ArrayList<>(2);
         params.add(new BasicNameValuePair("chat_id", chatId.toString()));
         params.add(new BasicNameValuePair("message_id", messageId.toString()));

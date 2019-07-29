@@ -1,5 +1,7 @@
 package com.travelBill.api.core.bill;
 
+import com.travelBill.api.core.exceptions.AccessDeniedException;
+import com.travelBill.api.core.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,8 +32,12 @@ public class BillServiceImpl implements BillService {
         return billRepository.save(bill);
     }
 
-    public void deleteById(Long id) {
-        billRepository.deleteById(id);
+    public void delete(Bill bill, User user) {
+        if (bill.getUser().getId().equals(user.getId())) {
+            billRepository.deleteById(bill.getId());
+        } else {
+            throw new AccessDeniedException("You've tried to access not your bill");
+        }
     }
 
     public List<Bill> selectTop10ByUserIdOrderByCreatedAtDesc(Long id) {

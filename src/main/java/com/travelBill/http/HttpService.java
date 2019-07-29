@@ -14,12 +14,22 @@ import java.util.List;
 @Service
 public class HttpService {
 
-    public HttpResponse post(String url, List<NameValuePair> params) throws IOException {
+    public HttpResponse post(String url, List<NameValuePair> params) {
         HttpClient httpclient = HttpClients.createDefault();
         HttpPost httppost = new HttpPost(url);
 
-        httppost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
-
-        return httpclient.execute(httppost);
+        try {
+            httppost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
+            return httpclient.execute(httppost);
+        } catch (IOException e) {
+            throw new HttpException("There was an error performing http request", e.getCause());
+        }
     }
+
+    public class HttpException extends RuntimeException {
+        public HttpException(String message, Throwable cause) {
+            super(message, cause);
+        }
+    }
+
 }

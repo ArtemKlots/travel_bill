@@ -2,7 +2,6 @@ package com.travelBill.telegram.scenario.individual;
 
 import com.travelBill.api.core.bill.Bill;
 import com.travelBill.api.core.bill.BillService;
-import com.travelBill.api.core.bill.BillServiceImpl;
 import com.travelBill.api.core.user.User;
 import com.travelBill.telegram.Request;
 import com.travelBill.telegram.formatter.bill.LastTransactionsListFormatter;
@@ -22,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class ShowLastTransactionsScenarioTest {
-    private BillService billService = Mockito.mock(BillServiceImpl.class);
+    private BillService billService = Mockito.mock(BillService.class);
     private BillContext billContext;
     private User user;
     private LastTransactionsListFormatter formatter = mock(LastTransactionsListFormatter.class);

@@ -1,8 +1,6 @@
 package com.travelBill.telegram.exceptions;
 
-import com.travelBill.api.core.exceptions.TravelBillException;
-
-public class UserIsNotSetUpException extends TravelBillException {
+public class UserIsNotSetUpException extends RuntimeException {
 
     @Override
     public String getMessage() {

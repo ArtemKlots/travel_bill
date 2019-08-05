@@ -4,8 +4,8 @@ import com.travelBill.api.core.bill.BillService;
 import com.travelBill.api.core.event.EventService;
 import com.travelBill.api.core.user.User;
 import com.travelBill.telegram.BotApi;
+import com.travelBill.telegram.Request;
 import org.springframework.stereotype.Service;
-import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Service
 public class ContextProvider {
@@ -19,21 +19,21 @@ public class ContextProvider {
         this.botApi = botApi;
     }
 
-    public EventContext getEventContext(Update update, User currentUser) {
+    public EventContext getEventContext(Request request, User currentUser) {
         EventContext context = new EventContext();
         context.eventService = eventService;
         context.botApi = botApi;
-        context.update = update;
+        context.request = request;
         context.currentUser = currentUser;
         return context;
     }
 
-    public BillContext getBillContext(Update update, User currentUser) {
+    public BillContext getBillContext(Request request, User currentUser) {
         BillContext context = new BillContext();
         context.eventService = eventService;
         context.billService = billService;
         context.botApi = botApi;
-        context.update = update;
+        context.request = request;
         context.currentUser = currentUser;
         return context;
     }

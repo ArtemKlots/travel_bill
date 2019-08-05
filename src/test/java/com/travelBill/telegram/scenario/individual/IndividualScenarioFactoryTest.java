@@ -1,17 +1,17 @@
 package com.travelBill.telegram.scenario.individual;
 
 import com.travelBill.api.core.user.User;
+import com.travelBill.telegram.Request;
 import com.travelBill.telegram.scenario.common.ScenarioNotFoundException;
 import com.travelBill.telegram.scenario.common.context.BillContext;
 import com.travelBill.telegram.scenario.common.context.ContextProvider;
 import com.travelBill.telegram.scenario.common.context.EventContext;
 import com.travelBill.telegram.scenario.common.scenario.BillScenarioHelper;
-import com.travelBill.telegram.scenario.common.scenario.NewEventScenarioHelper;
+import com.travelBill.telegram.scenario.common.scenario.EventScenarioHelper;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.mockito.Spy;
-import org.telegram.telegrambots.meta.api.objects.Update;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -21,9 +21,9 @@ import static org.mockito.Mockito.when;
 
 class IndividualScenarioFactoryTest {
     private ContextProvider contextProvider = mock(ContextProvider.class);
-    private NewEventScenarioHelper eventScenarioHelper = mock(NewEventScenarioHelper.class);
+    private EventScenarioHelper eventScenarioHelper = mock(EventScenarioHelper.class);
     private BillScenarioHelper billScenarioHelper = mock(BillScenarioHelper.class);
-    private Update update = mock(Update.class);
+    private Request request = mock(Request.class);
     private User user = mock(User.class);
 
     @Spy
@@ -39,20 +39,20 @@ class IndividualScenarioFactoryTest {
 
     @Test
     void createScenario_shouldReturnShowEventsScenario_whenShowEventsSignalWasProvided() {
-        when(eventScenarioHelper.isShowEventsSignal(update)).thenReturn(true);
+        when(eventScenarioHelper.isShowEventsSignal(request)).thenReturn(true);
 
         IndividualScenarioFactory factory = new IndividualScenarioFactory(contextProvider, eventScenarioHelper, billScenarioHelper);
-        Scenario scenario = factory.createScenario(update, user);
+        Scenario scenario = factory.createScenario(request, user);
 
         assertEquals(ShowEventsListScenario.class, scenario.getClass());
     }
 
     @Test
     void createScenario_shouldReturnShowLastTransactionsScenario_whenShowLastTransactionsSignalWasProvided() {
-        when(billScenarioHelper.isShowLastTransactionsSignal(update)).thenReturn(true);
+        when(billScenarioHelper.isShowLastTransactionsSignal(request)).thenReturn(true);
 
         IndividualScenarioFactory factory = new IndividualScenarioFactory(contextProvider, eventScenarioHelper, billScenarioHelper);
-        Scenario scenario = factory.createScenario(update, user);
+        Scenario scenario = factory.createScenario(request, user);
 
         assertEquals(ShowLastTransactionsScenario.class, scenario.getClass());
 
@@ -65,7 +65,7 @@ class IndividualScenarioFactoryTest {
         Exception expectedException = null;
 
         try {
-            factory.createScenario(update, user);
+            factory.createScenario(request, user);
         } catch (ScenarioNotFoundException e) {
             expectedException = e;
         }

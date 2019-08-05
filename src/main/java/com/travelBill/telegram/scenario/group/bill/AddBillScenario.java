@@ -16,7 +16,7 @@ public class AddBillScenario extends AbstractBillScenario {
     public SendMessage createMessage() {
         User user = billContext.currentUser;
         Event event = billContext.eventService.findByTelegramChatId(billContext.getChatId());
-        String textMessage = billContext.update.getMessage().getText();
+        String textMessage = billContext.request.message;
         String responseMessage = String.format("Done ;) %s were accepted from %s %s", textMessage, user.getFirstName(), user.getLastName());
 
         try {

@@ -1,21 +1,29 @@
 package com.travelBill.telegram.scenario.common.scenario;
 
+import com.travelBill.telegram.Request;
+import com.travelBill.telegram.scenario.group.bill.AddBillCommandParser;
 import org.springframework.stereotype.Service;
-import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Service
 public class BillScenarioHelper {
 
-    public boolean isBillAction(Update update) {
-        return isShowLastTransactionsSignal(update);
+    public boolean isContribution(Request request) {
+        return AddBillCommandParser.isContribution(request.message);
     }
 
-    public boolean isShowLastTransactionsSignal(Update update) {
-        return hasMessageAndText(update) && update.getMessage().getText().equals("Show last transactions");
+    public boolean isDeleteBillRequestSignal(Request request) {
+        return request.hasMessage() && request.message.equals("Delete bill");
     }
 
-    // TODO: 27.03.19 Can be extracted
-    public boolean hasMessageAndText(Update update) {
-        return update.hasMessage() && update.getMessage().hasText();
+    public boolean isDeleteBillConfirmationSignal(Request request) {
+        return request.hasCallbackQueryData() && request.callbackQueryData.startsWith("delete_bill");
+    }
+
+    public boolean isShowDebtsSignal(Request request) {
+        return request.hasMessage() && request.message.equals("Show debts");
+    }
+
+    public boolean isShowLastTransactionsSignal(Request request) {
+        return request.hasMessage() && request.message.equals("Show last transactions");
     }
 }

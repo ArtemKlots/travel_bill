@@ -1,8 +1,8 @@
 package com.travelBill.telegram.scenario;
 
+import com.travelBill.telegram.Request;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
@@ -11,19 +11,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InitialScenario implements Scenario {
-    private Update update;
+    private Request request;
 
-    InitialScenario(Update update) {
-        this.update = update;
+    InitialScenario(Request request) {
+        this.request = request;
     }
 
     @Override
     public SendMessage createMessage() {
-        long chat_id = update.getMessage().getChatId();
+        long chatId = request.chatId;
         ReplyKeyboard markup = createMarkup();
 
         return new SendMessage()
-                .setChatId(chat_id)
+                .setChatId(chatId)
                 .setText("What would you like to do?")
                 .setReplyMarkup(markup);
     }

@@ -1,7 +1,6 @@
 package com.travelBill.telegram.scenario.group.bill;
 
 import com.travelBill.api.core.bill.Bill;
-import com.travelBill.telegram.TelegramUpdateUtils;
 import com.travelBill.telegram.scenario.common.AbstractBillScenario;
 import com.travelBill.telegram.scenario.common.context.BillContext;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -19,7 +18,7 @@ public class ShowBillsToDeleteScenario extends AbstractBillScenario {
 
     @Override
     public SendMessage createMessage() {
-        Long telegramChatId = new TelegramUpdateUtils().getChatId(billContext.update);
+        Long telegramChatId = billContext.getChatId();
         Long eventId = billContext.eventService.findByTelegramChatId(telegramChatId).getId();
         Long currentUserId = billContext.currentUser.getId();
 

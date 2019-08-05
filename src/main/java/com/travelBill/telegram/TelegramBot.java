@@ -31,13 +31,14 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
+        Request request = new UpdateRequestMapper().mapTo(update);
         try {
             User currentUser = setupUser(update);
-            SendMessage message = scenarioFactory.createScenario(update, currentUser).createMessage();
+            SendMessage message = scenarioFactory.createScenario(request, currentUser).createMessage();
             execute(message);
         } catch (Exception e) {
             e.printStackTrace();
-            respondWithError(update);
+            respondWithError(request);
         }
     }
 
@@ -66,8 +67,8 @@ public class TelegramBot extends TelegramLongPollingBot {
         return telegramUserService.setupUser(user);
     }
 
-    private void respondWithError(Update update) {
-        SendMessage message = new UnknownScenario(update).createMessage();
+    private void respondWithError(Request request) {
+        SendMessage message = new UnknownScenario(request).createMessage();
         sneak(() -> execute(message));
     }
 }

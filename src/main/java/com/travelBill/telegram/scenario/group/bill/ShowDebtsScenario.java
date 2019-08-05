@@ -23,7 +23,7 @@ public class ShowDebtsScenario extends AbstractBillScenario {
 
     @Override
     public SendMessage createMessage() {
-        Long telegramChatId = billContext.update.getMessage().getChatId();
+        Long telegramChatId = billContext.getChatId();
         Event event = billContext.eventService.findByTelegramChatId(telegramChatId);
         DebtCalculator debtCalculator = new DebtCalculator();
 

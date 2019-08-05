@@ -1,23 +1,20 @@
 package com.travelBill.telegram.scenario;
 
-import com.travelBill.telegram.TelegramUpdateUtils;
+import com.travelBill.telegram.Request;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.Update;
 
 public class UnknownScenario implements Scenario {
-    private Update update;
+    private Request request;
 
-    public UnknownScenario(Update update) {
-        this.update = update;
+    public UnknownScenario(Request request) {
+        this.request = request;
     }
 
     @Override
     public SendMessage createMessage() {
-        long chat_id = new TelegramUpdateUtils().getChatId(update);
-
         return new SendMessage()
-                .setChatId(chat_id)
+                .setChatId(request.chatId)
                 .setText("Sorry, but I can't understand you :( Could you rephrase please?");
     }
 }

@@ -4,6 +4,7 @@ import com.travelBill.api.core.bill.Bill;
 import com.travelBill.api.core.bill.BillService;
 import com.travelBill.api.core.bill.BillServiceImpl;
 import com.travelBill.api.core.user.User;
+import com.travelBill.telegram.Request;
 import com.travelBill.telegram.formatter.bill.LastTransactionsListFormatter;
 import com.travelBill.telegram.scenario.common.context.BillContext;
 import io.github.benas.randombeans.EnhancedRandomBuilder;
@@ -12,7 +13,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.Collections;
@@ -36,7 +36,7 @@ public class ShowLastTransactionsScenarioTest {
         billContext = new BillContext();
         billContext.billService = billService;
         billContext.currentUser = user;
-        billContext.update = random.nextObject(Update.class);
+        billContext.request = random.nextObject(Request.class);
         when(formatter.format(any())).thenReturn(mockedFormatterResult);
     }
 

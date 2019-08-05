@@ -32,15 +32,8 @@ public class CreateEventScenario extends AbstractEventScenario {
     }
 
     private static Event createEvent(EventContext eventContext) {
-        String eventName = getEventName(eventContext);
+        String eventName = eventContext.request.chatTitle;
         return eventContext.eventService.save(eventName, eventContext.currentUser, eventContext.getChatId());
-    }
-
-    private static String getEventName(EventContext eventContext) {
-        return eventContext.update
-                .getMessage()
-                .getChat()
-                .getTitle();
     }
 
 }

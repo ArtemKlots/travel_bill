@@ -8,11 +8,16 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import java.util.ArrayList;
 import java.util.List;
 
-public class InitialScenarioResponse extends Response {
+public class InitialScenarioResponse implements Response {
 
     @Override
     public String getMessage() {
         return null;
+    }
+
+    @Override
+    public ReplyKeyboard getKeyboard() {
+        return createMarkup();
     }
 
     private ReplyKeyboard createMarkup() {

@@ -9,12 +9,12 @@ import com.travelBill.telegram.scenario.common.context.EventContext;
 import com.travelBill.telegram.scenario.common.scenario.BillScenarioHelper;
 import com.travelBill.telegram.scenario.common.scenario.EventScenarioHelper;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
-import com.travelBill.telegram.scenario.group.bill.AddBillScenario;
+import com.travelBill.telegram.scenario.group.bill.add.AddBillScenario;
 import com.travelBill.telegram.scenario.group.bill.delete.confirm.DeleteBillScenario;
 import com.travelBill.telegram.scenario.group.bill.delete.request.ShowBillsToDeleteScenario;
 import com.travelBill.telegram.scenario.group.bill.show.ShowDebtsScenario;
-import com.travelBill.telegram.scenario.group.event.CreateEventScenario;
-import com.travelBill.telegram.scenario.group.event.JoinEventScenario;
+import com.travelBill.telegram.scenario.group.event.create.CreateEventScenario;
+import com.travelBill.telegram.scenario.group.event.join.JoinEventScenario;
 import org.springframework.stereotype.Service;
 
 import static java.util.Objects.isNull;
@@ -63,7 +63,7 @@ public class GroupScenarioFactory {
         }
 
         if (isNull(selectedScenario)) {
-            selectedScenario = new UnknownScenario(request);
+            selectedScenario = new UnknownScenario();
         }
 
         return selectedScenario;

@@ -3,12 +3,13 @@ package com.travelBill.telegram.scenario.group.bill.show;
 import com.travelBill.api.core.bill.debtCalculator.Debt;
 import com.travelBill.api.core.user.User;
 import com.travelBill.telegram.Response;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
 
-public class ShowDebtsResponse extends Response {
+public class ShowDebtsResponse implements Response {
     private static DecimalFormat decimalFormat = new DecimalFormat("#.##");
     public Map<User, List<Debt>> debts;
 
@@ -31,5 +32,10 @@ public class ShowDebtsResponse extends Response {
             report.append("There are no debts between you");
         }
         return report.toString();
+    }
+
+    @Override
+    public ReplyKeyboard getKeyboard() {
+        return null;
     }
 }

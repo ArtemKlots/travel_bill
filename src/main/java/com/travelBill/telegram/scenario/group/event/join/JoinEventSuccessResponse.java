@@ -1,4 +1,4 @@
-package com.travelBill.telegram.scenario.group.event.responses;
+package com.travelBill.telegram.scenario.group.event.join;
 
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;

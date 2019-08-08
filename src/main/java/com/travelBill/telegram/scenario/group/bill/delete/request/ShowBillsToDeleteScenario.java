@@ -24,6 +24,7 @@ public class ShowBillsToDeleteScenario extends AbstractBillScenario {
 
         if (lastBills.size() > 0) {
             response = new ShowBillsToDeleteSuccessResponse();
+            ((ShowBillsToDeleteSuccessResponse) response).bills = lastBills;
         } else {
             response = new ShowBillsToDeleteFailResponse();
         }

@@ -37,6 +37,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             User currentUser = setupUser(update);
             Response response = scenarioFactory.createScenario(request, currentUser).execute();
             SendMessage message = getSendMessageFromReport(response);
+            message.setChatId(request.chatId);
 
             execute(message);
         } catch (Exception e) {
@@ -71,18 +72,20 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
     private void respondWithError(Request request) {
-        Response response = new UnknownScenario(request).execute();
-        sneak(() -> execute(getSendMessageFromReport(response)));
+        Response response = new UnknownScenario().execute();
+        SendMessage sendMessage = getSendMessageFromReport(response);
+        sendMessage.setChatId(request.chatId);
+        sneak(() -> execute(sendMessage));
     }
 
     private SendMessage getSendMessageFromReport(Response response) {
         SendMessage message = new SendMessage();
-        message.setChatId(response.chatId);
 
         if (response.getMessage() != null) {
             message.setText(response.getMessage());
         }
 
+        // todo look on the warning
         if (response.parseMode != null) {
             message.setParseMode(response.parseMode);
         }

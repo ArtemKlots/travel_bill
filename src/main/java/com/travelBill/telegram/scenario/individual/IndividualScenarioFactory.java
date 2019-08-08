@@ -2,7 +2,6 @@ package com.travelBill.telegram.scenario.individual;
 
 import com.travelBill.api.core.user.User;
 import com.travelBill.telegram.Request;
-import com.travelBill.telegram.formatter.bill.LastTransactionsListFormatter;
 import com.travelBill.telegram.scenario.common.ScenarioNotFoundException;
 import com.travelBill.telegram.scenario.common.context.BillContext;
 import com.travelBill.telegram.scenario.common.context.ContextProvider;
@@ -40,7 +39,7 @@ public class IndividualScenarioFactory {
         }
 
         if (billScenarioHelper.isShowLastTransactionsSignal(request)) {
-            selectedScenario = new ShowLastTransactionsScenario(billContext, new LastTransactionsListFormatter());
+            selectedScenario = new ShowLastTransactionsScenario(billContext);
         }
 
         if (isNull(selectedScenario)) {

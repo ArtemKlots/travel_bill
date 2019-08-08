@@ -3,6 +3,7 @@ package com.travelBill.telegram.scenario.individual;
 import com.travelBill.api.core.event.Event;
 import com.travelBill.telegram.Response;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 import java.util.ArrayList;
@@ -10,23 +11,8 @@ import java.util.List;
 
 import static java.util.Objects.isNull;
 
-public class ShowEventsListResponse extends Response {
-    public List<Event> events;
-
-    //todo set markup
-    private InlineKeyboardMarkup createMarkup(List<Event> events) {
-        InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
-        List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
-
-        for (Event event : events) {
-            List<InlineKeyboardButton> row = new ArrayList<>();
-            row.add(new InlineKeyboardButton().setText(event.getTitle()).setCallbackData("switch_to_event" + event.getId()));
-            rowsInline.add(row);
-        }
-
-        markupInline.setKeyboard(rowsInline);
-        return markupInline;
-    }
+public class ShowEventsListResponse implements Response {
+    List<Event> events;
 
     @Override
     public String getMessage() {
@@ -46,5 +32,24 @@ public class ShowEventsListResponse extends Response {
                 messageText = "Here are your events:";
         }
         return messageText;
+    }
+
+    @Override
+    public ReplyKeyboard getKeyboard() {
+        return createMarkup();
+    }
+
+    private InlineKeyboardMarkup createMarkup() {
+        InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
+
+        for (Event event : events) {
+            List<InlineKeyboardButton> row = new ArrayList<>();
+            row.add(new InlineKeyboardButton().setText(event.getTitle()).setCallbackData("switch_to_event" + event.getId()));
+            rowsInline.add(row);
+        }
+
+        markupInline.setKeyboard(rowsInline);
+        return markupInline;
     }
 }

@@ -1,4 +1,4 @@
-package com.travelBill.telegram.scenario.group.event;
+package com.travelBill.telegram.scenario.group.event.create;
 
 import com.travelBill.api.core.event.Event;
 import com.travelBill.telegram.Response;
@@ -6,9 +6,6 @@ import com.travelBill.telegram.scenario.common.context.EventContext;
 import com.travelBill.telegram.scenario.common.scenario.AbstractEventScenario;
 
 public class CreateEventScenario extends AbstractEventScenario {
-    private static final String SUCCESS_MESSAGE = "Event %s has been successfully registered. " +
-            "I have no access to members list, so I need to ask you to join manually. Please press /join ";
-    private static final String FAIL_MESSAGE = "Sorry, something went wrong. I can do nothing in this chat";
 
     public CreateEventScenario(EventContext eventContext) {
         super(eventContext);
@@ -16,17 +13,18 @@ public class CreateEventScenario extends AbstractEventScenario {
 
     @Override
     public Response execute() {
-        Event event;
-        String textMessage;
+        Response response;
+
         try {
-            event = createEvent(eventContext);
-            textMessage = String.format(SUCCESS_MESSAGE, event.getTitle());
+            Event event = createEvent(eventContext);
+            response = new CreateEventSuccessResponse();
+            ((CreateEventSuccessResponse) response).eventTitle = event.getTitle();
         } catch (Exception e) {
             e.printStackTrace();
-            textMessage = FAIL_MESSAGE;
+            response = new CreateEventFailResponse();
         }
 
-        return new Response(textMessage);
+        return response;
     }
 
     private static Event createEvent(EventContext eventContext) {

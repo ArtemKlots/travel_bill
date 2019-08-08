@@ -13,6 +13,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import static com.rainerhahnekamp.sneakythrow.Sneaky.sneak;
+import static java.util.Objects.isNull;
 
 
 @Component
@@ -34,7 +35,9 @@ public class TelegramBot extends TelegramLongPollingBot {
         Request request = new UpdateRequestMapper().mapTo(update);
         try {
             User currentUser = setupUser(update);
-            SendMessage message = scenarioFactory.createScenario(request, currentUser).createMessage();
+            Response response = scenarioFactory.createScenario(request, currentUser).execute();
+            SendMessage message = getSendMessageFromReport(response);
+
             execute(message);
         } catch (Exception e) {
             e.printStackTrace();
@@ -68,7 +71,27 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
     private void respondWithError(Request request) {
-        SendMessage message = new UnknownScenario(request).createMessage();
-        sneak(() -> execute(message));
+        Response response = new UnknownScenario(request).execute();
+        sneak(() -> execute(getSendMessageFromReport(response)));
     }
+
+    private SendMessage getSendMessageFromReport(Response response) {
+        SendMessage message = new SendMessage();
+        message.setChatId(response.chatId);
+
+        if (response.getMessage() != null) {
+            message.setText(response.getMessage());
+        }
+
+        if (response.parseMode != null) {
+            message.setParseMode(response.parseMode);
+        }
+
+        if (!isNull(response.getKeyboard())) {
+            message.setReplyMarkup(response.getKeyboard());
+        }
+
+        return message;
+    }
+
 }

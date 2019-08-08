@@ -1,6 +1,7 @@
 package com.travelBill.telegram.scenario.individual;
 
 import com.travelBill.api.core.bill.Bill;
+import com.travelBill.telegram.Response;
 import com.travelBill.telegram.formatter.bill.BillListFormatter;
 import com.travelBill.telegram.scenario.common.AbstractBillScenario;
 import com.travelBill.telegram.scenario.common.context.BillContext;
@@ -18,13 +19,14 @@ public class ShowLastTransactionsScenario extends AbstractBillScenario {
     }
 
     @Override
-    public SendMessage createMessage() {
+    public Response execute() {
         List<Bill> bills = billContext.billService.selectTop10ByUserIdOrderByCreatedAtDesc(billContext.currentUser.getId());
         SendMessage message = new SendMessage();
 
         String content = formatter.format(bills);
 
-        return message.setChatId(billContext.getChatId())
-                .setText(content);
+//        return message.setChatId(billContext.getChatId())
+//                .setText(content);
+        return new Response(content);
     }
 }

@@ -1,5 +1,6 @@
 package com.travelBill.api.core.event;
 
+import com.travelBill.api.core.event.exceptions.MemberAlreadyInEventException;
 import com.travelBill.api.core.user.User;
 import com.travelBill.api.core.user.UserService;
 import org.springframework.stereotype.Service;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -53,8 +55,22 @@ public class EventService {
     }
 
     public Event addMember(Event event, User member) {
-        event.getMembers().add(member);
-        return save(event);
+        if (isNewMember(event, member)) {
+            event.getMembers().add(member);
+            return save(event);
+        } else {
+            throw new MemberAlreadyInEventException();
+        }
+
+    }
+
+    private boolean isNewMember(Event event, User member) {
+        List matchedUser = event.getMembers()
+                .stream()
+                .filter(u -> u.getId().equals(member.getId()))
+                .collect(Collectors.toList());
+
+        return matchedUser.size() == 0;
     }
 
     public void switchCurrentEvent(User user, Event event) {

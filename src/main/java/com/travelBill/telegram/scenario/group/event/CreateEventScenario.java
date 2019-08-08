@@ -1,9 +1,9 @@
 package com.travelBill.telegram.scenario.group.event;
 
 import com.travelBill.api.core.event.Event;
+import com.travelBill.telegram.Response;
 import com.travelBill.telegram.scenario.common.context.EventContext;
 import com.travelBill.telegram.scenario.common.scenario.AbstractEventScenario;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 public class CreateEventScenario extends AbstractEventScenario {
     private static final String SUCCESS_MESSAGE = "Event %s has been successfully registered. " +
@@ -15,7 +15,7 @@ public class CreateEventScenario extends AbstractEventScenario {
     }
 
     @Override
-    public SendMessage createMessage() {
+    public Response execute() {
         Event event;
         String textMessage;
         try {
@@ -26,9 +26,7 @@ public class CreateEventScenario extends AbstractEventScenario {
             textMessage = FAIL_MESSAGE;
         }
 
-        return new SendMessage()
-                .setChatId(eventContext.getChatId())
-                .setText(textMessage);
+        return new Response(textMessage);
     }
 
     private static Event createEvent(EventContext eventContext) {

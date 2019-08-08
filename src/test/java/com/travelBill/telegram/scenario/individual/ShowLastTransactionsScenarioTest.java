@@ -45,7 +45,7 @@ public class ShowLastTransactionsScenarioTest {
         when(billService.selectTop10ByUserIdOrderByCreatedAtDesc(user.getId())).thenReturn(bills);
 
         ShowLastTransactionsScenario scenario = new ShowLastTransactionsScenario(billContext, formatter);
-        SendMessage message = scenario.createMessage();
+        SendMessage message = scenario.execute();
 
         assertNotNull(message);
         assertEquals(mockedFormatterResult, message.getText());
@@ -57,7 +57,7 @@ public class ShowLastTransactionsScenarioTest {
         Bill bill = random.nextObject(Bill.class);
         when(billService.selectTop10ByUserIdOrderByCreatedAtDesc(user.getId())).thenReturn(Collections.singletonList(bill));
 
-        SendMessage resultMessage = new ShowLastTransactionsScenario(billContext, formatter).createMessage();
+        SendMessage resultMessage = new ShowLastTransactionsScenario(billContext, formatter).execute();
 
         try {
             resultMessage.validate();
@@ -78,21 +78,21 @@ public class ShowLastTransactionsScenarioTest {
         when(billService.selectTop10ByUserIdOrderByCreatedAtDesc(any())).thenReturn(Collections.singletonList(bill));
 
         String expectedChatId = billContext.getChatId().toString();
-        String actualChatId = new ShowLastTransactionsScenario(billContext, formatter).createMessage().getChatId();
+        String actualChatId = new ShowLastTransactionsScenario(billContext, formatter).execute().getChatId();
 
         assertEquals(expectedChatId, actualChatId);
     }
 
     @Test
     void showLastTransactionsScenario_shouldGetOnlyLastTransactions() {
-        new ShowLastTransactionsScenario(billContext, formatter).createMessage();
+        new ShowLastTransactionsScenario(billContext, formatter).execute();
 
         verify(billService, times(1)).selectTop10ByUserIdOrderByCreatedAtDesc(any());
     }
 
     @Test
     void showLastTransactionsScenario_shouldGetOnlyLastTransactions_forConcreteUser() {
-        new ShowLastTransactionsScenario(billContext, formatter).createMessage();
+        new ShowLastTransactionsScenario(billContext, formatter).execute();
 
         verify(billService, times(1)).selectTop10ByUserIdOrderByCreatedAtDesc(user.getId());
     }

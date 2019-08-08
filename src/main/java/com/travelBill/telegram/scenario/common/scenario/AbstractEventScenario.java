@@ -1,7 +1,7 @@
 package com.travelBill.telegram.scenario.common.scenario;
 
+import com.travelBill.telegram.Response;
 import com.travelBill.telegram.scenario.common.context.EventContext;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 public abstract class AbstractEventScenario implements Scenario {
     public EventContext eventContext;
@@ -10,5 +10,5 @@ public abstract class AbstractEventScenario implements Scenario {
         this.eventContext = eventContext;
     }
 
-    public abstract SendMessage createMessage();
+    public abstract Response execute();
 }

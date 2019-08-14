@@ -17,7 +17,7 @@ public class DeleteBillScenario extends AbstractBillScenario {
     public Response execute() {
         String stringBillId = billContext.request.callbackQueryData.split("_")[BILL_ID_INDEX_IN_CALLBACK];
         Long billId = Long.parseLong(stringBillId);
-        Bill billToRemove = billContext.billService.findById(billId);
+        Bill billToRemove = billContext.billService.findById(billId, billContext.currentUser.getId());
 
         billContext.billService.delete(billToRemove, billContext.currentUser);
         billContext.botApi.deleteMessage(billContext.getChatId(), billContext.request.messageId);

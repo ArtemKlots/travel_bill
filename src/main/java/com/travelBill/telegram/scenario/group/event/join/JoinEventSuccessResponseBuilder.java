@@ -1,5 +1,6 @@
 package com.travelBill.telegram.scenario.group.event.join;
 
+import com.travelBill.telegram.Response;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
@@ -7,9 +8,16 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import java.util.ArrayList;
 import java.util.List;
 
-public class JoinEventSuccessResponse extends JoinEventResponse {
+public class JoinEventSuccessResponseBuilder extends JoinEventResponseBuilder {
 
     @Override
+    public Response build() {
+        Response response = new Response();
+        response.message = getMessage();
+        response.keyboard = getKeyboard();
+        return response;
+    }
+
     public String getMessage() {
         return String.format(
                 "Hello %s! Now I know that you are here and can receive your contributions :) \n\n" +
@@ -18,7 +26,6 @@ public class JoinEventSuccessResponse extends JoinEventResponse {
                 member.getFullName());
     }
 
-    @Override
     public ReplyKeyboard getKeyboard() {
         ReplyKeyboardMarkup markup = new ReplyKeyboardMarkup();
         List<KeyboardRow> keyboard = new ArrayList<>();

@@ -2,6 +2,7 @@ package com.travelBill.telegram.scenario.group.event.create;
 
 import com.travelBill.api.core.event.Event;
 import com.travelBill.telegram.Response;
+import com.travelBill.telegram.ResponseBuilder;
 import com.travelBill.telegram.scenario.common.context.EventContext;
 import com.travelBill.telegram.scenario.common.scenario.AbstractEventScenario;
 
@@ -13,18 +14,18 @@ public class CreateEventScenario extends AbstractEventScenario {
 
     @Override
     public Response execute() {
-        Response response;
+        ResponseBuilder responseBuilder;
 
         try {
             Event event = createEvent(eventContext);
-            response = new CreateEventSuccessResponse();
-            ((CreateEventSuccessResponse) response).eventTitle = event.getTitle();
+            responseBuilder = new CreateEventSuccessResponseBuilder();
+            ((CreateEventSuccessResponseBuilder) responseBuilder).eventTitle = event.getTitle();
         } catch (Exception e) {
             e.printStackTrace();
-            response = new CreateEventFailResponse();
+            responseBuilder = new CreateEventFailResponseBuilder();
         }
 
-        return response;
+        return responseBuilder.build();
     }
 
     private static Event createEvent(EventContext eventContext) {

@@ -13,17 +13,17 @@ public class JoinEventScenario extends AbstractEventScenario {
 
     public Response execute() {
         Event event = eventContext.eventService.findByTelegramChatId(eventContext.getChatId());
-        JoinEventResponse response;
+        JoinEventResponseBuilder responseBuilder;
 
         try {
             eventContext.eventService.addMember(event, eventContext.currentUser);
-            response = new JoinEventSuccessResponse();
+            responseBuilder = new JoinEventSuccessResponseBuilder();
         } catch (MemberAlreadyInEventException e) {
-            response = new JoinEventFailResponse();
+            responseBuilder = new JoinEventFailResponseBuilder();
         }
 
-        response.member = eventContext.currentUser;
+        responseBuilder.member = eventContext.currentUser;
 
-        return response;
+        return responseBuilder.build();
     }
 }

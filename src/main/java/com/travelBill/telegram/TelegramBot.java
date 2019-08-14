@@ -81,17 +81,16 @@ public class TelegramBot extends TelegramLongPollingBot {
     private SendMessage getSendMessageFromReport(Response response) {
         SendMessage message = new SendMessage();
 
-        if (response.getMessage() != null) {
-            message.setText(response.getMessage());
+        if (!isNull(response.message)) {
+            message.setText(response.message);
         }
 
-        // todo look on the warning
-        if (response.parseMode != null) {
+        if (!isNull(response.parseMode)) {
             message.setParseMode(response.parseMode);
         }
 
-        if (!isNull(response.getKeyboard())) {
-            message.setReplyMarkup(response.getKeyboard());
+        if (!isNull(response.keyboard)) {
+            message.setReplyMarkup(response.keyboard);
         }
 
         return message;

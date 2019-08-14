@@ -29,10 +29,10 @@ public class ShowDebtsScenario extends AbstractBillScenario {
         Map<User, List<Debt>> debtsByDebtor = debts.stream()
                 .collect(Collectors.groupingBy(Debt::getDebtor));
 
-        ShowDebtsResponse response = new ShowDebtsResponse();
-        response.debts = debtsByDebtor;
+        ShowDebtsResponseBuilder responseBuilder = new ShowDebtsResponseBuilder();
+        responseBuilder.debts = debtsByDebtor;
 
-        return response;
+        return responseBuilder.build();
     }
 
 }

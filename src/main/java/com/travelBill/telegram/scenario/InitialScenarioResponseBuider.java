@@ -1,6 +1,7 @@
 package com.travelBill.telegram.scenario;
 
 import com.travelBill.telegram.Response;
+import com.travelBill.telegram.ResponseBuilder;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
@@ -8,16 +9,14 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import java.util.ArrayList;
 import java.util.List;
 
-public class InitialScenarioResponse implements Response {
+public class InitialScenarioResponseBuider implements ResponseBuilder {
 
     @Override
-    public String getMessage() {
-        return null;
-    }
-
-    @Override
-    public ReplyKeyboard getKeyboard() {
-        return createMarkup();
+    public Response build() {
+        Response response = new Response();
+        response.message = "What would you like to do?";
+        response.keyboard = createMarkup();
+        return response;
     }
 
     private ReplyKeyboard createMarkup() {

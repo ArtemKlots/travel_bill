@@ -2,8 +2,8 @@ package com.travelBill.telegram.scenario.individual;
 
 import com.travelBill.api.core.event.Event;
 import com.travelBill.telegram.Response;
+import com.travelBill.telegram.ResponseBuilder;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 import java.util.ArrayList;
@@ -11,10 +11,18 @@ import java.util.List;
 
 import static java.util.Objects.isNull;
 
-public class ShowEventsListResponse implements Response {
+public class ShowEventsListResponseBuilder implements ResponseBuilder {
     List<Event> events;
 
+
     @Override
+    public Response build() {
+        Response response = new Response();
+        response.message = getMessage();
+        response.keyboard = getKeyboard();
+        return response;
+    }
+
     public String getMessage() {
         if (isNull(events)) {
             throw new IllegalArgumentException("Events are not provided");
@@ -34,12 +42,7 @@ public class ShowEventsListResponse implements Response {
         return messageText;
     }
 
-    @Override
-    public ReplyKeyboard getKeyboard() {
-        return createMarkup();
-    }
-
-    private InlineKeyboardMarkup createMarkup() {
+    public InlineKeyboardMarkup getKeyboard() {
         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
 

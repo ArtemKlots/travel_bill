@@ -13,10 +13,10 @@ public class ShowEventsListScenario extends AbstractEventScenario {
     public Response execute() {
         Long userId = eventContext.currentUser.getId();
 
-        ShowEventsListResponse response = new ShowEventsListResponse();
-        response.events = eventContext.eventService.getEventsByOwnerId(userId);
+        ShowEventsListResponseBuilder responseBuilder = new ShowEventsListResponseBuilder();
+        responseBuilder.events = eventContext.eventService.getEventsByOwnerId(userId);
 
-        return response;
+        return responseBuilder.build();
     }
 
 

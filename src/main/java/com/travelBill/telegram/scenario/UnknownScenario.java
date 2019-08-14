@@ -7,6 +7,6 @@ public class UnknownScenario implements Scenario {
 
     @Override
     public Response execute() {
-        return new UnknownScenarioResponse();
+        return new UnknownScenarioResponseBuider().build();
     }
 }

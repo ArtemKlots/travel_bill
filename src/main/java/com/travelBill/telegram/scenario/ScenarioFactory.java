@@ -24,7 +24,7 @@ public class ScenarioFactory {
         boolean isPrivateChat = request.chatType == ChatType.PRIVATE;
 
         if (request.hasMessage() && request.message.equals(START_MESSAGE)) {
-            scenario = new InitialScenario(request);
+            scenario = new InitialScenario();
         } else if (isPrivateChat) {
             scenario = individualScenarioFactory.createScenario(request, currentUser);
         } else {

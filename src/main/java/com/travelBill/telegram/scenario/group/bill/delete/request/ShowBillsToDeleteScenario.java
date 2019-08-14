@@ -2,6 +2,7 @@ package com.travelBill.telegram.scenario.group.bill.delete.request;
 
 import com.travelBill.api.core.bill.Bill;
 import com.travelBill.telegram.Response;
+import com.travelBill.telegram.ResponseBuilder;
 import com.travelBill.telegram.scenario.common.AbstractBillScenario;
 import com.travelBill.telegram.scenario.common.context.BillContext;
 
@@ -18,17 +19,17 @@ public class ShowBillsToDeleteScenario extends AbstractBillScenario {
         Long telegramChatId = billContext.getChatId();
         Long eventId = billContext.eventService.findByTelegramChatId(telegramChatId).getId();
         Long currentUserId = billContext.currentUser.getId();
-        Response response;
+        ResponseBuilder responseBuilder;
 
         List<Bill> lastBills = billContext.billService.selectTop10ByUserIdAndEventIdOrderByCreatedAtDesc(currentUserId, eventId);
 
         if (lastBills.size() > 0) {
-            response = new ShowBillsToDeleteSuccessResponse();
-            ((ShowBillsToDeleteSuccessResponse) response).bills = lastBills;
+            responseBuilder = new ShowBillsToDeleteSuccessResponseBuilder();
+            ((ShowBillsToDeleteSuccessResponseBuilder) responseBuilder).bills = lastBills;
         } else {
-            response = new ShowBillsToDeleteFailResponse();
+            responseBuilder = new ShowBillsToDeleteFailResponseBuilder();
         }
 
-        return response;
+        return responseBuilder.build();
     }
 }

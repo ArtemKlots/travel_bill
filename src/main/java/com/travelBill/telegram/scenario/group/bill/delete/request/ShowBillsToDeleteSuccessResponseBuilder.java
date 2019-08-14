@@ -2,24 +2,22 @@ package com.travelBill.telegram.scenario.group.bill.delete.request;
 
 import com.travelBill.api.core.bill.Bill;
 import com.travelBill.telegram.Response;
+import com.travelBill.telegram.ResponseBuilder;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShowBillsToDeleteSuccessResponse implements Response {
+public class ShowBillsToDeleteSuccessResponseBuilder implements ResponseBuilder {
     List<Bill> bills;
 
     @Override
-    public String getMessage() {
-        return "Select bill from the list:";
-    }
-
-    @Override
-    public ReplyKeyboard getKeyboard() {
-        return createMarkup();
+    public Response build() {
+        Response response = new Response();
+        response.message = "Select bill from the list:";
+        response.keyboard = createMarkup();
+        return response;
     }
 
     private InlineKeyboardMarkup createMarkup() {

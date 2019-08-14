@@ -5,8 +5,6 @@ import com.travelBill.telegram.Response;
 import com.travelBill.telegram.scenario.common.AbstractBillScenario;
 import com.travelBill.telegram.scenario.common.context.BillContext;
 
-import static org.telegram.telegrambots.meta.api.methods.ParseMode.MARKDOWN;
-
 public class DeleteBillScenario extends AbstractBillScenario {
 
     private static final int BILL_ID_INDEX_IN_CALLBACK = 2;
@@ -24,12 +22,11 @@ public class DeleteBillScenario extends AbstractBillScenario {
         billContext.billService.delete(billToRemove, billContext.currentUser);
         billContext.botApi.deleteMessage(billContext.getChatId(), billContext.request.messageId);
 
-        DeleteBillResponse response = new DeleteBillResponse();
-        response.bill = billToRemove;
-        response.actorFullName = billContext.currentUser.getFullName();
-        response.parseMode = MARKDOWN;
+        DeleteBillResponseBuilder responseBuilder = new DeleteBillResponseBuilder();
+        responseBuilder.bill = billToRemove;
+        responseBuilder.memberFullName = billContext.currentUser.getFullName();
 
-        return response;
+        return responseBuilder.build();
     }
 
 }

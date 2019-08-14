@@ -17,8 +17,8 @@ public class ShowLastTransactionsScenario extends AbstractBillScenario {
     @Override
     public Response execute() {
         List<Bill> bills = billContext.billService.selectTop10ByUserIdOrderByCreatedAtDesc(billContext.currentUser.getId());
-        ShowLastTransactionResponse response = new ShowLastTransactionResponse();
-        response.bills = bills;
-        return response;
+        ShowLastTransactionResponseBuilder responseBuilder = new ShowLastTransactionResponseBuilder();
+        responseBuilder.bills = bills;
+        return responseBuilder.build();
     }
 }

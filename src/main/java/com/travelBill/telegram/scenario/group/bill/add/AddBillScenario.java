@@ -4,6 +4,7 @@ import com.travelBill.api.core.bill.Bill;
 import com.travelBill.api.core.event.Event;
 import com.travelBill.api.core.user.User;
 import com.travelBill.telegram.Response;
+import com.travelBill.telegram.ResponseBuilder;
 import com.travelBill.telegram.scenario.common.AbstractBillScenario;
 import com.travelBill.telegram.scenario.common.context.BillContext;
 import com.travelBill.telegram.scenario.group.bill.AddBillCommandParser;
@@ -18,7 +19,7 @@ public class AddBillScenario extends AbstractBillScenario {
         User user = billContext.currentUser;
         Event event = billContext.eventService.findByTelegramChatId(billContext.getChatId());
         String textMessage = billContext.request.message;
-        Response response;
+        ResponseBuilder responseBuilder;
 
         try {
             Bill bill = AddBillCommandParser.parse(textMessage);
@@ -26,14 +27,14 @@ public class AddBillScenario extends AbstractBillScenario {
             bill.setUser(user);
             billContext.billService.save(bill);
 
-            response = new AddBillSuccessResponse();
-            ((AddBillSuccessResponse) response).transaction = textMessage;
-            ((AddBillSuccessResponse) response).user = user;
+            responseBuilder = new AddBillSuccessResponseBuilder();
+            ((AddBillSuccessResponseBuilder) responseBuilder).transaction = textMessage;
+            ((AddBillSuccessResponseBuilder) responseBuilder).user = user;
         } catch (Exception e) {
-            response = new AddBillFailResponse();
+            responseBuilder = new AddBillFailResponseBuilder();
             e.printStackTrace();
         }
 
-        return response;
+        return responseBuilder.build();
     }
 }

@@ -3,17 +3,24 @@ package com.travelBill.telegram.scenario.group.bill.show;
 import com.travelBill.api.core.bill.debtCalculator.Debt;
 import com.travelBill.api.core.user.User;
 import com.travelBill.telegram.Response;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
+import com.travelBill.telegram.ResponseBuilder;
 
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
 
-public class ShowDebtsResponse implements Response {
+public class ShowDebtsResponseBuilder implements ResponseBuilder {
     private static DecimalFormat decimalFormat = new DecimalFormat("#.##");
     public Map<User, List<Debt>> debts;
 
+
     @Override
+    public Response build() {
+        Response response = new Response();
+        response.message = getMessage();
+        return response;
+    }
+
     public String getMessage() {
         //todo Refactor and extract to formatter
         StringBuffer report = new StringBuffer();
@@ -34,8 +41,4 @@ public class ShowDebtsResponse implements Response {
         return report.toString();
     }
 
-    @Override
-    public ReplyKeyboard getKeyboard() {
-        return null;
-    }
 }

@@ -5,7 +5,6 @@ import com.travelBill.api.core.bill.BillService;
 import com.travelBill.api.core.user.User;
 import com.travelBill.telegram.Request;
 import com.travelBill.telegram.formatter.bill.LastTransactionsListFormatter;
-import com.travelBill.telegram.scenario.common.context.BillContext;
 import io.github.benas.randombeans.EnhancedRandomBuilder;
 import io.github.benas.randombeans.api.EnhancedRandom;
 import org.junit.jupiter.api.BeforeEach;

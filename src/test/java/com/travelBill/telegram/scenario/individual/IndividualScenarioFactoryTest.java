@@ -3,9 +3,6 @@ package com.travelBill.telegram.scenario.individual;
 import com.travelBill.api.core.user.User;
 import com.travelBill.telegram.Request;
 import com.travelBill.telegram.scenario.common.ScenarioNotFoundException;
-import com.travelBill.telegram.scenario.common.context.BillContext;
-import com.travelBill.telegram.scenario.common.context.ContextProvider;
-import com.travelBill.telegram.scenario.common.context.EventContext;
 import com.travelBill.telegram.scenario.common.scenario.BillScenarioHelper;
 import com.travelBill.telegram.scenario.common.scenario.EventScenarioHelper;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
@@ -41,7 +38,7 @@ class IndividualScenarioFactoryTest {
     void createScenario_shouldReturnShowEventsScenario_whenShowEventsSignalWasProvided() {
         when(eventScenarioHelper.isShowEventsSignal(request)).thenReturn(true);
 
-        IndividualScenarioFactory factory = new IndividualScenarioFactory(contextProvider, eventScenarioHelper, billScenarioHelper);
+        IndividualScenarioFactory factory = new IndividualScenarioFactory(contextProvider, eventScenarioHelper, billScenarioHelper, showLastTransactionsScenario);
         Scenario scenario = factory.createScenario(request, user);
 
         assertEquals(ShowEventsListScenario.class, scenario.getClass());
@@ -51,7 +48,7 @@ class IndividualScenarioFactoryTest {
     void createScenario_shouldReturnShowLastTransactionsScenario_whenShowLastTransactionsSignalWasProvided() {
         when(billScenarioHelper.isShowLastTransactionsSignal(request)).thenReturn(true);
 
-        IndividualScenarioFactory factory = new IndividualScenarioFactory(contextProvider, eventScenarioHelper, billScenarioHelper);
+        IndividualScenarioFactory factory = new IndividualScenarioFactory(contextProvider, eventScenarioHelper, billScenarioHelper, showLastTransactionsScenario);
         Scenario scenario = factory.createScenario(request, user);
 
         assertEquals(ShowLastTransactionsScenario.class, scenario.getClass());
@@ -60,7 +57,7 @@ class IndividualScenarioFactoryTest {
 
     @Test
     void createScenario_shouldThrowScenarioNotFoundException_whenShenarioWasNotFouns() {
-        IndividualScenarioFactory factory = new IndividualScenarioFactory(contextProvider, eventScenarioHelper, billScenarioHelper);
+        IndividualScenarioFactory factory = new IndividualScenarioFactory(contextProvider, eventScenarioHelper, billScenarioHelper, showLastTransactionsScenario);
 
         Exception expectedException = null;
 

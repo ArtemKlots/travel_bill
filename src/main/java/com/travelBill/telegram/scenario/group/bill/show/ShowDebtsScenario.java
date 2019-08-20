@@ -3,26 +3,30 @@ package com.travelBill.telegram.scenario.group.bill.show;
 import com.travelBill.api.core.bill.debtCalculator.Debt;
 import com.travelBill.api.core.bill.debtCalculator.DebtCalculator;
 import com.travelBill.api.core.event.Event;
+import com.travelBill.api.core.event.EventService;
 import com.travelBill.api.core.user.User;
+import com.travelBill.telegram.Request;
 import com.travelBill.telegram.Response;
-import com.travelBill.telegram.scenario.common.AbstractBillScenario;
-import com.travelBill.telegram.scenario.common.context.BillContext;
+import com.travelBill.telegram.scenario.common.scenario.Scenario;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ShowDebtsScenario extends AbstractBillScenario {
+@Service
+public class ShowDebtsScenario implements Scenario {
+    private final EventService eventService;
 
-    public ShowDebtsScenario(BillContext billContext) {
-        super(billContext);
+    public ShowDebtsScenario(EventService eventService) {
+
+        this.eventService = eventService;
     }
 
-
     @Override
-    public Response execute() {
-        Long telegramChatId = billContext.getChatId();
-        Event event = billContext.eventService.findByTelegramChatId(telegramChatId);
+    public Response execute(Request request) {
+        Long telegramChatId = request.chatId;
+        Event event = eventService.findByTelegramChatId(telegramChatId);
         DebtCalculator debtCalculator = new DebtCalculator();
 
         List<Debt> debts = debtCalculator.calculate(event);

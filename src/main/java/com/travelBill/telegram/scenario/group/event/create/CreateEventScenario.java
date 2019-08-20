@@ -1,23 +1,28 @@
 package com.travelBill.telegram.scenario.group.event.create;
 
 import com.travelBill.api.core.event.Event;
+import com.travelBill.api.core.event.EventService;
+import com.travelBill.telegram.Request;
 import com.travelBill.telegram.Response;
 import com.travelBill.telegram.ResponseBuilder;
-import com.travelBill.telegram.scenario.common.context.EventContext;
-import com.travelBill.telegram.scenario.common.scenario.AbstractEventScenario;
+import com.travelBill.telegram.scenario.common.scenario.Scenario;
+import org.springframework.stereotype.Service;
 
-public class CreateEventScenario extends AbstractEventScenario {
+@Service
+public class CreateEventScenario implements Scenario {
+    private final EventService eventService;
 
-    public CreateEventScenario(EventContext eventContext) {
-        super(eventContext);
+    public CreateEventScenario(EventService eventService) {
+        this.eventService = eventService;
     }
 
+
     @Override
-    public Response execute() {
+    public Response execute(Request request) {
         ResponseBuilder responseBuilder;
 
         try {
-            Event event = createEvent(eventContext);
+            Event event = eventService.save(request.chatTitle, request.user, request.chatId);
             responseBuilder = new CreateEventSuccessResponseBuilder();
             ((CreateEventSuccessResponseBuilder) responseBuilder).eventTitle = event.getTitle();
         } catch (Exception e) {
@@ -26,11 +31,6 @@ public class CreateEventScenario extends AbstractEventScenario {
         }
 
         return responseBuilder.build();
-    }
-
-    private static Event createEvent(EventContext eventContext) {
-        String eventName = eventContext.request.chatTitle;
-        return eventContext.eventService.save(eventName, eventContext.currentUser, eventContext.getChatId());
     }
 
 }

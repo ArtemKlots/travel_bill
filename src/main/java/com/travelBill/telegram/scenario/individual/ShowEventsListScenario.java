@@ -1,20 +1,25 @@
 package com.travelBill.telegram.scenario.individual;
 
+import com.travelBill.api.core.event.EventService;
+import com.travelBill.telegram.Request;
 import com.travelBill.telegram.Response;
-import com.travelBill.telegram.scenario.common.context.EventContext;
-import com.travelBill.telegram.scenario.common.scenario.AbstractEventScenario;
+import com.travelBill.telegram.scenario.common.scenario.Scenario;
+import org.springframework.stereotype.Service;
 
-public class ShowEventsListScenario extends AbstractEventScenario {
-    ShowEventsListScenario(EventContext eventContext) {
-        super(eventContext);
+@Service
+public class ShowEventsListScenario implements Scenario {
+    private final EventService eventService;
+
+    public ShowEventsListScenario(EventService eventService) {
+        this.eventService = eventService;
     }
 
     @Override
-    public Response execute() {
-        Long userId = eventContext.currentUser.getId();
+    public Response execute(Request request) {
+        Long userId = request.user.getId();
 
         ShowEventsListResponseBuilder responseBuilder = new ShowEventsListResponseBuilder();
-        responseBuilder.events = eventContext.eventService.getEventsByOwnerId(userId);
+        responseBuilder.events = eventService.getEventsByOwnerId(userId);
 
         return responseBuilder.build();
     }

@@ -35,7 +35,8 @@ public class TelegramBot extends TelegramLongPollingBot {
         Request request = new UpdateRequestMapper().mapTo(update);
         try {
             User currentUser = setupUser(update);
-            Response response = scenarioFactory.createScenario(request, currentUser).execute();
+            request.user = currentUser;
+            Response response = scenarioFactory.createScenario(request, currentUser).execute(request);
             SendMessage message = getSendMessageFromReport(response);
             message.setChatId(request.chatId);
 
@@ -72,7 +73,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
     private void respondWithError(Request request) {
-        Response response = new UnknownScenario().execute();
+        Response response = new UnknownScenario().execute(request);
         SendMessage sendMessage = getSendMessageFromReport(response);
         sendMessage.setChatId(request.chatId);
         sneak(() -> execute(sendMessage));

@@ -1,22 +1,26 @@
 package com.travelBill.telegram.scenario.individual;
 
 import com.travelBill.api.core.bill.Bill;
+import com.travelBill.api.core.bill.BillService;
+import com.travelBill.telegram.Request;
 import com.travelBill.telegram.Response;
-import com.travelBill.telegram.scenario.common.AbstractBillScenario;
-import com.travelBill.telegram.scenario.common.context.BillContext;
+import com.travelBill.telegram.scenario.common.scenario.Scenario;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 
-public class ShowLastTransactionsScenario extends AbstractBillScenario {
+@Service
+public class ShowLastTransactionsScenario implements Scenario {
+    private final BillService billService;
 
-    ShowLastTransactionsScenario(BillContext billContext) {
-        super(billContext);
+    ShowLastTransactionsScenario(BillService billService) {
+        this.billService = billService;
     }
 
     @Override
-    public Response execute() {
-        List<Bill> bills = billContext.billService.selectTop10ByUserIdOrderByCreatedAtDesc(billContext.currentUser.getId());
+    public Response execute(Request request) {
+        List<Bill> bills = billService.selectTop10ByUserIdOrderByCreatedAtDesc(request.user.getId());
         ShowLastTransactionResponseBuilder responseBuilder = new ShowLastTransactionResponseBuilder();
         responseBuilder.bills = bills;
         return responseBuilder.build();

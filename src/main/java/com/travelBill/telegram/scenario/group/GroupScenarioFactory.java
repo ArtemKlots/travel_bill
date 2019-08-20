@@ -3,9 +3,6 @@ package com.travelBill.telegram.scenario.group;
 import com.travelBill.api.core.user.User;
 import com.travelBill.telegram.Request;
 import com.travelBill.telegram.scenario.UnknownScenario;
-import com.travelBill.telegram.scenario.common.context.BillContext;
-import com.travelBill.telegram.scenario.common.context.ContextProvider;
-import com.travelBill.telegram.scenario.common.context.EventContext;
 import com.travelBill.telegram.scenario.common.scenario.BillScenarioHelper;
 import com.travelBill.telegram.scenario.common.scenario.EventScenarioHelper;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
@@ -21,45 +18,58 @@ import static java.util.Objects.isNull;
 
 @Service
 public class GroupScenarioFactory {
-    private final ContextProvider contextProvider;
     private final EventScenarioHelper eventScenarioHelper;
     private final BillScenarioHelper billScenarioHelper;
+    private final CreateEventScenario createEventScenario;
+    private final AddBillScenario addBillScenario;
+    private final DeleteBillScenario deleteBillScenario;
+    private final JoinEventScenario joinEventScenario;
+    private final ShowDebtsScenario showDebtsScenario;
+    private final ShowBillsToDeleteScenario showBillsToDeleteScenario;
 
-    public GroupScenarioFactory(ContextProvider contextProvider,
-                                EventScenarioHelper eventScenarioHelper, BillScenarioHelper billScenarioHelper) {
-        this.contextProvider = contextProvider;
+    public GroupScenarioFactory(EventScenarioHelper eventScenarioHelper,
+                                BillScenarioHelper billScenarioHelper,
+                                CreateEventScenario createEventScenario,
+                                AddBillScenario addBillScenario, DeleteBillScenario deleteBillScenario,
+                                JoinEventScenario joinEventScenario,
+                                ShowDebtsScenario showDebtsScenario,
+                                ShowBillsToDeleteScenario showBillsToDeleteScenario) {
         this.eventScenarioHelper = eventScenarioHelper;
         this.billScenarioHelper = billScenarioHelper;
+        this.createEventScenario = createEventScenario;
+        this.addBillScenario = addBillScenario;
+        this.deleteBillScenario = deleteBillScenario;
+        this.joinEventScenario = joinEventScenario;
+        this.showDebtsScenario = showDebtsScenario;
+        this.showBillsToDeleteScenario = showBillsToDeleteScenario;
     }
 
     public Scenario createScenario(Request request, User currentUser) {
-        EventContext eventContext = contextProvider.getEventContext(request, currentUser);
-        BillContext billContext = contextProvider.getBillContext(request, currentUser);
         Scenario selectedScenario = null;
 
         // TODO: it can be made using switch/case
         if (billScenarioHelper.isDeleteBillConfirmationSignal(request)) {
-            selectedScenario = new DeleteBillScenario(billContext);
+            selectedScenario = deleteBillScenario;
         }
 
         if (request.isGroupChatCreated) {
-            selectedScenario = new CreateEventScenario(eventContext);
+            selectedScenario = createEventScenario;
         }
 
         if (billScenarioHelper.isContribution(request)) {
-            selectedScenario = new AddBillScenario(billContext);
+            selectedScenario = addBillScenario;
         }
 
         if (eventScenarioHelper.isJoinEventsSignal(request)) {
-            selectedScenario = new JoinEventScenario(eventContext);
+            selectedScenario = joinEventScenario;
         }
 
         if (billScenarioHelper.isShowDebtsSignal(request)) {
-            selectedScenario = new ShowDebtsScenario(billContext);
+            selectedScenario = showDebtsScenario;
         }
 
         if (billScenarioHelper.isDeleteBillRequestSignal(request)) {
-            selectedScenario = new ShowBillsToDeleteScenario(billContext);
+            selectedScenario = showBillsToDeleteScenario;
         }
 
         if (isNull(selectedScenario)) {

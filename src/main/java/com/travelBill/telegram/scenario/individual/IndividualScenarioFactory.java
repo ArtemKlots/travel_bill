@@ -1,11 +1,7 @@
 package com.travelBill.telegram.scenario.individual;
 
-import com.travelBill.api.core.user.User;
 import com.travelBill.telegram.Request;
 import com.travelBill.telegram.scenario.common.ScenarioNotFoundException;
-import com.travelBill.telegram.scenario.common.context.BillContext;
-import com.travelBill.telegram.scenario.common.context.ContextProvider;
-import com.travelBill.telegram.scenario.common.context.EventContext;
 import com.travelBill.telegram.scenario.common.scenario.BillScenarioHelper;
 import com.travelBill.telegram.scenario.common.scenario.EventScenarioHelper;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
@@ -16,30 +12,31 @@ import static java.util.Objects.isNull;
 
 @Service
 public class IndividualScenarioFactory {
-    private final ContextProvider contextProvider;
     private final EventScenarioHelper eventScenarioHelper;
     private final BillScenarioHelper billScenarioHelper;
+    private final ShowEventsListScenario showEventsListScenario;
+    private final ShowLastTransactionsScenario showLastTransactionsScenario;
 
     @Autowired
-    public IndividualScenarioFactory(ContextProvider contextProvider,
-                                     EventScenarioHelper eventScenarioHelper, BillScenarioHelper billScenarioHelper) {
-        this.contextProvider = contextProvider;
+    public IndividualScenarioFactory(EventScenarioHelper eventScenarioHelper,
+                                     BillScenarioHelper billScenarioHelper,
+                                     ShowEventsListScenario showEventsListScenario,
+                                     ShowLastTransactionsScenario showLastTransactionsScenario) {
         this.eventScenarioHelper = eventScenarioHelper;
         this.billScenarioHelper = billScenarioHelper;
+        this.showEventsListScenario = showEventsListScenario;
+        this.showLastTransactionsScenario = showLastTransactionsScenario;
     }
 
-    public Scenario createScenario(Request request, User currentUser) throws ScenarioNotFoundException {
-        EventContext eventContext = contextProvider.getEventContext(request, currentUser);
-        BillContext billContext = contextProvider.getBillContext(request, currentUser);
-
+    public Scenario createScenario(Request request) throws ScenarioNotFoundException {
         Scenario selectedScenario = null;
 
         if (eventScenarioHelper.isShowEventsSignal(request)) {
-            selectedScenario = new ShowEventsListScenario(eventContext);
+            selectedScenario = showEventsListScenario;
         }
 
         if (billScenarioHelper.isShowLastTransactionsSignal(request)) {
-            selectedScenario = new ShowLastTransactionsScenario(billContext);
+            selectedScenario = showLastTransactionsScenario;
         }
 
         if (isNull(selectedScenario)) {

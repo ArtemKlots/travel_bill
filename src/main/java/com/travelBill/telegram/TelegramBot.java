@@ -2,6 +2,7 @@ package com.travelBill.telegram;
 
 import com.travelBill.api.core.user.User;
 import com.travelBill.config.ApplicationConfiguration;
+import com.travelBill.telegram.driver.ResponseSendMessageMapper;
 import com.travelBill.telegram.exceptions.UserIsNotSetUpException;
 import com.travelBill.telegram.scenario.ScenarioFactory;
 import com.travelBill.telegram.scenario.UnknownScenario;
@@ -13,7 +14,6 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import static com.rainerhahnekamp.sneakythrow.Sneaky.sneak;
-import static java.util.Objects.isNull;
 
 
 @Component
@@ -37,8 +37,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             User currentUser = setupUser(update);
             request.user = currentUser;
             Response response = scenarioFactory.createScenario(request, currentUser).execute(request);
-            SendMessage message = getSendMessageFromReport(response);
-            message.setChatId(request.chatId);
+            SendMessage message = new ResponseSendMessageMapper().mapTo(response, request.chatId);
 
             execute(message);
         } catch (Exception e) {
@@ -74,27 +73,8 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     private void respondWithError(Request request) {
         Response response = new UnknownScenario().execute(request);
-        SendMessage sendMessage = getSendMessageFromReport(response);
-        sendMessage.setChatId(request.chatId);
+        SendMessage sendMessage = new ResponseSendMessageMapper().mapTo(response, request.chatId);
         sneak(() -> execute(sendMessage));
-    }
-
-    private SendMessage getSendMessageFromReport(Response response) {
-        SendMessage message = new SendMessage();
-
-        if (!isNull(response.message)) {
-            message.setText(response.message);
-        }
-
-        if (!isNull(response.parseMode)) {
-            message.setParseMode(response.parseMode);
-        }
-
-        if (!isNull(response.keyboard)) {
-            message.setReplyMarkup(response.keyboard);
-        }
-
-        return message;
     }
 
 }

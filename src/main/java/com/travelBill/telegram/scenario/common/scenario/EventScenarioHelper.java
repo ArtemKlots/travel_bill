@@ -13,4 +13,8 @@ public class EventScenarioHelper {
     public boolean isJoinEventsSignal(Request request) {
         return request.hasMessage() && request.message.toLowerCase().startsWith("/join");
     }
+
+    public boolean isShowCurrentEventSignal(Request request) {
+        return request.hasMessage() && request.message.equals("Show current event");
+    }
 }

@@ -15,16 +15,19 @@ public class IndividualScenarioFactory {
     private final EventScenarioHelper eventScenarioHelper;
     private final BillScenarioHelper billScenarioHelper;
     private final ShowEventsListScenario showEventsListScenario;
+    private final ShowCurrentEventScenario showCurrentEventScenario;
     private final ShowLastTransactionsScenario showLastTransactionsScenario;
 
     @Autowired
     public IndividualScenarioFactory(EventScenarioHelper eventScenarioHelper,
                                      BillScenarioHelper billScenarioHelper,
                                      ShowEventsListScenario showEventsListScenario,
+                                     ShowCurrentEventScenario showCurrentEventScenario,
                                      ShowLastTransactionsScenario showLastTransactionsScenario) {
         this.eventScenarioHelper = eventScenarioHelper;
         this.billScenarioHelper = billScenarioHelper;
         this.showEventsListScenario = showEventsListScenario;
+        this.showCurrentEventScenario = showCurrentEventScenario;
         this.showLastTransactionsScenario = showLastTransactionsScenario;
     }
 
@@ -33,6 +36,10 @@ public class IndividualScenarioFactory {
 
         if (eventScenarioHelper.isShowEventsSignal(request)) {
             selectedScenario = showEventsListScenario;
+        }
+
+        if (eventScenarioHelper.isShowCurrentEventSignal(request)) {
+            selectedScenario = showCurrentEventScenario;
         }
 
         if (billScenarioHelper.isShowLastTransactionsSignal(request)) {

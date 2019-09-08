@@ -36,6 +36,7 @@ public class KeyboardMapper {
 
     public ReplyKeyboard mapTo(com.travelBill.telegram.driver.keyboard.reply.ReplyKeyboard markup) {
         org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup externalMarkup = new org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup();
+        externalMarkup.setResizeKeyboard(markup.autoResize);
         List<KeyboardRow> keyboard = new ArrayList<>();
 
         markup.rows.forEach(buttons -> {

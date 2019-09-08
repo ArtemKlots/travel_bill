@@ -8,4 +8,11 @@ public class Response {
     public String message;
     public InlineKeyboard inlineKeyboard;
     public ReplyKeyboard replyKeyboard;
+
+    public Response() {
+    }
+
+    public Response(String message) {
+        this.message = message;
+    }
 }

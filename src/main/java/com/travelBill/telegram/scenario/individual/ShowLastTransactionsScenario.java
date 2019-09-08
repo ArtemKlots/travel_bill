@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static java.util.Objects.isNull;
+
 
 @Service
 public class ShowLastTransactionsScenario implements Scenario {
@@ -20,6 +22,10 @@ public class ShowLastTransactionsScenario implements Scenario {
 
     @Override
     public Response execute(Request request) {
+        if (isNull(request.user.getCurrentEvent())) {
+            return new EventIsNotSelectedResponse();
+        }
+
         List<Bill> bills = billService.selectTop10ByUserIdAndEventIdOrderByCreatedAtDesc(request.user.getId(), request.user.getCurrentEvent().getId());
         ShowLastTransactionResponseBuilder responseBuilder = new ShowLastTransactionResponseBuilder();
         responseBuilder.bills = bills;

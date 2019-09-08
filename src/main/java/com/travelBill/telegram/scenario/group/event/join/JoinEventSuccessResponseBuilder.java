@@ -26,10 +26,8 @@ public class JoinEventSuccessResponseBuilder extends JoinEventResponseBuilder {
         ReplyKeyboard keyboard = new ReplyKeyboard();
 
         ReplyKeyboardButton showDebtsButton = new ReplyKeyboardButton().setText("Show debts");
-        ReplyKeyboardButton deleteBillButton = new ReplyKeyboardButton().setText("Delete bill");
 
         keyboard.addRow(showDebtsButton);
-        keyboard.addRow(deleteBillButton);
 
         return keyboard;
     }

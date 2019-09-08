@@ -1,4 +1,4 @@
-package com.travelBill.telegram.scenario.group.bill.delete.request;
+package com.travelBill.telegram.scenario.individual.bill.delete.request;
 
 import com.travelBill.api.core.bill.Bill;
 import com.travelBill.telegram.Response;

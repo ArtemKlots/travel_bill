@@ -6,6 +6,8 @@ import com.travelBill.telegram.scenario.common.scenario.BillScenarioHelper;
 import com.travelBill.telegram.scenario.common.scenario.EventScenarioHelper;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
 import com.travelBill.telegram.scenario.individual.bill.add.AddBillScenario;
+import com.travelBill.telegram.scenario.individual.bill.delete.confirm.DeleteBillScenario;
+import com.travelBill.telegram.scenario.individual.bill.delete.request.ShowBillsToDeleteScenario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,9 @@ public class IndividualScenarioFactory {
     private final SwitchEventScenario switchEventScenario;
     private final ShowLastTransactionsScenario showLastTransactionsScenario;
     private final AddBillScenario addBillScenario;
+    private final DeleteBillScenario deleteBillScenario;
+    private final ShowBillsToDeleteScenario showBillsToDeleteScenario;
+
 
     @Autowired
     public IndividualScenarioFactory(EventScenarioHelper eventScenarioHelper,
@@ -28,7 +33,7 @@ public class IndividualScenarioFactory {
                                      ShowCurrentEventScenario showCurrentEventScenario,
                                      SwitchEventScenario switchEventScenario,
                                      ShowLastTransactionsScenario showLastTransactionsScenario,
-                                     AddBillScenario addBillScenario) {
+                                     AddBillScenario addBillScenario, DeleteBillScenario deleteBillScenario, ShowBillsToDeleteScenario showBillsToDeleteScenario) {
         this.eventScenarioHelper = eventScenarioHelper;
         this.billScenarioHelper = billScenarioHelper;
         this.showEventsListScenario = showEventsListScenario;
@@ -36,6 +41,8 @@ public class IndividualScenarioFactory {
         this.switchEventScenario = switchEventScenario;
         this.showLastTransactionsScenario = showLastTransactionsScenario;
         this.addBillScenario = addBillScenario;
+        this.deleteBillScenario = deleteBillScenario;
+        this.showBillsToDeleteScenario = showBillsToDeleteScenario;
     }
 
     public Scenario createScenario(Request request) throws ScenarioNotFoundException {
@@ -59,6 +66,15 @@ public class IndividualScenarioFactory {
 
         if (billScenarioHelper.isContribution(request)) {
             selectedScenario = addBillScenario;
+        }
+
+
+        if (billScenarioHelper.isDeleteBillRequestSignal(request)) {
+            selectedScenario = showBillsToDeleteScenario;
+        }
+
+        if (billScenarioHelper.isDeleteBillConfirmationSignal(request)) {
+            selectedScenario = deleteBillScenario;
         }
 
         if (isNull(selectedScenario)) {

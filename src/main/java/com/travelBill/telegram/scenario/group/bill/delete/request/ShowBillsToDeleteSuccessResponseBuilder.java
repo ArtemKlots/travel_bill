@@ -3,10 +3,9 @@ package com.travelBill.telegram.scenario.group.bill.delete.request;
 import com.travelBill.api.core.bill.Bill;
 import com.travelBill.telegram.Response;
 import com.travelBill.telegram.ResponseBuilder;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import com.travelBill.telegram.driver.keyboard.inline.InlineKeyboard;
+import com.travelBill.telegram.driver.keyboard.inline.InlineKeyboardButton;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ShowBillsToDeleteSuccessResponseBuilder implements ResponseBuilder {
@@ -16,22 +15,19 @@ public class ShowBillsToDeleteSuccessResponseBuilder implements ResponseBuilder 
     public Response build() {
         Response response = new Response();
         response.message = "Select bill from the list:";
-        response.keyboard = createMarkup();
+        response.inlineKeyboard = createMarkup();
         return response;
     }
 
-    private InlineKeyboardMarkup createMarkup() {
-        InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
-        List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
+    private InlineKeyboard createMarkup() {
+        InlineKeyboard inlineKeyboard = new InlineKeyboard();
 
         for (Bill bill : bills) {
-            List<InlineKeyboardButton> row = new ArrayList<>();
             String rowText = String.format("%s %s %s", bill.getAmount(), bill.getCurrency(), bill.getPurpose());
-            row.add(new InlineKeyboardButton().setText(rowText).setCallbackData("delete_bill_" + bill.getId()));
-            rowsInline.add(row);
+            InlineKeyboardButton button = new InlineKeyboardButton().setText(rowText).setCallbackData("delete_bill_" + bill.getId());
+            inlineKeyboard.addRow(button);
         }
 
-        markupInline.setKeyboard(rowsInline);
-        return markupInline;
+        return inlineKeyboard;
     }
 }

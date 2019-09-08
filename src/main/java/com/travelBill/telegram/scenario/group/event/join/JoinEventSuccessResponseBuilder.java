@@ -1,12 +1,8 @@
 package com.travelBill.telegram.scenario.group.event.join;
 
 import com.travelBill.telegram.Response;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.travelBill.telegram.driver.keyboard.reply.ReplyKeyboard;
+import com.travelBill.telegram.driver.keyboard.reply.ReplyKeyboardButton;
 
 public class JoinEventSuccessResponseBuilder extends JoinEventResponseBuilder {
 
@@ -14,7 +10,7 @@ public class JoinEventSuccessResponseBuilder extends JoinEventResponseBuilder {
     public Response build() {
         Response response = new Response();
         response.message = getMessage();
-        response.keyboard = getKeyboard();
+        response.replyKeyboard = getKeyboard();
         return response;
     }
 
@@ -27,20 +23,14 @@ public class JoinEventSuccessResponseBuilder extends JoinEventResponseBuilder {
     }
 
     public ReplyKeyboard getKeyboard() {
-        ReplyKeyboardMarkup markup = new ReplyKeyboardMarkup();
-        List<KeyboardRow> keyboard = new ArrayList<>();
+        ReplyKeyboard keyboard = new ReplyKeyboard();
 
-        KeyboardRow showDebtsRow = new KeyboardRow();
-        showDebtsRow.add("Show debts");
+        ReplyKeyboardButton showDebtsButton = new ReplyKeyboardButton().setText("Show debts");
+        ReplyKeyboardButton deleteBillButton = new ReplyKeyboardButton().setText("Delete bill");
 
-        KeyboardRow deleteBillRow = new KeyboardRow();
-        deleteBillRow.add("Delete bill");
+        keyboard.addRow(showDebtsButton);
+        keyboard.addRow(deleteBillButton);
 
-        keyboard.add(showDebtsRow);
-        keyboard.add(deleteBillRow);
-
-        markup.setKeyboard(keyboard);
-        markup.setResizeKeyboard(true);
-        return markup;
+        return keyboard;
     }
 }

@@ -10,7 +10,7 @@ public class InitialScenario implements Scenario {
 
     @Override
     public Response execute(Request request) {
-        return new InitialScenarioResponseBuider().build();
+        return new InitialScenarioResponseBuilder().build();
     }
 
 

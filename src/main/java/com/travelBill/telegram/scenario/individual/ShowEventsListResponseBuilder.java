@@ -3,10 +3,9 @@ package com.travelBill.telegram.scenario.individual;
 import com.travelBill.api.core.event.Event;
 import com.travelBill.telegram.Response;
 import com.travelBill.telegram.ResponseBuilder;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import com.travelBill.telegram.driver.keyboard.inline.InlineKeyboard;
+import com.travelBill.telegram.driver.keyboard.inline.InlineKeyboardButton;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Objects.isNull;
@@ -19,7 +18,7 @@ public class ShowEventsListResponseBuilder implements ResponseBuilder {
     public Response build() {
         Response response = new Response();
         response.message = getMessage();
-        response.keyboard = getKeyboard();
+        response.inlineKeyboard = getKeyboard();
         return response;
     }
 
@@ -42,17 +41,14 @@ public class ShowEventsListResponseBuilder implements ResponseBuilder {
         return messageText;
     }
 
-    public InlineKeyboardMarkup getKeyboard() {
-        InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
-        List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
+    public InlineKeyboard getKeyboard() {
+        InlineKeyboard inlineKeyboard = new InlineKeyboard();
 
         for (Event event : events) {
-            List<InlineKeyboardButton> row = new ArrayList<>();
-            row.add(new InlineKeyboardButton().setText(event.getTitle()).setCallbackData("switch_to_event" + event.getId()));
-            rowsInline.add(row);
+            InlineKeyboardButton button = new InlineKeyboardButton().setText(event.getTitle()).setCallbackData("switch_to_event" + event.getId());
+            inlineKeyboard.addRow(button);
         }
 
-        markupInline.setKeyboard(rowsInline);
-        return markupInline;
+        return inlineKeyboard;
     }
 }

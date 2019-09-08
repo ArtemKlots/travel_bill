@@ -45,7 +45,7 @@ class ScenarioFactoryTest {
     @Test
     void createScenario_shouldReturnResultOfIndividualScenarioFactory_WhenChatIsPrivate() {
         request.chatType = ChatType.PRIVATE;
-        when(individualScenarioFactoryMock.createScenario(request, currentUserMock)).thenReturn(scenarioMock);
+        when(individualScenarioFactoryMock.createScenario(request)).thenReturn(scenarioMock);
         Scenario result = scenarioFactory.createScenario(request, currentUserMock);
         assertEquals(scenarioMock, result);
     }

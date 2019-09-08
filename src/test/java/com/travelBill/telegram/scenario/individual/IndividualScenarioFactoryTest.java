@@ -1,73 +1,52 @@
 package com.travelBill.telegram.scenario.individual;
 
-import com.travelBill.api.core.user.User;
 import com.travelBill.telegram.Request;
 import com.travelBill.telegram.scenario.common.ScenarioNotFoundException;
 import com.travelBill.telegram.scenario.common.scenario.BillScenarioHelper;
 import com.travelBill.telegram.scenario.common.scenario.EventScenarioHelper;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Spy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class IndividualScenarioFactoryTest {
-    private ContextProvider contextProvider = mock(ContextProvider.class);
     private EventScenarioHelper eventScenarioHelper = mock(EventScenarioHelper.class);
     private BillScenarioHelper billScenarioHelper = mock(BillScenarioHelper.class);
+    private ShowEventsListScenario showEventsListScenario = mock(ShowEventsListScenario.class);
+    private ShowLastTransactionsScenario showLastTransactionsScenario = mock(ShowLastTransactionsScenario.class);
     private Request request = mock(Request.class);
-    private User user = mock(User.class);
+    private IndividualScenarioFactory individualScenarioFactory;
 
-    @Spy
-    EventContext eventContext;
-    @Spy
-    BillContext billContext;
-
-    @Before
+    @BeforeEach
     void setupContextProvider() {
-        when(contextProvider.getBillContext(any(), any())).thenReturn(billContext);
-        when(contextProvider.getEventContext(any(), any())).thenReturn(eventContext);
+        individualScenarioFactory = new IndividualScenarioFactory(
+                eventScenarioHelper,
+                billScenarioHelper,
+                showEventsListScenario,
+                showLastTransactionsScenario);
     }
 
     @Test
-    void createScenario_shouldReturnShowEventsScenario_whenShowEventsSignalWasProvided() {
+    void createScenario_shouldReturnShowEventsListScenario_whenShowEventsSignalWasProvided() {
         when(eventScenarioHelper.isShowEventsSignal(request)).thenReturn(true);
-
-        IndividualScenarioFactory factory = new IndividualScenarioFactory(contextProvider, eventScenarioHelper, billScenarioHelper, showLastTransactionsScenario);
-        Scenario scenario = factory.createScenario(request, user);
-
-        assertEquals(ShowEventsListScenario.class, scenario.getClass());
+        Scenario scenario = individualScenarioFactory.createScenario(request);
+        assertEquals(showEventsListScenario.getClass(), scenario.getClass());
     }
 
     @Test
     void createScenario_shouldReturnShowLastTransactionsScenario_whenShowLastTransactionsSignalWasProvided() {
         when(billScenarioHelper.isShowLastTransactionsSignal(request)).thenReturn(true);
-
-        IndividualScenarioFactory factory = new IndividualScenarioFactory(contextProvider, eventScenarioHelper, billScenarioHelper, showLastTransactionsScenario);
-        Scenario scenario = factory.createScenario(request, user);
-
-        assertEquals(ShowLastTransactionsScenario.class, scenario.getClass());
-
+        Scenario scenario = individualScenarioFactory.createScenario(request);
+        assertEquals(showLastTransactionsScenario.getClass(), scenario.getClass());
     }
 
     @Test
-    void createScenario_shouldThrowScenarioNotFoundException_whenShenarioWasNotFouns() {
-        IndividualScenarioFactory factory = new IndividualScenarioFactory(contextProvider, eventScenarioHelper, billScenarioHelper, showLastTransactionsScenario);
-
-        Exception expectedException = null;
-
-        try {
-            factory.createScenario(request, user);
-        } catch (ScenarioNotFoundException e) {
-            expectedException = e;
-        }
-
-        assertNotNull(expectedException);
+    void createScenario_shouldThrowScenarioNotFoundException_whenScenarioWasNotDefined() {
+        assertThrows(ScenarioNotFoundException.class, () -> individualScenarioFactory.createScenario(request));
     }
 
 }

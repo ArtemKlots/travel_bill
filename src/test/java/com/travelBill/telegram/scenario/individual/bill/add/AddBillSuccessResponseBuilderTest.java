@@ -32,19 +32,7 @@ class AddBillSuccessResponseBuilderTest {
         bill.setPurpose("for soldiers of fortune");
 
         Response response = builder.build();
-        assertEquals("Done ;) *300 Gold Dragon coins* for soldiers of fortune were accepted from *Tywin Lannister*", response.message);
-    }
-
-    @Test
-    void build_shouldReturnResponseWithBillCurrencyAndAmountAndUserName_whenUserDontHaveSurname() {
-        user.setLastName("Tywin");
-
-        bill.setAmount(300);
-        bill.setCurrency("Gold Dragon coins");
-        bill.setPurpose("for soldiers of fortune");
-
-        Response response = builder.build();
-        assertEquals("Done ;) *300 Gold Dragon coins* for soldiers of fortune were accepted from *Tywin*", response.message);
+        assertEquals("Done ;) *300 Gold Dragon coins* for soldiers of fortune were accepted", response.message);
     }
 
 }

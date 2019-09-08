@@ -17,7 +17,7 @@ public class AddBillSuccessResponseBuilder implements ResponseBuilder {
     public Response build() {
         Response response = new Response();
         String amount = new DecimalFormat("#.##").format(bill.getAmount());
-        response.message = String.format("Done ;) *%s %s* %s were accepted from *%s*", amount, bill.getCurrency(), bill.getPurpose(), user.getFullName());
+        response.message = String.format("Done ;) *%s %s* %s were accepted", amount, bill.getCurrency(), bill.getPurpose());
         response.parseMode = MARKDOWN;
         return response;
     }

@@ -11,7 +11,7 @@ public class AddBillSuccessResponseBuilder implements ResponseBuilder {
     @Override
     public Response build() {
         Response response = new Response();
-        response.message = String.format("Done ;) %s were accepted from %s %s", transaction, user.getFirstName(), user.getLastName());
+        response.message = String.format("Done ;) %s were accepted from %s", transaction, user.getFullName());
         return response;
     }
 }

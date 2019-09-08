@@ -1,4 +1,4 @@
-package com.travelBill.telegram.scenario.group.bill.add;
+package com.travelBill.telegram.scenario.individual.bill.add;
 
 import com.travelBill.api.core.bill.Bill;
 import com.travelBill.api.core.bill.BillService;
@@ -10,7 +10,10 @@ import com.travelBill.telegram.Response;
 import com.travelBill.telegram.ResponseBuilder;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
 import com.travelBill.telegram.scenario.group.bill.AddBillCommandParser;
+import com.travelBill.telegram.scenario.individual.EventIsNotSelectedResponse;
 import org.springframework.stereotype.Service;
+
+import static java.util.Objects.isNull;
 
 @Service
 public class AddBillScenario implements Scenario {
@@ -24,8 +27,12 @@ public class AddBillScenario implements Scenario {
 
     @Override
     public Response execute(Request request) {
+        if (isNull(request.user.getCurrentEvent())) {
+            return new EventIsNotSelectedResponse();
+        }
+
         User user = request.user;
-        Event event = eventService.findByTelegramChatId(request.chatId);
+        Event event = eventService.findById(request.user.getCurrentEvent().getId());
         String textMessage = request.message;
         ResponseBuilder responseBuilder;
 

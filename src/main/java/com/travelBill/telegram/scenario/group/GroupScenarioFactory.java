@@ -6,12 +6,12 @@ import com.travelBill.telegram.scenario.UnknownScenario;
 import com.travelBill.telegram.scenario.common.scenario.BillScenarioHelper;
 import com.travelBill.telegram.scenario.common.scenario.EventScenarioHelper;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
-import com.travelBill.telegram.scenario.group.bill.add.AddBillScenario;
 import com.travelBill.telegram.scenario.group.bill.delete.confirm.DeleteBillScenario;
 import com.travelBill.telegram.scenario.group.bill.delete.request.ShowBillsToDeleteScenario;
 import com.travelBill.telegram.scenario.group.bill.show.ShowDebtsScenario;
 import com.travelBill.telegram.scenario.group.event.create.CreateEventScenario;
 import com.travelBill.telegram.scenario.group.event.join.JoinEventScenario;
+import com.travelBill.telegram.scenario.individual.bill.add.AddBillScenario;
 import org.springframework.stereotype.Service;
 
 import static java.util.Objects.isNull;
@@ -21,7 +21,6 @@ public class GroupScenarioFactory {
     private final EventScenarioHelper eventScenarioHelper;
     private final BillScenarioHelper billScenarioHelper;
     private final CreateEventScenario createEventScenario;
-    private final AddBillScenario addBillScenario;
     private final DeleteBillScenario deleteBillScenario;
     private final JoinEventScenario joinEventScenario;
     private final ShowDebtsScenario showDebtsScenario;
@@ -37,7 +36,6 @@ public class GroupScenarioFactory {
         this.eventScenarioHelper = eventScenarioHelper;
         this.billScenarioHelper = billScenarioHelper;
         this.createEventScenario = createEventScenario;
-        this.addBillScenario = addBillScenario;
         this.deleteBillScenario = deleteBillScenario;
         this.joinEventScenario = joinEventScenario;
         this.showDebtsScenario = showDebtsScenario;
@@ -54,10 +52,6 @@ public class GroupScenarioFactory {
 
         if (request.isGroupChatCreated) {
             selectedScenario = createEventScenario;
-        }
-
-        if (billScenarioHelper.isContribution(request)) {
-            selectedScenario = addBillScenario;
         }
 
         if (eventScenarioHelper.isJoinEventsSignal(request)) {

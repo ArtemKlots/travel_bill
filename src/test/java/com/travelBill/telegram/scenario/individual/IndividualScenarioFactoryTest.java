@@ -5,6 +5,7 @@ import com.travelBill.telegram.scenario.common.ScenarioNotFoundException;
 import com.travelBill.telegram.scenario.common.scenario.BillScenarioHelper;
 import com.travelBill.telegram.scenario.common.scenario.EventScenarioHelper;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
+import com.travelBill.telegram.scenario.individual.bill.add.AddBillScenario;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,6 +21,7 @@ class IndividualScenarioFactoryTest {
     private ShowCurrentEventScenario showCurrentEventScenario = mock(ShowCurrentEventScenario.class);
     private SwitchEventScenario switchEventScenario = mock(SwitchEventScenario.class);
     private ShowLastTransactionsScenario showLastTransactionsScenario = mock(ShowLastTransactionsScenario.class);
+    private AddBillScenario addBillScenario;
     private Request request = mock(Request.class);
     private IndividualScenarioFactory individualScenarioFactory;
 
@@ -31,7 +33,8 @@ class IndividualScenarioFactoryTest {
                 showEventsListScenario,
                 showCurrentEventScenario,
                 switchEventScenario,
-                showLastTransactionsScenario);
+                showLastTransactionsScenario,
+                addBillScenario);
     }
 
     @Test

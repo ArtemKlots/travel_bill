@@ -20,7 +20,7 @@ public class ShowLastTransactionsScenario implements Scenario {
 
     @Override
     public Response execute(Request request) {
-        List<Bill> bills = billService.selectTop10ByUserIdOrderByCreatedAtDesc(request.user.getId());
+        List<Bill> bills = billService.selectTop10ByUserIdAndEventIdOrderByCreatedAtDesc(request.user.getId(), request.user.getCurrentEvent().getId());
         ShowLastTransactionResponseBuilder responseBuilder = new ShowLastTransactionResponseBuilder();
         responseBuilder.bills = bills;
         return responseBuilder.build();

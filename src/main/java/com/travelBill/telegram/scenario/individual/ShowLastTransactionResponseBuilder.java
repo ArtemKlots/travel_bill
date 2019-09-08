@@ -15,7 +15,12 @@ public class ShowLastTransactionResponseBuilder implements ResponseBuilder {
     @Override
     public Response build() {
         Response response = new Response();
-        response.message = formatter.format(bills);
+        if (bills.size() > 0) {
+            response.message = formatter.format(bills);
+        } else {
+            response.message = "It looks like you haven't added any bill yet. Maybe you need to change the current event?";
+        }
+
         return response;
     }
 }

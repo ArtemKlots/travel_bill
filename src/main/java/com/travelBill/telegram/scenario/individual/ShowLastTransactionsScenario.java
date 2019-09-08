@@ -1,30 +1,28 @@
 package com.travelBill.telegram.scenario.individual;
 
 import com.travelBill.api.core.bill.Bill;
-import com.travelBill.telegram.formatter.bill.BillListFormatter;
-import com.travelBill.telegram.scenario.common.AbstractBillScenario;
-import com.travelBill.telegram.scenario.common.context.BillContext;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import com.travelBill.api.core.bill.BillService;
+import com.travelBill.telegram.Request;
+import com.travelBill.telegram.Response;
+import com.travelBill.telegram.scenario.common.scenario.Scenario;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 
-public class ShowLastTransactionsScenario extends AbstractBillScenario {
-    private BillListFormatter formatter;
+@Service
+public class ShowLastTransactionsScenario implements Scenario {
+    private final BillService billService;
 
-    ShowLastTransactionsScenario(BillContext billContext, BillListFormatter formatter) {
-        super(billContext);
-        this.formatter = formatter;
+    ShowLastTransactionsScenario(BillService billService) {
+        this.billService = billService;
     }
 
     @Override
-    public SendMessage createMessage() {
-        List<Bill> bills = billContext.billService.selectTop10ByUserIdOrderByCreatedAtDesc(billContext.currentUser.getId());
-        SendMessage message = new SendMessage();
-
-        String content = formatter.format(bills);
-
-        return message.setChatId(billContext.getChatId())
-                .setText(content);
+    public Response execute(Request request) {
+        List<Bill> bills = billService.selectTop10ByUserIdOrderByCreatedAtDesc(request.user.getId());
+        ShowLastTransactionResponseBuilder responseBuilder = new ShowLastTransactionResponseBuilder();
+        responseBuilder.bills = bills;
+        return responseBuilder.build();
     }
 }

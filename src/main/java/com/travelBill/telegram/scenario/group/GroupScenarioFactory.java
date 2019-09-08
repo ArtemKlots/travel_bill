@@ -1,93 +1,82 @@
 package com.travelBill.telegram.scenario.group;
 
 import com.travelBill.api.core.user.User;
+import com.travelBill.telegram.Request;
 import com.travelBill.telegram.scenario.UnknownScenario;
-import com.travelBill.telegram.scenario.common.context.BillContext;
-import com.travelBill.telegram.scenario.common.context.ContextProvider;
-import com.travelBill.telegram.scenario.common.context.EventContext;
+import com.travelBill.telegram.scenario.common.scenario.BillScenarioHelper;
 import com.travelBill.telegram.scenario.common.scenario.EventScenarioHelper;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
-import com.travelBill.telegram.scenario.group.bill.*;
-import com.travelBill.telegram.scenario.group.event.CreateEventScenario;
-import com.travelBill.telegram.scenario.group.event.JoinEventScenario;
+import com.travelBill.telegram.scenario.group.bill.add.AddBillScenario;
+import com.travelBill.telegram.scenario.group.bill.delete.confirm.DeleteBillScenario;
+import com.travelBill.telegram.scenario.group.bill.delete.request.ShowBillsToDeleteScenario;
+import com.travelBill.telegram.scenario.group.bill.show.ShowDebtsScenario;
+import com.travelBill.telegram.scenario.group.event.create.CreateEventScenario;
+import com.travelBill.telegram.scenario.group.event.join.JoinEventScenario;
 import org.springframework.stereotype.Service;
-import org.telegram.telegrambots.meta.api.objects.Update;
 
 import static java.util.Objects.isNull;
 
 @Service
 public class GroupScenarioFactory {
-    private final ContextProvider contextProvider;
+    private final EventScenarioHelper eventScenarioHelper;
+    private final BillScenarioHelper billScenarioHelper;
+    private final CreateEventScenario createEventScenario;
+    private final AddBillScenario addBillScenario;
+    private final DeleteBillScenario deleteBillScenario;
+    private final JoinEventScenario joinEventScenario;
+    private final ShowDebtsScenario showDebtsScenario;
+    private final ShowBillsToDeleteScenario showBillsToDeleteScenario;
 
-    public GroupScenarioFactory(ContextProvider contextProvider) {
-        this.contextProvider = contextProvider;
+    public GroupScenarioFactory(EventScenarioHelper eventScenarioHelper,
+                                BillScenarioHelper billScenarioHelper,
+                                CreateEventScenario createEventScenario,
+                                AddBillScenario addBillScenario, DeleteBillScenario deleteBillScenario,
+                                JoinEventScenario joinEventScenario,
+                                ShowDebtsScenario showDebtsScenario,
+                                ShowBillsToDeleteScenario showBillsToDeleteScenario) {
+        this.eventScenarioHelper = eventScenarioHelper;
+        this.billScenarioHelper = billScenarioHelper;
+        this.createEventScenario = createEventScenario;
+        this.addBillScenario = addBillScenario;
+        this.deleteBillScenario = deleteBillScenario;
+        this.joinEventScenario = joinEventScenario;
+        this.showDebtsScenario = showDebtsScenario;
+        this.showBillsToDeleteScenario = showBillsToDeleteScenario;
     }
 
-    public Scenario createScenario(Update update, User currentUser) {
-        EventScenarioHelper eventScenarioHelper = new EventScenarioHelper(update);
-        EventContext eventContext = contextProvider.getEventContext(update, currentUser);
-        BillContext billContext = contextProvider.getBillContext(update, currentUser);
+    public Scenario createScenario(Request request, User currentUser) {
         Scenario selectedScenario = null;
 
-        if (update.hasCallbackQuery()) {
-            if (update.getCallbackQuery().getData().startsWith("delete_bill")) {
-                selectedScenario = new DeleteBillScenario(billContext);
-            }
+        // TODO: it can be made using switch/case
+        if (billScenarioHelper.isDeleteBillConfirmationSignal(request)) {
+            selectedScenario = deleteBillScenario;
         }
 
-
-        if (isChatCreated(update)) {
-            selectedScenario = new CreateEventScenario(eventContext);
+        if (request.isGroupChatCreated) {
+            selectedScenario = createEventScenario;
         }
 
-        if (isContribution(update)) {
-            selectedScenario = new AddBillScenario(billContext);
+        if (billScenarioHelper.isContribution(request)) {
+            selectedScenario = addBillScenario;
         }
 
-        if (isCommand(update)) {
-
-            if (eventScenarioHelper.isJoinEventsSignal()) {
-                selectedScenario = new JoinEventScenario(eventContext);
-            }
+        if (eventScenarioHelper.isJoinEventsSignal(request)) {
+            selectedScenario = joinEventScenario;
         }
 
-        if (update.hasMessage() && update.getMessage().hasText()) {
-            String plainText = update.getMessage().getText();
-            if (plainText.equals("Show debts")) {
-                selectedScenario = new ShowDebtsScenario(billContext);
-            }
+        if (billScenarioHelper.isShowDebtsSignal(request)) {
+            selectedScenario = showDebtsScenario;
+        }
 
-            if (plainText.equals("Delete bill")) {
-                selectedScenario = new ShowBillsToDeleteScenario(billContext);
-            }
+        if (billScenarioHelper.isDeleteBillRequestSignal(request)) {
+            selectedScenario = showBillsToDeleteScenario;
         }
 
         if (isNull(selectedScenario)) {
-            selectedScenario = new UnknownScenario(update);
+            selectedScenario = new UnknownScenario();
         }
 
         return selectedScenario;
-    }
-
-    private boolean isContribution(Update update) {
-        if (update.hasMessage() && update.getMessage().hasText()) {
-            String text = update.getMessage().getText();
-            return AddBillCommandParser.isContribution(text);
-        }
-        return false;
-    }
-
-
-    // TODO: 19.01.19 can be extracted
-    private boolean isCommand(Update update) {
-        return update.hasMessage()
-                && update.getMessage().hasText()
-                && update.getMessage().getText().startsWith("/");
-    }
-
-    private boolean isChatCreated(Update update) {
-        return update.hasMessage()
-                && (!isNull(update.getMessage().getGroupchatCreated()) || !isNull(update.getMessage().getSuperGroupCreated()));
     }
 
 }

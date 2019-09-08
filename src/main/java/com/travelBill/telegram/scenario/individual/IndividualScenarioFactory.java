@@ -1,47 +1,42 @@
 package com.travelBill.telegram.scenario.individual;
 
-import com.travelBill.api.core.user.User;
-import com.travelBill.telegram.formatter.bill.LastTransactionsListFormatter;
+import com.travelBill.telegram.Request;
 import com.travelBill.telegram.scenario.common.ScenarioNotFoundException;
-import com.travelBill.telegram.scenario.common.context.BillContext;
-import com.travelBill.telegram.scenario.common.context.ContextProvider;
-import com.travelBill.telegram.scenario.common.context.EventContext;
 import com.travelBill.telegram.scenario.common.scenario.BillScenarioHelper;
-import com.travelBill.telegram.scenario.common.scenario.NewEventScenarioHelper;
+import com.travelBill.telegram.scenario.common.scenario.EventScenarioHelper;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.telegram.telegrambots.meta.api.objects.Update;
 
 import static java.util.Objects.isNull;
 
 @Service
 public class IndividualScenarioFactory {
-    private final ContextProvider contextProvider;
-    private final NewEventScenarioHelper eventScenarioHelper;
+    private final EventScenarioHelper eventScenarioHelper;
     private final BillScenarioHelper billScenarioHelper;
+    private final ShowEventsListScenario showEventsListScenario;
+    private final ShowLastTransactionsScenario showLastTransactionsScenario;
 
     @Autowired
-    public IndividualScenarioFactory(ContextProvider contextProvider,
-                                     NewEventScenarioHelper eventScenarioHelper,
-                                     BillScenarioHelper billScenarioHelper) {
-        this.contextProvider = contextProvider;
+    public IndividualScenarioFactory(EventScenarioHelper eventScenarioHelper,
+                                     BillScenarioHelper billScenarioHelper,
+                                     ShowEventsListScenario showEventsListScenario,
+                                     ShowLastTransactionsScenario showLastTransactionsScenario) {
         this.eventScenarioHelper = eventScenarioHelper;
         this.billScenarioHelper = billScenarioHelper;
+        this.showEventsListScenario = showEventsListScenario;
+        this.showLastTransactionsScenario = showLastTransactionsScenario;
     }
 
-    public Scenario createScenario(Update update, User currentUser) throws ScenarioNotFoundException {
-        EventContext eventContext = contextProvider.getEventContext(update, currentUser);
-        BillContext billContext = contextProvider.getBillContext(update, currentUser);
-
+    public Scenario createScenario(Request request) throws ScenarioNotFoundException {
         Scenario selectedScenario = null;
 
-        if (eventScenarioHelper.isShowEventsSignal(update)) {
-            selectedScenario = new ShowEventsListScenario(eventContext);
+        if (eventScenarioHelper.isShowEventsSignal(request)) {
+            selectedScenario = showEventsListScenario;
         }
 
-        if (billScenarioHelper.isShowLastTransactionsSignal(update)) {
-            selectedScenario = new ShowLastTransactionsScenario(billContext, new LastTransactionsListFormatter());
+        if (billScenarioHelper.isShowLastTransactionsSignal(request)) {
+            selectedScenario = showLastTransactionsScenario;
         }
 
         if (isNull(selectedScenario)) {

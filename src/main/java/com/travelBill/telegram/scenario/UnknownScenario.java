@@ -1,23 +1,15 @@
 package com.travelBill.telegram.scenario;
 
-import com.travelBill.telegram.TelegramUpdateUtils;
+import com.travelBill.telegram.Request;
+import com.travelBill.telegram.Response;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.Update;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UnknownScenario implements Scenario {
-    private Update update;
-
-    public UnknownScenario(Update update) {
-        this.update = update;
-    }
 
     @Override
-    public SendMessage createMessage() {
-        long chat_id = new TelegramUpdateUtils().getChatId(update);
-
-        return new SendMessage()
-                .setChatId(chat_id)
-                .setText("Sorry, but I can't understand you :( Could you rephrase please?");
+    public Response execute(Request request) {
+        return new UnknownScenarioResponseBuider().build();
     }
 }

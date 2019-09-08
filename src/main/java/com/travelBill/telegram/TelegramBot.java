@@ -2,6 +2,7 @@ package com.travelBill.telegram;
 
 import com.travelBill.api.core.user.User;
 import com.travelBill.config.ApplicationConfiguration;
+import com.travelBill.telegram.driver.ResponseSendMessageMapper;
 import com.travelBill.telegram.exceptions.UserIsNotSetUpException;
 import com.travelBill.telegram.scenario.ScenarioFactory;
 import com.travelBill.telegram.scenario.UnknownScenario;
@@ -31,13 +32,17 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
+        Request request = new UpdateRequestMapper().mapTo(update);
         try {
             User currentUser = setupUser(update);
-            SendMessage message = scenarioFactory.createScenario(update, currentUser).createMessage();
+            request.user = currentUser;
+            Response response = scenarioFactory.createScenario(request, currentUser).execute(request);
+            SendMessage message = new ResponseSendMessageMapper().mapTo(response, request.chatId);
+
             execute(message);
         } catch (Exception e) {
             e.printStackTrace();
-            respondWithError(update);
+            respondWithError(request);
         }
     }
 
@@ -66,8 +71,10 @@ public class TelegramBot extends TelegramLongPollingBot {
         return telegramUserService.setupUser(user);
     }
 
-    private void respondWithError(Update update) {
-        SendMessage message = new UnknownScenario(update).createMessage();
-        sneak(() -> execute(message));
+    private void respondWithError(Request request) {
+        Response response = new UnknownScenario().execute(request);
+        SendMessage sendMessage = new ResponseSendMessageMapper().mapTo(response, request.chatId);
+        sneak(() -> execute(sendMessage));
     }
+
 }

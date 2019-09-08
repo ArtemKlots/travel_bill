@@ -21,6 +21,10 @@ public class AddBillCommandParser {
     }
 
     public static boolean isContribution(String string) {
+        if (string == null) {
+            return false;
+        }
+
         String firstSymbol = String.valueOf(string.charAt(0));
         int minAvailableStringSequence = 2;
 

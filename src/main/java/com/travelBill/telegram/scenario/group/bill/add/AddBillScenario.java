@@ -36,7 +36,7 @@ public class AddBillScenario implements Scenario {
             billService.save(bill);
 
             responseBuilder = new AddBillSuccessResponseBuilder();
-            ((AddBillSuccessResponseBuilder) responseBuilder).transaction = textMessage;
+            ((AddBillSuccessResponseBuilder) responseBuilder).bill = bill;
             ((AddBillSuccessResponseBuilder) responseBuilder).user = user;
         } catch (Exception e) {
             responseBuilder = new AddBillFailResponseBuilder();

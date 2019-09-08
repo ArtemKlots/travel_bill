@@ -46,6 +46,6 @@ public class AddBillCommandParser {
             title.append(" ");
         }
 
-        return title.toString();
+        return title.toString().trim();
     }
 }

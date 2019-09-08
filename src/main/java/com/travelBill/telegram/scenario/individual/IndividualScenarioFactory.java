@@ -16,6 +16,7 @@ public class IndividualScenarioFactory {
     private final BillScenarioHelper billScenarioHelper;
     private final ShowEventsListScenario showEventsListScenario;
     private final ShowCurrentEventScenario showCurrentEventScenario;
+    private final SwitchEventScenario switchEventScenario;
     private final ShowLastTransactionsScenario showLastTransactionsScenario;
 
     @Autowired
@@ -23,11 +24,12 @@ public class IndividualScenarioFactory {
                                      BillScenarioHelper billScenarioHelper,
                                      ShowEventsListScenario showEventsListScenario,
                                      ShowCurrentEventScenario showCurrentEventScenario,
-                                     ShowLastTransactionsScenario showLastTransactionsScenario) {
+                                     SwitchEventScenario switchEventScenario, ShowLastTransactionsScenario showLastTransactionsScenario) {
         this.eventScenarioHelper = eventScenarioHelper;
         this.billScenarioHelper = billScenarioHelper;
         this.showEventsListScenario = showEventsListScenario;
         this.showCurrentEventScenario = showCurrentEventScenario;
+        this.switchEventScenario = switchEventScenario;
         this.showLastTransactionsScenario = showLastTransactionsScenario;
     }
 
@@ -36,6 +38,10 @@ public class IndividualScenarioFactory {
 
         if (eventScenarioHelper.isShowEventsSignal(request)) {
             selectedScenario = showEventsListScenario;
+        }
+
+        if (eventScenarioHelper.isSwitchEventSignal(request)) {
+            selectedScenario = switchEventScenario;
         }
 
         if (eventScenarioHelper.isShowCurrentEventSignal(request)) {

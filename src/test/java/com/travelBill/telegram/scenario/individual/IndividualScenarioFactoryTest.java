@@ -17,6 +17,8 @@ class IndividualScenarioFactoryTest {
     private EventScenarioHelper eventScenarioHelper = mock(EventScenarioHelper.class);
     private BillScenarioHelper billScenarioHelper = mock(BillScenarioHelper.class);
     private ShowEventsListScenario showEventsListScenario = mock(ShowEventsListScenario.class);
+    private ShowCurrentEventScenario showCurrentEventScenario = mock(ShowCurrentEventScenario.class);
+    private SwitchEventScenario switchEventScenario = mock(SwitchEventScenario.class);
     private ShowLastTransactionsScenario showLastTransactionsScenario = mock(ShowLastTransactionsScenario.class);
     private Request request = mock(Request.class);
     private IndividualScenarioFactory individualScenarioFactory;
@@ -27,6 +29,8 @@ class IndividualScenarioFactoryTest {
                 eventScenarioHelper,
                 billScenarioHelper,
                 showEventsListScenario,
+                showCurrentEventScenario,
+                switchEventScenario,
                 showLastTransactionsScenario);
     }
 

@@ -45,7 +45,7 @@ public class ShowEventsListResponseBuilder implements ResponseBuilder {
         InlineKeyboard inlineKeyboard = new InlineKeyboard();
 
         for (Event event : events) {
-            InlineKeyboardButton button = new InlineKeyboardButton().setText(event.getTitle()).setCallbackData("switch_to_event" + event.getId());
+            InlineKeyboardButton button = new InlineKeyboardButton().setText(event.getTitle()).setCallbackData("switch_to_event-" + event.getId());
             inlineKeyboard.addRow(button);
         }
 

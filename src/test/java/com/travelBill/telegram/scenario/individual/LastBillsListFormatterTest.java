@@ -1,7 +1,7 @@
 package com.travelBill.telegram.scenario.individual;
 
 import com.travelBill.api.core.bill.Bill;
-import com.travelBill.telegram.formatter.bill.LastTransactionsListFormatter;
+import com.travelBill.telegram.formatter.bill.LastBillsListFormatter;
 import io.github.benas.randombeans.EnhancedRandomBuilder;
 import io.github.benas.randombeans.api.EnhancedRandom;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class LastTransactionsListFormatterTest {
+class LastBillsListFormatterTest {
     private EnhancedRandom random = EnhancedRandomBuilder.aNewEnhancedRandomBuilder().build();
 
     @Test
@@ -24,12 +24,12 @@ class LastTransactionsListFormatterTest {
         bill.setCurrency("$");
         bill.setPurpose("for sandwiches");
 
-        String expectedResult = "Here are your transactions:\n10.50 $ for sandwiches\n";
-        String actualResult = new LastTransactionsListFormatter().format(Collections.singletonList(bill));
+        String expectedResult = "Here are your last bills:\n10.50 $ for sandwiches\n";
+        String actualResult = new LastBillsListFormatter().format(Collections.singletonList(bill));
 
         assertEquals(expectedResult, actualResult);
         //Можно так делать?
-        assertTrue(actualResult.startsWith("Here are your transactions:\n"), "expect text to be started from description");
+        assertTrue(actualResult.startsWith("Here are your last bills:\n"), "expect text to be started from description");
         assertEquals(expectedResult, actualResult, "expect price to be formatted as 10.50");
     }
 
@@ -50,15 +50,15 @@ class LastTransactionsListFormatterTest {
         billBaz.setCurrency("£");
         billBaz.setPurpose("ticket");
 
-        String expectedResult = "Here are your transactions:\n" +
+        String expectedResult = "Here are your last bills:\n" +
                 "5.00 $ toll road\n" +
                 "10.00 € sandwiches\n" +
                 "15.00 £ ticket\n";
         List<Bill> bills = new ArrayList<>(asList(billFoo, billBar, billBaz));
 
-        String actualResult = new LastTransactionsListFormatter().format(bills);
+        String actualResult = new LastBillsListFormatter().format(bills);
 
         assertEquals(expectedResult, actualResult);
-        assertTrue(actualResult.startsWith("Here are your transactions:\n"), "expect text to be started from description");
+        assertTrue(actualResult.startsWith("Here are your last bills:\n"), "expect text to be started from description");
     }
 }

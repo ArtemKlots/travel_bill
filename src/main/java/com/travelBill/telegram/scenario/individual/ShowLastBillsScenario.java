@@ -13,10 +13,10 @@ import static java.util.Objects.isNull;
 
 
 @Service
-public class ShowLastTransactionsScenario implements Scenario {
+public class ShowLastBillsScenario implements Scenario {
     private final BillService billService;
 
-    ShowLastTransactionsScenario(BillService billService) {
+    ShowLastBillsScenario(BillService billService) {
         this.billService = billService;
     }
 
@@ -27,7 +27,7 @@ public class ShowLastTransactionsScenario implements Scenario {
         }
 
         List<Bill> bills = billService.selectTop10ByUserIdAndEventIdOrderByCreatedAtDesc(request.user.getId(), request.user.getCurrentEvent().getId());
-        ShowLastTransactionResponseBuilder responseBuilder = new ShowLastTransactionResponseBuilder();
+        ShowLastBillsResponseBuilder responseBuilder = new ShowLastBillsResponseBuilder();
         responseBuilder.bills = bills;
         return responseBuilder.build();
     }

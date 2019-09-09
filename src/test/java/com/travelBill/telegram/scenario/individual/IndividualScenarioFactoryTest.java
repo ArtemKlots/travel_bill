@@ -23,7 +23,7 @@ class IndividualScenarioFactoryTest {
     private ShowEventsListScenario showEventsListScenario = mock(ShowEventsListScenario.class);
     private ShowCurrentEventScenario showCurrentEventScenario = mock(ShowCurrentEventScenario.class);
     private SwitchEventScenario switchEventScenario = mock(SwitchEventScenario.class);
-    private ShowLastTransactionsScenario showLastTransactionsScenario = mock(ShowLastTransactionsScenario.class);
+    private ShowLastBillsScenario showLastBillsScenario = mock(ShowLastBillsScenario.class);
     private AddBillScenario addBillScenario = mock(AddBillScenario.class);
     private DeleteBillScenario deleteBillScenario = mock(DeleteBillScenario.class);
     private ShowBillsToDeleteScenario showBillsToDeleteScenario = mock(ShowBillsToDeleteScenario.class);
@@ -39,7 +39,7 @@ class IndividualScenarioFactoryTest {
                 showEventsListScenario,
                 showCurrentEventScenario,
                 switchEventScenario,
-                showLastTransactionsScenario,
+                showLastBillsScenario,
                 addBillScenario,
                 deleteBillScenario,
                 showBillsToDeleteScenario,
@@ -55,9 +55,9 @@ class IndividualScenarioFactoryTest {
 
     @Test
     void createScenario_shouldReturnShowLastTransactionsScenario_whenShowLastTransactionsSignalWasProvided() {
-        when(billScenarioHelper.isShowLastTransactionsSignal(request)).thenReturn(true);
+        when(billScenarioHelper.isShowLastBillsSignal(request)).thenReturn(true);
         Scenario scenario = individualScenarioFactory.createScenario(request);
-        assertEquals(showLastTransactionsScenario.getClass(), scenario.getClass());
+        assertEquals(showLastBillsScenario.getClass(), scenario.getClass());
     }
 
     @Test

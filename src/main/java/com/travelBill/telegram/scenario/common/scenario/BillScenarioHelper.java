@@ -23,7 +23,7 @@ public class BillScenarioHelper {
         return request.hasMessage() && request.message.equals("Show debts");
     }
 
-    public boolean isShowLastTransactionsSignal(Request request) {
+    public boolean isShowLastBillsSignal(Request request) {
         return request.hasMessage() && request.message.equals("Show last bills");
     }
 }

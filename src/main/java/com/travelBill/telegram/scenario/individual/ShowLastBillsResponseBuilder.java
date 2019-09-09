@@ -4,12 +4,12 @@ import com.travelBill.api.core.bill.Bill;
 import com.travelBill.telegram.Response;
 import com.travelBill.telegram.ResponseBuilder;
 import com.travelBill.telegram.formatter.bill.BillListFormatter;
-import com.travelBill.telegram.formatter.bill.LastTransactionsListFormatter;
+import com.travelBill.telegram.formatter.bill.LastBillsListFormatter;
 
 import java.util.List;
 
-public class ShowLastTransactionResponseBuilder implements ResponseBuilder {
-    private BillListFormatter formatter = new LastTransactionsListFormatter();
+public class ShowLastBillsResponseBuilder implements ResponseBuilder {
+    private BillListFormatter formatter = new LastBillsListFormatter();
     List<Bill> bills;
 
     @Override

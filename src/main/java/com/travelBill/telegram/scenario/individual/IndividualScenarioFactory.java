@@ -21,7 +21,7 @@ public class IndividualScenarioFactory {
     private final ShowEventsListScenario showEventsListScenario;
     private final ShowCurrentEventScenario showCurrentEventScenario;
     private final SwitchEventScenario switchEventScenario;
-    private final ShowLastTransactionsScenario showLastTransactionsScenario;
+    private final ShowLastBillsScenario showLastBillsScenario;
     private final AddBillScenario addBillScenario;
     private final DeleteBillScenario deleteBillScenario;
     private final ShowBillsToDeleteScenario showBillsToDeleteScenario;
@@ -34,7 +34,7 @@ public class IndividualScenarioFactory {
                                      ShowEventsListScenario showEventsListScenario,
                                      ShowCurrentEventScenario showCurrentEventScenario,
                                      SwitchEventScenario switchEventScenario,
-                                     ShowLastTransactionsScenario showLastTransactionsScenario,
+                                     ShowLastBillsScenario showLastBillsScenario,
                                      AddBillScenario addBillScenario,
                                      DeleteBillScenario deleteBillScenario,
                                      ShowBillsToDeleteScenario showBillsToDeleteScenario,
@@ -44,7 +44,7 @@ public class IndividualScenarioFactory {
         this.showEventsListScenario = showEventsListScenario;
         this.showCurrentEventScenario = showCurrentEventScenario;
         this.switchEventScenario = switchEventScenario;
-        this.showLastTransactionsScenario = showLastTransactionsScenario;
+        this.showLastBillsScenario = showLastBillsScenario;
         this.addBillScenario = addBillScenario;
         this.deleteBillScenario = deleteBillScenario;
         this.showBillsToDeleteScenario = showBillsToDeleteScenario;
@@ -66,8 +66,8 @@ public class IndividualScenarioFactory {
             selectedScenario = showCurrentEventScenario;
         }
 
-        if (billScenarioHelper.isShowLastTransactionsSignal(request)) {
-            selectedScenario = showLastTransactionsScenario;
+        if (billScenarioHelper.isShowLastBillsSignal(request)) {
+            selectedScenario = showLastBillsScenario;
         }
 
         if (billScenarioHelper.isContribution(request)) {

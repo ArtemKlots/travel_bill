@@ -2,7 +2,6 @@ package com.travelBill.telegram.scenario.group;
 
 import com.travelBill.api.core.user.User;
 import com.travelBill.telegram.Request;
-import com.travelBill.telegram.scenario.UnknownScenario;
 import com.travelBill.telegram.scenario.common.scenario.EventScenarioHelper;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
 import com.travelBill.telegram.scenario.group.event.create.CreateEventScenario;
@@ -39,7 +38,7 @@ public class GroupScenarioFactory {
         }
 
         if (isNull(selectedScenario)) {
-            selectedScenario = new UnknownScenario();
+            selectedScenario = new IgnoreMessageScenario();
         }
 
         return selectedScenario;

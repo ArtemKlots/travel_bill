@@ -37,9 +37,11 @@ public class TelegramBot extends TelegramLongPollingBot {
             User currentUser = setupUser(update);
             request.user = currentUser;
             Response response = scenarioFactory.createScenario(request, currentUser).execute(request);
-            SendMessage message = new ResponseSendMessageMapper().mapTo(response, request.chatId);
 
-            execute(message);
+            if (!response.isEmpty()) {
+                SendMessage message = new ResponseSendMessageMapper().mapTo(response, request.chatId);
+                execute(message);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             respondWithError(request);

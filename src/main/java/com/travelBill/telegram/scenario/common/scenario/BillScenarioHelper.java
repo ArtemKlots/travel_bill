@@ -24,6 +24,6 @@ public class BillScenarioHelper {
     }
 
     public boolean isShowLastTransactionsSignal(Request request) {
-        return request.hasMessage() && request.message.equals("Show last transactions");
+        return request.hasMessage() && request.message.equals("Show last bills");
     }
 }

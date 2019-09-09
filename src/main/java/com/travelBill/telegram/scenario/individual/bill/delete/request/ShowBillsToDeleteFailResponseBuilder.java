@@ -8,7 +8,7 @@ public class ShowBillsToDeleteFailResponseBuilder implements ResponseBuilder {
     @Override
     public Response build() {
         Response response = new Response();
-        response.message = "Нou haven't added any bill to this event";
+        response.message = "You haven't added any bill to this event";
         return response;
     }
 }

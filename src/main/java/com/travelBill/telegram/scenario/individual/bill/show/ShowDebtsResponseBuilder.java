@@ -1,4 +1,4 @@
-package com.travelBill.telegram.scenario.group.bill.show;
+package com.travelBill.telegram.scenario.individual.bill.show;
 
 import com.travelBill.api.core.bill.debtCalculator.Debt;
 import com.travelBill.api.core.user.User;

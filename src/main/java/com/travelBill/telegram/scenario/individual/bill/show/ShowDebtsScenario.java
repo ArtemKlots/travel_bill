@@ -1,4 +1,4 @@
-package com.travelBill.telegram.scenario.group.bill.show;
+package com.travelBill.telegram.scenario.individual.bill.show;
 
 import com.travelBill.api.core.bill.debtCalculator.Debt;
 import com.travelBill.api.core.bill.debtCalculator.DebtCalculator;
@@ -8,11 +8,14 @@ import com.travelBill.api.core.user.User;
 import com.travelBill.telegram.Request;
 import com.travelBill.telegram.Response;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
+import com.travelBill.telegram.scenario.individual.EventIsNotSelectedResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static java.util.Objects.isNull;
 
 @Service
 public class ShowDebtsScenario implements Scenario {
@@ -25,7 +28,11 @@ public class ShowDebtsScenario implements Scenario {
 
     @Override
     public Response execute(Request request) {
-        Long telegramChatId = request.chatId;
+        if (isNull(request.user.getCurrentEvent())) {
+            return new EventIsNotSelectedResponse();
+        }
+
+        Long telegramChatId = request.user.getCurrentEvent().getTelegramChatId();
         Event event = eventService.findByTelegramChatId(telegramChatId);
         DebtCalculator debtCalculator = new DebtCalculator();
 

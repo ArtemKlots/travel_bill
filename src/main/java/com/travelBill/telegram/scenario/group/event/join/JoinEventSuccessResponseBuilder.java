@@ -1,8 +1,6 @@
 package com.travelBill.telegram.scenario.group.event.join;
 
 import com.travelBill.telegram.Response;
-import com.travelBill.telegram.driver.keyboard.reply.ReplyKeyboard;
-import com.travelBill.telegram.driver.keyboard.reply.ReplyKeyboardButton;
 
 public class JoinEventSuccessResponseBuilder extends JoinEventResponseBuilder {
 
@@ -10,7 +8,6 @@ public class JoinEventSuccessResponseBuilder extends JoinEventResponseBuilder {
     public Response build() {
         Response response = new Response();
         response.message = getMessage();
-        response.replyKeyboard = getKeyboard();
         return response;
     }
 
@@ -22,13 +19,4 @@ public class JoinEventSuccessResponseBuilder extends JoinEventResponseBuilder {
                 member.getFullName());
     }
 
-    public ReplyKeyboard getKeyboard() {
-        ReplyKeyboard keyboard = new ReplyKeyboard();
-
-        ReplyKeyboardButton showDebtsButton = new ReplyKeyboardButton().setText("Show debts");
-
-        keyboard.addRow(showDebtsButton);
-
-        return keyboard;
-    }
 }

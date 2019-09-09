@@ -21,10 +21,12 @@ public class InitialScenarioResponseBuilder implements ResponseBuilder {
         ReplyKeyboardButton currentEventButton = new ReplyKeyboardButton().setText("Show current event");
         ReplyKeyboardButton switchEventButton = new ReplyKeyboardButton().setText("Switch event");
         ReplyKeyboardButton lastTransactionButton = new ReplyKeyboardButton().setText("Show last transactions");
+        ReplyKeyboardButton showDebtsButton = new ReplyKeyboardButton().setText("Show debts");
         ReplyKeyboardButton deleteBillButton = new ReplyKeyboardButton().setText("Delete bill");
 
         keyboard.addRow(currentEventButton, switchEventButton);
         keyboard.addRow(lastTransactionButton);
+        keyboard.addRow(showDebtsButton);
         keyboard.addRow(deleteBillButton);
         return keyboard;
     }

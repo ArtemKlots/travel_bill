@@ -8,6 +8,7 @@ import com.travelBill.telegram.scenario.common.scenario.Scenario;
 import com.travelBill.telegram.scenario.individual.bill.add.AddBillScenario;
 import com.travelBill.telegram.scenario.individual.bill.delete.confirm.DeleteBillScenario;
 import com.travelBill.telegram.scenario.individual.bill.delete.request.ShowBillsToDeleteScenario;
+import com.travelBill.telegram.scenario.individual.bill.show.ShowDebtsScenario;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -26,6 +27,7 @@ class IndividualScenarioFactoryTest {
     private AddBillScenario addBillScenario = mock(AddBillScenario.class);
     private DeleteBillScenario deleteBillScenario = mock(DeleteBillScenario.class);
     private ShowBillsToDeleteScenario showBillsToDeleteScenario = mock(ShowBillsToDeleteScenario.class);
+    private ShowDebtsScenario showDebtsScenario = mock(ShowDebtsScenario.class);
     private Request request = mock(Request.class);
     private IndividualScenarioFactory individualScenarioFactory;
 
@@ -40,7 +42,8 @@ class IndividualScenarioFactoryTest {
                 showLastTransactionsScenario,
                 addBillScenario,
                 deleteBillScenario,
-                showBillsToDeleteScenario);
+                showBillsToDeleteScenario,
+                showDebtsScenario);
     }
 
     @Test

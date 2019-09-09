@@ -1,4 +1,4 @@
-package com.travelBill.telegram.scenario.group.bill;
+package com.travelBill.telegram.scenario.individual.bill;
 
 import com.travelBill.api.core.bill.Bill;
 

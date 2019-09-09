@@ -1,10 +1,11 @@
-package com.travelBill.telegram.scenario.individual;
+package com.travelBill.telegram.scenario.individual.bill.lastBills;
 
 import com.travelBill.api.core.bill.Bill;
 import com.travelBill.api.core.bill.BillService;
 import com.travelBill.telegram.Request;
 import com.travelBill.telegram.Response;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
+import com.travelBill.telegram.scenario.individual.event.EventIsNotSelectedResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

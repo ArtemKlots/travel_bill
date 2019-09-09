@@ -6,9 +6,13 @@ import com.travelBill.telegram.scenario.common.scenario.BillScenarioHelper;
 import com.travelBill.telegram.scenario.common.scenario.EventScenarioHelper;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
 import com.travelBill.telegram.scenario.individual.bill.add.AddBillScenario;
+import com.travelBill.telegram.scenario.individual.bill.debts.ShowDebtsScenario;
 import com.travelBill.telegram.scenario.individual.bill.delete.confirm.DeleteBillScenario;
 import com.travelBill.telegram.scenario.individual.bill.delete.request.ShowBillsToDeleteScenario;
-import com.travelBill.telegram.scenario.individual.bill.show.ShowDebtsScenario;
+import com.travelBill.telegram.scenario.individual.bill.lastBills.ShowLastBillsScenario;
+import com.travelBill.telegram.scenario.individual.event.ShowCurrentEventScenario;
+import com.travelBill.telegram.scenario.individual.event.ShowEventsListScenario;
+import com.travelBill.telegram.scenario.individual.event.SwitchEventScenario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.travelBill.telegram.scenario.individual;
+package com.travelBill.telegram.scenario.individual.event;
 
 import com.travelBill.api.core.event.EventService;
 import com.travelBill.telegram.Request;

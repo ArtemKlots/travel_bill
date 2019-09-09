@@ -1,4 +1,4 @@
-package com.travelBill.telegram.scenario.individual.bill.show;
+package com.travelBill.telegram.scenario.individual.bill.debts;
 
 import com.travelBill.api.core.bill.debtCalculator.Debt;
 import com.travelBill.api.core.bill.debtCalculator.DebtCalculator;
@@ -8,7 +8,7 @@ import com.travelBill.api.core.user.User;
 import com.travelBill.telegram.Request;
 import com.travelBill.telegram.Response;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
-import com.travelBill.telegram.scenario.individual.EventIsNotSelectedResponse;
+import com.travelBill.telegram.scenario.individual.event.EventIsNotSelectedResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -8,6 +8,8 @@ import com.travelBill.telegram.formatter.bill.LastBillsListFormatter;
 
 import java.util.List;
 
+import static org.telegram.telegrambots.meta.api.methods.ParseMode.MARKDOWN;
+
 public class ShowLastBillsResponseBuilder implements ResponseBuilder {
     private BillListFormatter formatter = new LastBillsListFormatter();
     List<Bill> bills;
@@ -18,7 +20,10 @@ public class ShowLastBillsResponseBuilder implements ResponseBuilder {
         if (bills.size() > 0) {
             response.message = formatter.format(bills);
         } else {
-            response.message = "It looks like you haven't added any bill yet. Maybe you need to change the current event?";
+            response.parseMode = MARKDOWN;
+            response.message = "It looks like you haven't added any bill yet. Try to add a new one using the following pattern:" +
+                    "\n<*how much*> <*currency*> <*purpose*> \n" +
+                    "Example: 10 points to Gryffindor\n";
         }
 
         return response;

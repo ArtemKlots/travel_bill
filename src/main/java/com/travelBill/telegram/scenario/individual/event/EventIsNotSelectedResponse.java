@@ -1,6 +1,6 @@
 package com.travelBill.telegram.scenario.individual.event;
 
-import com.travelBill.telegram.Response;
+import com.travelBill.telegram.driver.Response;
 
 public class EventIsNotSelectedResponse extends Response {
     public EventIsNotSelectedResponse() {

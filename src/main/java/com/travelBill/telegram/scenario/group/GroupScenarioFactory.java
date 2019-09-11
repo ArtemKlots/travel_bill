@@ -1,7 +1,7 @@
 package com.travelBill.telegram.scenario.group;
 
 import com.travelBill.api.core.user.User;
-import com.travelBill.telegram.Request;
+import com.travelBill.telegram.driver.Request;
 import com.travelBill.telegram.scenario.common.scenario.EventScenarioHelper;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
 import com.travelBill.telegram.scenario.group.event.create.CreateEventScenario;

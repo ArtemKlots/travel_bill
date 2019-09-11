@@ -1,4 +1,4 @@
-package com.travelBill.telegram;
+package com.travelBill.telegram.driver;
 
 import com.travelBill.ParseMode;
 import com.travelBill.telegram.driver.keyboard.inline.InlineKeyboard;

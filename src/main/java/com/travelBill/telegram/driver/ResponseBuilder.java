@@ -1,4 +1,4 @@
-package com.travelBill.telegram;
+package com.travelBill.telegram.driver;
 
 public interface ResponseBuilder {
     Response build();

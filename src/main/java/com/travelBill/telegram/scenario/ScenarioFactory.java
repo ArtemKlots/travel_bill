@@ -1,8 +1,8 @@
 package com.travelBill.telegram.scenario;
 
 import com.travelBill.api.core.user.User;
-import com.travelBill.telegram.ChatType;
-import com.travelBill.telegram.Request;
+import com.travelBill.telegram.driver.ChatType;
+import com.travelBill.telegram.driver.Request;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
 import com.travelBill.telegram.scenario.group.GroupScenarioFactory;
 import com.travelBill.telegram.scenario.individual.IndividualScenarioFactory;

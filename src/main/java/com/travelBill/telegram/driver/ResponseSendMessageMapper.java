@@ -1,6 +1,5 @@
 package com.travelBill.telegram.driver;
 
-import com.travelBill.telegram.Response;
 import com.travelBill.telegram.driver.keyboard.KeyboardMapper;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;

@@ -2,7 +2,7 @@ package com.travelBill.telegram.scenario.individual.bill.add;
 
 import com.travelBill.api.core.bill.Bill;
 import com.travelBill.api.core.user.User;
-import com.travelBill.telegram.Response;
+import com.travelBill.telegram.driver.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

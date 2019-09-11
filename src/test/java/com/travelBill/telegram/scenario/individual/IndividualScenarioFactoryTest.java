@@ -1,6 +1,6 @@
 package com.travelBill.telegram.scenario.individual;
 
-import com.travelBill.telegram.Request;
+import com.travelBill.telegram.driver.Request;
 import com.travelBill.telegram.scenario.common.ScenarioNotFoundException;
 import com.travelBill.telegram.scenario.common.scenario.BillScenarioHelper;
 import com.travelBill.telegram.scenario.common.scenario.EventScenarioHelper;

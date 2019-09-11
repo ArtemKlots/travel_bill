@@ -1,6 +1,6 @@
 package com.travelBill.telegram.scenario.group.event.join;
 
-import com.travelBill.telegram.Response;
+import com.travelBill.telegram.driver.Response;
 
 public class JoinEventSuccessResponseBuilder extends JoinEventResponseBuilder {
 

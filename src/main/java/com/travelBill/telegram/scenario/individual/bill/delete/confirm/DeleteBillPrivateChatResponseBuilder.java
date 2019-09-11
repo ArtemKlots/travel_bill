@@ -1,8 +1,8 @@
 package com.travelBill.telegram.scenario.individual.bill.delete.confirm;
 
 import com.travelBill.api.core.bill.Bill;
-import com.travelBill.telegram.Response;
-import com.travelBill.telegram.ResponseBuilder;
+import com.travelBill.telegram.driver.Response;
+import com.travelBill.telegram.driver.ResponseBuilder;
 
 import static com.travelBill.ParseMode.MARKDOWN;
 

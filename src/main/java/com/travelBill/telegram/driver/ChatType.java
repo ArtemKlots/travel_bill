@@ -1,4 +1,4 @@
-package com.travelBill.telegram;
+package com.travelBill.telegram.driver;
 
 public enum ChatType {
     PRIVATE, GROUP, CHANEL, SUPER_GROUP;

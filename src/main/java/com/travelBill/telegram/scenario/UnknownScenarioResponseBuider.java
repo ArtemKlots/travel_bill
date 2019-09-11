@@ -1,7 +1,7 @@
 package com.travelBill.telegram.scenario;
 
-import com.travelBill.telegram.Response;
-import com.travelBill.telegram.ResponseBuilder;
+import com.travelBill.telegram.driver.Response;
+import com.travelBill.telegram.driver.ResponseBuilder;
 
 public class UnknownScenarioResponseBuider implements ResponseBuilder {
 

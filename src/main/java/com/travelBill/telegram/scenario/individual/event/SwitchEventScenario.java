@@ -2,9 +2,9 @@ package com.travelBill.telegram.scenario.individual.event;
 
 import com.travelBill.api.core.user.User;
 import com.travelBill.api.core.user.UserService;
-import com.travelBill.telegram.BotApi;
-import com.travelBill.telegram.Request;
-import com.travelBill.telegram.Response;
+import com.travelBill.telegram.driver.BotApi;
+import com.travelBill.telegram.driver.Request;
+import com.travelBill.telegram.driver.Response;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
 import org.springframework.stereotype.Service;
 

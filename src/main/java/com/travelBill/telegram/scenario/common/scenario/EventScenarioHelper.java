@@ -1,6 +1,6 @@
 package com.travelBill.telegram.scenario.common.scenario;
 
-import com.travelBill.telegram.Request;
+import com.travelBill.telegram.driver.Request;
 import org.springframework.stereotype.Service;
 
 @Service

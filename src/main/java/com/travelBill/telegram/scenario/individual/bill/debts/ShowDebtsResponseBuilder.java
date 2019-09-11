@@ -2,8 +2,8 @@ package com.travelBill.telegram.scenario.individual.bill.debts;
 
 import com.travelBill.api.core.bill.debtCalculator.Debt;
 import com.travelBill.api.core.user.User;
-import com.travelBill.telegram.Response;
-import com.travelBill.telegram.ResponseBuilder;
+import com.travelBill.telegram.driver.Response;
+import com.travelBill.telegram.driver.ResponseBuilder;
 
 import java.text.DecimalFormat;
 import java.util.List;

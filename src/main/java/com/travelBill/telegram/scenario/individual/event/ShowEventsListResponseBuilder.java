@@ -1,8 +1,8 @@
 package com.travelBill.telegram.scenario.individual.event;
 
 import com.travelBill.api.core.event.Event;
-import com.travelBill.telegram.Response;
-import com.travelBill.telegram.ResponseBuilder;
+import com.travelBill.telegram.driver.Response;
+import com.travelBill.telegram.driver.ResponseBuilder;
 import com.travelBill.telegram.driver.keyboard.inline.InlineKeyboard;
 import com.travelBill.telegram.driver.keyboard.inline.InlineKeyboardButton;
 

@@ -1,12 +1,13 @@
 package com.travelBill.telegram;
 
+import com.travelBill.ParseMode;
 import com.travelBill.telegram.driver.keyboard.inline.InlineKeyboard;
 import com.travelBill.telegram.driver.keyboard.reply.ReplyKeyboard;
 
 import static java.util.Objects.isNull;
 
 public class Response {
-    public String parseMode;
+    public ParseMode parseMode = ParseMode.PLAIN_TEXT;
     public String message;
     public InlineKeyboard inlineKeyboard;
     public ReplyKeyboard replyKeyboard;

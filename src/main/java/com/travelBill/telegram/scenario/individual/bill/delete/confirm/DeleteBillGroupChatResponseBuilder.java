@@ -4,7 +4,7 @@ import com.travelBill.api.core.bill.Bill;
 import com.travelBill.telegram.Response;
 import com.travelBill.telegram.ResponseBuilder;
 
-import static org.telegram.telegrambots.meta.api.methods.ParseMode.MARKDOWN;
+import static com.travelBill.ParseMode.MARKDOWN;
 
 public class DeleteBillGroupChatResponseBuilder implements ResponseBuilder {
     private static final String responseTemplate = "*%s %s %s* has been successfully removed by *%s*";

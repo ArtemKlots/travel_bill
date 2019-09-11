@@ -6,8 +6,8 @@ import com.travelBill.telegram.Response;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
 import org.springframework.stereotype.Service;
 
+import static com.travelBill.ParseMode.MARKDOWN;
 import static java.util.Objects.isNull;
-import static org.telegram.telegrambots.meta.api.methods.ParseMode.MARKDOWN;
 
 @Service
 public class ShowCurrentEventScenario implements Scenario {

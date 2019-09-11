@@ -8,7 +8,8 @@ import com.travelBill.telegram.formatter.bill.LastBillsListFormatter;
 
 import java.util.List;
 
-import static org.telegram.telegrambots.meta.api.methods.ParseMode.MARKDOWN;
+import static com.travelBill.ParseMode.MARKDOWN;
+
 
 public class ShowLastBillsResponseBuilder implements ResponseBuilder {
     private BillListFormatter formatter = new LastBillsListFormatter();

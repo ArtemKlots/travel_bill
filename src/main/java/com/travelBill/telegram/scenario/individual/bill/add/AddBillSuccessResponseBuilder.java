@@ -7,7 +7,7 @@ import com.travelBill.telegram.ResponseBuilder;
 
 import java.text.DecimalFormat;
 
-import static org.telegram.telegrambots.meta.api.methods.ParseMode.MARKDOWN;
+import static com.travelBill.ParseMode.MARKDOWN;
 
 public class AddBillSuccessResponseBuilder implements ResponseBuilder {
     Bill bill;

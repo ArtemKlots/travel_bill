@@ -37,7 +37,7 @@ public class BotApi {
         params.add(new BasicNameValuePair("chat_id", chatId.toString()));
         params.add(new BasicNameValuePair("text", response.message));
         if (nonNull(response.parseMode)) {
-            params.add(new BasicNameValuePair("parse_mode", response.parseMode));
+            params.add(new BasicNameValuePair("parse_mode", response.parseMode.getValue()));
         }
         httpService.post(getApiUrl() + SEND_MESSAGE_RESOURCE, params);
     }

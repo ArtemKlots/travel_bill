@@ -6,6 +6,8 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 
 import static java.util.Objects.isNull;
+import static org.telegram.telegrambots.meta.api.methods.ParseMode.HTML;
+import static org.telegram.telegrambots.meta.api.methods.ParseMode.MARKDOWN;
 
 public class ResponseSendMessageMapper {
     public SendMessage mapTo(Response response, Long chatId) {
@@ -17,7 +19,7 @@ public class ResponseSendMessageMapper {
         }
 
         if (!isNull(response.parseMode)) {
-            message.setParseMode(response.parseMode);
+            message.setParseMode(getParseMode(response));
         }
 
         if (!isNull(response.inlineKeyboard)) {
@@ -32,5 +34,21 @@ public class ResponseSendMessageMapper {
 
         return message;
 
+    }
+
+    private String getParseMode(Response response) {
+        String parseMode;
+        switch (response.parseMode) {
+            case MARKDOWN:
+                parseMode = MARKDOWN;
+                break;
+            case HTML:
+                parseMode = HTML;
+                break;
+            case PLAIN_TEXT:
+            default:
+                parseMode = null;
+        }
+        return parseMode;
     }
 }

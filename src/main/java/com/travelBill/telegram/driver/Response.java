@@ -1,6 +1,5 @@
 package com.travelBill.telegram.driver;
 
-import com.travelBill.ParseMode;
 import com.travelBill.telegram.driver.keyboard.inline.InlineKeyboard;
 import com.travelBill.telegram.driver.keyboard.reply.ReplyKeyboard;
 

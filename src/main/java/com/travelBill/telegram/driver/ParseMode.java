@@ -1,4 +1,4 @@
-package com.travelBill;
+package com.travelBill.telegram.driver;
 
 public enum ParseMode {
     MARKDOWN("MARKDOWN"),

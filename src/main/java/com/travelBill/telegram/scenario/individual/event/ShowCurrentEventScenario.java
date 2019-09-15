@@ -6,7 +6,7 @@ import com.travelBill.telegram.driver.Response;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
 import org.springframework.stereotype.Service;
 
-import static com.travelBill.ParseMode.MARKDOWN;
+import static com.travelBill.telegram.driver.ParseMode.MARKDOWN;
 import static java.util.Objects.isNull;
 
 @Service

@@ -5,7 +5,7 @@ import com.travelBill.telegram.driver.ResponseBuilder;
 import com.travelBill.telegram.driver.keyboard.reply.ReplyKeyboard;
 import com.travelBill.telegram.driver.keyboard.reply.ReplyKeyboardButton;
 
-import static com.travelBill.ParseMode.MARKDOWN;
+import static com.travelBill.telegram.driver.ParseMode.MARKDOWN;
 
 public class InitialScenarioResponseBuilder implements ResponseBuilder {
 

@@ -8,7 +8,7 @@ import com.travelBill.telegram.driver.Response;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
 import org.springframework.stereotype.Service;
 
-import static com.travelBill.ParseMode.MARKDOWN;
+import static com.travelBill.telegram.driver.ParseMode.MARKDOWN;
 
 @Service
 public class SwitchEventScenario implements Scenario {

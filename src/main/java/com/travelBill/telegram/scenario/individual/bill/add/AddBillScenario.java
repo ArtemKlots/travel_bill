@@ -14,7 +14,7 @@ import com.travelBill.telegram.scenario.individual.bill.AddBillCommandParser;
 import com.travelBill.telegram.scenario.individual.event.EventIsNotSelectedResponse;
 import org.springframework.stereotype.Service;
 
-import static com.travelBill.ParseMode.MARKDOWN;
+import static com.travelBill.telegram.driver.ParseMode.MARKDOWN;
 import static java.util.Objects.isNull;
 
 @Service

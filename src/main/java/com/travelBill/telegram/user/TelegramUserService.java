@@ -4,6 +4,8 @@ import com.travelBill.api.core.user.User;
 import com.travelBill.api.core.user.UserService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class TelegramUserService {
     private final UserService userService;
@@ -26,6 +28,7 @@ public class TelegramUserService {
         newUser.setTelegramId(telegramUser.getId());
         newUser.setFirstName(telegramUser.getFirstName());
         newUser.setLastName(telegramUser.getLastName());
+        newUser.setLastActivity(LocalDateTime.now());
         return userService.save(newUser);
     }
 }

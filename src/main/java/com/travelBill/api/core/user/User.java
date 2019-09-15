@@ -11,8 +11,6 @@ import java.util.Objects;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-import static javax.persistence.GenerationType.IDENTITY;
-
 @Entity
 @Table(name = "user")
 public class User {
@@ -44,6 +42,9 @@ public class User {
     @Column
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    @Column
+    private LocalDateTime lastActivity;
 
     //todo should be here?
     public String getFullName() {
@@ -128,6 +129,14 @@ public class User {
         this.updatedAt = updatedAt;
     }
 
+    public LocalDateTime getLastActivity() {
+        return lastActivity;
+    }
+
+    public void setLastActivity(LocalDateTime lastActivity) {
+        this.lastActivity = lastActivity;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -140,11 +149,12 @@ public class User {
                 Objects.equals(getTelegramId(), user.getTelegramId()) &&
                 Objects.equals(getCurrentEvent(), user.getCurrentEvent()) &&
                 Objects.equals(getCreatedAt(), user.getCreatedAt()) &&
-                Objects.equals(getUpdatedAt(), user.getUpdatedAt());
+                Objects.equals(getUpdatedAt(), user.getUpdatedAt()) &&
+                Objects.equals(getLastActivity(), user.getLastActivity());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getFirstName(), getLastName(), getEvents(), getTelegramId(), getCurrentEvent(), getCreatedAt(), getUpdatedAt());
+        return Objects.hash(getId(), getFirstName(), getLastName(), getEvents(), getTelegramId(), getCurrentEvent(), getCreatedAt(), getUpdatedAt(), getLastActivity());
     }
 }

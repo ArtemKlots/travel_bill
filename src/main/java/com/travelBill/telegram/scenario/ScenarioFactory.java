@@ -1,6 +1,5 @@
 package com.travelBill.telegram.scenario;
 
-import com.travelBill.api.core.user.User;
 import com.travelBill.telegram.driver.ChatType;
 import com.travelBill.telegram.driver.Request;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
@@ -19,7 +18,7 @@ public class ScenarioFactory {
         this.groupScenarioFactory = groupScenarioFactory;
     }
 
-    public Scenario createScenario(Request request, User currentUser) {
+    public Scenario createScenario(Request request) {
         Scenario scenario;
         boolean isPrivateChat = request.chatType == ChatType.PRIVATE;
 
@@ -28,7 +27,7 @@ public class ScenarioFactory {
         } else if (isPrivateChat) {
             scenario = individualScenarioFactory.createScenario(request);
         } else {
-            scenario = groupScenarioFactory.createScenario(request, currentUser);
+            scenario = groupScenarioFactory.createScenario(request);
         }
 
         return scenario;

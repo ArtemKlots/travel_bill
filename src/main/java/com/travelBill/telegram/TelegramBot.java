@@ -37,9 +37,8 @@ public class TelegramBot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         Request request = new UpdateRequestMapper().mapTo(update);
         try {
-            User currentUser = setupUser(update);
-            request.user = currentUser;
-            Response response = scenarioFactory.createScenario(request, currentUser).execute(request);
+            request.user = setupUser(update);
+            Response response = scenarioFactory.createScenario(request).execute(request);
 
             if (!response.isEmpty()) {
                 SendMessage message = new ResponseSendMessageMapper().mapTo(response, request.chatId);

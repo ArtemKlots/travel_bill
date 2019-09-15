@@ -1,6 +1,5 @@
 package com.travelBill.telegram.scenario.group;
 
-import com.travelBill.api.core.user.User;
 import com.travelBill.telegram.driver.Request;
 import com.travelBill.telegram.scenario.common.scenario.EventScenarioHelper;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
@@ -24,7 +23,7 @@ public class GroupScenarioFactory {
         this.joinEventScenario = joinEventScenario;
     }
 
-    public Scenario createScenario(Request request, User currentUser) {
+    public Scenario createScenario(Request request) {
         Scenario selectedScenario = null;
 
         // TODO: it can be made using switch/case

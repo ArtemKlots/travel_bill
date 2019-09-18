@@ -1,5 +1,7 @@
 package com.travelBill.telegram.scenario;
 
+import com.travelBill.api.core.event.Event;
+import com.travelBill.api.core.event.EventService;
 import com.travelBill.telegram.driver.ChatType;
 import com.travelBill.telegram.driver.Request;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
@@ -15,18 +17,24 @@ public class ScenarioFactory {
     private final IndividualScenarioFactory individualScenarioFactory;
     private final GroupScenarioFactory groupScenarioFactory;
     private final UpdateIndividualKeyboardScenario updateIndividualKeyboardScenario;
+    private final UpdateGroupKeyboardScenario updateGroupKeyboardScenario;
     private final InitialScenario initialScenario;
     private final KeyboardVersionStorage keyboardVersionStorage;
+    private final EventService eventService;
 
     public ScenarioFactory(IndividualScenarioFactory individualScenarioFactory,
                            GroupScenarioFactory groupScenarioFactory,
                            UpdateIndividualKeyboardScenario updateIndividualKeyboardScenario,
-                           InitialScenario initialScenario, KeyboardVersionStorage keyboardVersionStorage) {
+                           UpdateGroupKeyboardScenario updateGroupKeyboardScenario, InitialScenario initialScenario,
+                           KeyboardVersionStorage keyboardVersionStorage,
+                           EventService eventService) {
         this.individualScenarioFactory = individualScenarioFactory;
         this.groupScenarioFactory = groupScenarioFactory;
         this.updateIndividualKeyboardScenario = updateIndividualKeyboardScenario;
+        this.updateGroupKeyboardScenario = updateGroupKeyboardScenario;
         this.initialScenario = initialScenario;
         this.keyboardVersionStorage = keyboardVersionStorage;
+        this.eventService = eventService;
     }
 
     public Scenario createScenario(Request request) {
@@ -38,7 +46,7 @@ public class ScenarioFactory {
         } else if (isPrivateChat) {
             scenario = getScenarioForPrivateChat(request);
         } else {
-            scenario = groupScenarioFactory.createScenario(request);
+            scenario = getScenarioForGroupChat(request);
         }
 
         return scenario;
@@ -50,6 +58,17 @@ public class ScenarioFactory {
             scenario = updateIndividualKeyboardScenario;
         } else {
             scenario = individualScenarioFactory.createScenario(request);
+        }
+        return scenario;
+    }
+
+    private Scenario getScenarioForGroupChat(Request request) {
+        Scenario scenario;
+        Event event = eventService.findByTelegramChatId(request.chatId);
+        if (isNull(event.getLastActivity()) || event.getLastActivity().isBefore(keyboardVersionStorage.getGroupKeyboardReleaseDate())) {
+            scenario = updateGroupKeyboardScenario;
+        } else {
+            scenario = groupScenarioFactory.createScenario(request);
         }
         return scenario;
     }

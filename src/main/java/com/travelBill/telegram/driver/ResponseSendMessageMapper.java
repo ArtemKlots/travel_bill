@@ -3,6 +3,7 @@ package com.travelBill.telegram.driver;
 import com.travelBill.telegram.driver.keyboard.KeyboardMapper;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRemove;
 
 import static java.util.Objects.isNull;
 import static org.telegram.telegrambots.meta.api.methods.ParseMode.HTML;
@@ -27,7 +28,12 @@ public class ResponseSendMessageMapper {
         }
 
         if (!isNull(response.replyKeyboard)) {
-            ReplyKeyboard markup = new KeyboardMapper().mapTo(response.replyKeyboard);
+            ReplyKeyboard markup;
+            if (response.replyKeyboard.isDeleteKeyboard) {
+                markup = new ReplyKeyboardRemove();
+            } else {
+                markup = new KeyboardMapper().mapTo(response.replyKeyboard);
+            }
             message.setReplyMarkup(markup);
         }
 

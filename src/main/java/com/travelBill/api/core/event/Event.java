@@ -49,6 +49,9 @@ public class Event {
     @Column(unique=true)
     private Long telegramChatId;
 
+    @Column
+    private LocalDateTime lastActivity;
+
     public Long getId() {
         return id;
     }
@@ -111,5 +114,13 @@ public class Event {
 
     public void setTelegramChatId(Long telegramChatId) {
         this.telegramChatId = telegramChatId;
+    }
+
+    public LocalDateTime getLastActivity() {
+        return lastActivity;
+    }
+
+    public void setLastActivity(LocalDateTime lastActivity) {
+        this.lastActivity = lastActivity;
     }
 }

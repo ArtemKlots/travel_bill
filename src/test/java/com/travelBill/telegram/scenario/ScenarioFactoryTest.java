@@ -1,5 +1,7 @@
 package com.travelBill.telegram.scenario;
 
+import com.travelBill.api.core.event.Event;
+import com.travelBill.api.core.event.EventService;
 import com.travelBill.api.core.user.User;
 import com.travelBill.telegram.driver.ChatType;
 import com.travelBill.telegram.driver.Request;
@@ -13,6 +15,7 @@ import java.time.LocalDateTime;
 
 import static com.travelBill.telegram.scenario.ScenarioFactory.START_MESSAGE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -24,12 +27,16 @@ class ScenarioFactoryTest {
     private UpdateIndividualKeyboardScenario updateIndividualKeyboardScenarioMock = mock(UpdateIndividualKeyboardScenario.class);
     private InitialScenario initialScenarioMock = mock(InitialScenario.class);
     private KeyboardVersionStorage keyboardVersionStorageMock = mock(KeyboardVersionStorage.class);
+    private UpdateGroupKeyboardScenario updateGroupKeyboardScenario = mock(UpdateGroupKeyboardScenario.class);
+    private EventService eventService = mock(EventService.class);
     private ScenarioFactory scenarioFactory = new ScenarioFactory(
             individualScenarioFactoryMock,
             groupScenarioFactoryMock,
             updateIndividualKeyboardScenarioMock,
+            updateGroupKeyboardScenario,
             initialScenarioMock,
-            keyboardVersionStorageMock);
+            keyboardVersionStorageMock,
+            eventService);
     private Scenario scenarioMock = mock(Scenario.class);
 
     @BeforeEach
@@ -47,8 +54,14 @@ class ScenarioFactoryTest {
     }
 
     @Test
-    void createScenario_shouldReturnResultOfGroupScenarioFactory_WhenMessageIsNull() {
+    void createScenario_shouldReturnResultOfGroupScenarioFactory_WhenMessageIsNullAndKeyboardIsActual() {
+        Event event = mock(Event.class);
+
+        when(keyboardVersionStorageMock.getGroupKeyboardReleaseDate()).thenReturn(LocalDateTime.MIN);
+        when(event.getLastActivity()).thenReturn(LocalDateTime.MAX);
         when(groupScenarioFactoryMock.createScenario(request)).thenReturn(scenarioMock);
+        when(eventService.findByTelegramChatId(any())).thenReturn(event);
+
         Scenario result = scenarioFactory.createScenario(request);
         assertEquals(scenarioMock, result);
     }
@@ -76,17 +89,30 @@ class ScenarioFactoryTest {
     }
 
     @Test
-    void createScenario_shouldReturnResultOfGroupScenarioFactory_WhenChatIsGroup() {
+    void createScenario_shouldReturnResultOfGroupScenarioFactory_WhenChatIsGroupAndKeyboardIsActual() {
         request.chatType = ChatType.GROUP;
+        Event event = mock(Event.class);
+
+        when(keyboardVersionStorageMock.getGroupKeyboardReleaseDate()).thenReturn(LocalDateTime.MIN);
+        when(event.getLastActivity()).thenReturn(LocalDateTime.MAX);
         when(groupScenarioFactoryMock.createScenario(request)).thenReturn(scenarioMock);
+        when(eventService.findByTelegramChatId(any())).thenReturn(event);
+
         Scenario result = scenarioFactory.createScenario(request);
         assertEquals(scenarioMock, result);
     }
 
     @Test
-    void createScenario_shouldReturnResultOfGroupScenarioFactory_WhenChatIsSuperGroup() {
+    void createScenario_shouldReturnResultOfGroupScenarioFactory_WhenChatIsSuperGroupAndKeyboardIsActual() {
         request.chatType = ChatType.SUPER_GROUP;
+        Event event = mock(Event.class);
+
+
+        when(keyboardVersionStorageMock.getGroupKeyboardReleaseDate()).thenReturn(LocalDateTime.MIN);
+        when(event.getLastActivity()).thenReturn(LocalDateTime.MAX);
         when(groupScenarioFactoryMock.createScenario(request)).thenReturn(scenarioMock);
+        when(eventService.findByTelegramChatId(any())).thenReturn(event);
+
         Scenario result = scenarioFactory.createScenario(request);
         assertEquals(scenarioMock, result);
     }

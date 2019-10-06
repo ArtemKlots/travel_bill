@@ -10,6 +10,7 @@ import com.travelBill.telegram.scenario.individual.IndividualScenarioFactory;
 import org.springframework.stereotype.Service;
 
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 @Service
 public class ScenarioFactory {
@@ -65,7 +66,7 @@ public class ScenarioFactory {
     private Scenario getScenarioForGroupChat(Request request) {
         Scenario scenario;
         Event event = eventService.findByTelegramChatId(request.chatId);
-        if (isNull(event.getLastActivity()) || event.getLastActivity().isBefore(keyboardVersionStorage.getGroupKeyboardReleaseDate())) {
+        if (nonNull(event) && (isNull(event.getLastActivity()) || event.getLastActivity().isBefore(keyboardVersionStorage.getGroupKeyboardReleaseDate()))) {
             scenario = updateGroupKeyboardScenario;
         } else {
             scenario = groupScenarioFactory.createScenario(request);

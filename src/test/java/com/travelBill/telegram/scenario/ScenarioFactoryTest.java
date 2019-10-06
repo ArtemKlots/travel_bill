@@ -55,12 +55,10 @@ class ScenarioFactoryTest {
 
     @Test
     void createScenario_shouldReturnResultOfGroupScenarioFactory_WhenMessageIsNullAndKeyboardIsActual() {
-        Event event = mock(Event.class);
 
         when(keyboardVersionStorageMock.getGroupKeyboardReleaseDate()).thenReturn(LocalDateTime.MIN);
-        when(event.getLastActivity()).thenReturn(LocalDateTime.MAX);
         when(groupScenarioFactoryMock.createScenario(request)).thenReturn(scenarioMock);
-        when(eventService.findByTelegramChatId(any())).thenReturn(event);
+        when(eventService.findByTelegramChatId(any())).thenReturn(null);
 
         Scenario result = scenarioFactory.createScenario(request);
         assertEquals(scenarioMock, result);

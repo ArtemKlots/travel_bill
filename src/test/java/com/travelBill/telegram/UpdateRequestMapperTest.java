@@ -1,12 +1,14 @@
 package com.travelBill.telegram;
 
+import com.travelBill.telegram.driver.Request;
+import com.travelBill.telegram.driver.UpdateRequestMapper;
 import org.junit.jupiter.api.Test;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import static com.travelBill.telegram.ChatType.*;
+import static com.travelBill.telegram.driver.ChatType.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 

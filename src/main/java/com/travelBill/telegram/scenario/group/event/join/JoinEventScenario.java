@@ -3,8 +3,8 @@ package com.travelBill.telegram.scenario.group.event.join;
 import com.travelBill.api.core.event.Event;
 import com.travelBill.api.core.event.EventService;
 import com.travelBill.api.core.event.exceptions.MemberAlreadyInEventException;
-import com.travelBill.telegram.Request;
-import com.travelBill.telegram.Response;
+import com.travelBill.telegram.driver.Request;
+import com.travelBill.telegram.driver.Response;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
 import org.springframework.stereotype.Service;
 

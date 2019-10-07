@@ -1,7 +1,7 @@
 package com.travelBill.telegram.scenario.common.scenario;
 
-import com.travelBill.telegram.Request;
-import com.travelBill.telegram.scenario.group.bill.AddBillCommandParser;
+import com.travelBill.telegram.driver.Request;
+import com.travelBill.telegram.scenario.individual.bill.AddBillCommandParser;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,7 +23,7 @@ public class BillScenarioHelper {
         return request.hasMessage() && request.message.equals("Show debts");
     }
 
-    public boolean isShowLastTransactionsSignal(Request request) {
-        return request.hasMessage() && request.message.equals("Show last transactions");
+    public boolean isShowLastBillsSignal(Request request) {
+        return request.hasMessage() && request.message.equals("Show last bills");
     }
 }

@@ -24,6 +24,7 @@ public class SwitchEventScenario implements Scenario {
     public Response execute(Request request) {
         Long eventId = extractEventId(request);
         User updatedUser = userService.changeCurrentEvent(request.user.getId(), eventId);
+        request.user = updatedUser;
         botApi.deleteMessage(request.chatId, request.messageId);
 
         return buildResponse(updatedUser);

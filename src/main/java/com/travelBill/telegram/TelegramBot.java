@@ -9,6 +9,7 @@ import com.travelBill.telegram.driver.UpdateRequestMapper;
 import com.travelBill.telegram.exceptions.UserIsNotSetUpException;
 import com.travelBill.telegram.scenario.ScenarioFactory;
 import com.travelBill.telegram.scenario.UnknownScenario;
+import com.travelBill.telegram.user.ActivityService;
 import com.travelBill.telegram.user.TelegramUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,12 +24,17 @@ import static com.rainerhahnekamp.sneakythrow.Sneaky.sneak;
 public class TelegramBot extends TelegramLongPollingBot {
 
     private final TelegramUserService telegramUserService;
+    private final ActivityService activityService;
     private final ScenarioFactory scenarioFactory;
     private final ApplicationConfiguration applicationConfiguration;
 
     @Autowired
-    public TelegramBot(TelegramUserService telegramUserService, ScenarioFactory scenarioFactory, ApplicationConfiguration applicationConfiguration) {
+    public TelegramBot(TelegramUserService telegramUserService,
+                       ActivityService activityService,
+                       ScenarioFactory scenarioFactory,
+                       ApplicationConfiguration applicationConfiguration) {
         this.telegramUserService = telegramUserService;
+        this.activityService = activityService;
         this.scenarioFactory = scenarioFactory;
         this.applicationConfiguration = applicationConfiguration;
     }
@@ -44,6 +50,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 SendMessage message = new ResponseSendMessageMapper().mapTo(response, request.chatId);
                 execute(message);
             }
+            activityService.registerActivity(request);
         } catch (Exception e) {
             e.printStackTrace();
             respondWithError(request);

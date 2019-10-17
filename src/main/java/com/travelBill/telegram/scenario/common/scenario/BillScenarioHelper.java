@@ -26,4 +26,8 @@ public class BillScenarioHelper {
     public boolean isShowLastBillsSignal(Request request) {
         return request.hasMessage() && request.message.equals("Show last bills");
     }
+
+    public boolean isShowTotalSignal(Request request) {
+        return request.hasMessage() && request.message.equals("Show total");
+    }
 }

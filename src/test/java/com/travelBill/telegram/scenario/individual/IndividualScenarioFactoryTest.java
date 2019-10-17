@@ -13,6 +13,7 @@ import com.travelBill.telegram.scenario.individual.bill.lastBills.ShowLastBillsS
 import com.travelBill.telegram.scenario.individual.event.ShowCurrentEventScenario;
 import com.travelBill.telegram.scenario.individual.event.ShowEventsListScenario;
 import com.travelBill.telegram.scenario.individual.event.SwitchEventScenario;
+import com.travelBill.telegram.scenario.individual.event.totalSpent.ShowTotalSpentByEventScenario;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -34,6 +35,7 @@ class IndividualScenarioFactoryTest {
     private ShowDebtsScenario showDebtsScenario = mock(ShowDebtsScenario.class);
     private Request request = mock(Request.class);
     private IndividualScenarioFactory individualScenarioFactory;
+    private ShowTotalSpentByEventScenario showTotalSpentByEventScenario;
 
     @BeforeEach
     void setupContextProvider() {
@@ -47,7 +49,8 @@ class IndividualScenarioFactoryTest {
                 addBillScenario,
                 deleteBillScenario,
                 showBillsToDeleteScenario,
-                showDebtsScenario);
+                showDebtsScenario,
+                showTotalSpentByEventScenario);
     }
 
     @Test

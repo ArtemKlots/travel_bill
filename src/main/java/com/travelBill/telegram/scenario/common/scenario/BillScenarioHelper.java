@@ -20,7 +20,7 @@ public class BillScenarioHelper {
     }
 
     public boolean isDeleteBillCancellationSignal(Request request) {
-        return request.hasCallbackQueryData() && request.callbackQueryData.contentEquals("cancel_delete_bill");
+        return request.hasCallbackQueryData() && request.callbackQueryData.contentEquals("cancel_bill_deleting");
     }
 
     public boolean isShowDebtsSignal(Request request) {

@@ -1,4 +1,4 @@
-package com.travelBill.telegram.scenario.individual.bill.delete.cancel;
+package com.travelBill.telegram.scenario;
 
 import com.travelBill.telegram.driver.BotApi;
 import com.travelBill.telegram.driver.Request;
@@ -7,10 +7,10 @@ import com.travelBill.telegram.scenario.common.scenario.Scenario;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CancelBillDeletingScenario implements Scenario {
+public class DeletePreviousMessageScenario implements Scenario {
     private final BotApi botApi;
 
-    public CancelBillDeletingScenario(BotApi botApi) {
+    public DeletePreviousMessageScenario(BotApi botApi) {
         this.botApi = botApi;
     }
 

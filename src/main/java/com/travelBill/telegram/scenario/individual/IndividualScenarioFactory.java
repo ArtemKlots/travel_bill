@@ -1,13 +1,13 @@
 package com.travelBill.telegram.scenario.individual;
 
 import com.travelBill.telegram.driver.Request;
+import com.travelBill.telegram.scenario.DeletePreviousMessageScenario;
 import com.travelBill.telegram.scenario.common.ScenarioNotFoundException;
 import com.travelBill.telegram.scenario.common.scenario.BillScenarioHelper;
 import com.travelBill.telegram.scenario.common.scenario.EventScenarioHelper;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
 import com.travelBill.telegram.scenario.individual.bill.add.AddBillScenario;
 import com.travelBill.telegram.scenario.individual.bill.debts.ShowDebtsScenario;
-import com.travelBill.telegram.scenario.individual.bill.delete.cancel.CancelBillDeletingScenario;
 import com.travelBill.telegram.scenario.individual.bill.delete.confirm.DeleteBillScenario;
 import com.travelBill.telegram.scenario.individual.bill.delete.request.ShowBillsToDeleteScenario;
 import com.travelBill.telegram.scenario.individual.bill.lastBills.ShowLastBillsScenario;
@@ -29,7 +29,7 @@ public class IndividualScenarioFactory {
     private final ShowLastBillsScenario showLastBillsScenario;
     private final AddBillScenario addBillScenario;
     private final DeleteBillScenario deleteBillScenario;
-    private final CancelBillDeletingScenario cancelBillDeletingScenario;
+    private final DeletePreviousMessageScenario deletePreviousMessageScenario;
     private final ShowBillsToDeleteScenario showBillsToDeleteScenario;
     private final ShowDebtsScenario showDebtsScenario;
 
@@ -43,7 +43,7 @@ public class IndividualScenarioFactory {
                                      ShowLastBillsScenario showLastBillsScenario,
                                      AddBillScenario addBillScenario,
                                      DeleteBillScenario deleteBillScenario,
-                                     CancelBillDeletingScenario cancelBillDeletingScenario,
+                                     DeletePreviousMessageScenario deletePreviousMessageScenario,
                                      ShowBillsToDeleteScenario showBillsToDeleteScenario,
                                      ShowDebtsScenario showDebtsScenario) {
         this.eventScenarioHelper = eventScenarioHelper;
@@ -54,7 +54,7 @@ public class IndividualScenarioFactory {
         this.showLastBillsScenario = showLastBillsScenario;
         this.addBillScenario = addBillScenario;
         this.deleteBillScenario = deleteBillScenario;
-        this.cancelBillDeletingScenario = cancelBillDeletingScenario;
+        this.deletePreviousMessageScenario = deletePreviousMessageScenario;
         this.showBillsToDeleteScenario = showBillsToDeleteScenario;
         this.showDebtsScenario = showDebtsScenario;
     }
@@ -72,6 +72,10 @@ public class IndividualScenarioFactory {
 
         if (eventScenarioHelper.isShowCurrentEventSignal(request)) {
             selectedScenario = showCurrentEventScenario;
+        }
+
+        if (eventScenarioHelper.isCancelEventSwitchingSignal(request)) {
+            selectedScenario = deletePreviousMessageScenario;
         }
 
         if (billScenarioHelper.isShowLastBillsSignal(request)) {
@@ -92,7 +96,7 @@ public class IndividualScenarioFactory {
         }
 
         if (billScenarioHelper.isDeleteBillCancellationSignal(request)) {
-            selectedScenario = cancelBillDeletingScenario;
+            selectedScenario = deletePreviousMessageScenario;
         }
 
         if (billScenarioHelper.isShowDebtsSignal(request)) {

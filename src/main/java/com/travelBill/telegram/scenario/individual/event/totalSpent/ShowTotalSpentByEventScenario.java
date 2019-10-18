@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 
 import static java.util.Objects.isNull;
 
-// TODO: 18.10.19 Add tests
 @Service
 public class ShowTotalSpentByEventScenario implements Scenario {
     private final BillService billService;

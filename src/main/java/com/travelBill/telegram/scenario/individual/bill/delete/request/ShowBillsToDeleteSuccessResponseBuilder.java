@@ -28,6 +28,8 @@ public class ShowBillsToDeleteSuccessResponseBuilder implements ResponseBuilder 
             inlineKeyboard.addRow(button);
         }
 
+        inlineKeyboard.addRow(new InlineKeyboardButton().setText("Cancel").setCallbackData("cancel_delete_bill"));
+
         return inlineKeyboard;
     }
 }

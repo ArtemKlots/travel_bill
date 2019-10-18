@@ -7,6 +7,7 @@ import com.travelBill.telegram.scenario.common.scenario.EventScenarioHelper;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
 import com.travelBill.telegram.scenario.individual.bill.add.AddBillScenario;
 import com.travelBill.telegram.scenario.individual.bill.debts.ShowDebtsScenario;
+import com.travelBill.telegram.scenario.individual.bill.delete.cancel.CancelBillDeletingScenario;
 import com.travelBill.telegram.scenario.individual.bill.delete.confirm.DeleteBillScenario;
 import com.travelBill.telegram.scenario.individual.bill.delete.request.ShowBillsToDeleteScenario;
 import com.travelBill.telegram.scenario.individual.bill.lastBills.ShowLastBillsScenario;
@@ -30,6 +31,7 @@ class IndividualScenarioFactoryTest {
     private ShowLastBillsScenario showLastBillsScenario = mock(ShowLastBillsScenario.class);
     private AddBillScenario addBillScenario = mock(AddBillScenario.class);
     private DeleteBillScenario deleteBillScenario = mock(DeleteBillScenario.class);
+    private CancelBillDeletingScenario cancelBillDeletingScenarioMock = mock(CancelBillDeletingScenario.class);
     private ShowBillsToDeleteScenario showBillsToDeleteScenario = mock(ShowBillsToDeleteScenario.class);
     private ShowDebtsScenario showDebtsScenario = mock(ShowDebtsScenario.class);
     private Request request = mock(Request.class);
@@ -46,6 +48,7 @@ class IndividualScenarioFactoryTest {
                 showLastBillsScenario,
                 addBillScenario,
                 deleteBillScenario,
+                cancelBillDeletingScenarioMock,
                 showBillsToDeleteScenario,
                 showDebtsScenario);
     }

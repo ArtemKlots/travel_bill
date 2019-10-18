@@ -7,6 +7,7 @@ import com.travelBill.telegram.scenario.common.scenario.EventScenarioHelper;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
 import com.travelBill.telegram.scenario.individual.bill.add.AddBillScenario;
 import com.travelBill.telegram.scenario.individual.bill.debts.ShowDebtsScenario;
+import com.travelBill.telegram.scenario.individual.bill.delete.cancel.CancelBillDeletingScenario;
 import com.travelBill.telegram.scenario.individual.bill.delete.confirm.DeleteBillScenario;
 import com.travelBill.telegram.scenario.individual.bill.delete.request.ShowBillsToDeleteScenario;
 import com.travelBill.telegram.scenario.individual.bill.lastBills.ShowLastBillsScenario;
@@ -28,6 +29,7 @@ public class IndividualScenarioFactory {
     private final ShowLastBillsScenario showLastBillsScenario;
     private final AddBillScenario addBillScenario;
     private final DeleteBillScenario deleteBillScenario;
+    private final CancelBillDeletingScenario cancelBillDeletingScenario;
     private final ShowBillsToDeleteScenario showBillsToDeleteScenario;
     private final ShowDebtsScenario showDebtsScenario;
 
@@ -41,6 +43,7 @@ public class IndividualScenarioFactory {
                                      ShowLastBillsScenario showLastBillsScenario,
                                      AddBillScenario addBillScenario,
                                      DeleteBillScenario deleteBillScenario,
+                                     CancelBillDeletingScenario cancelBillDeletingScenario,
                                      ShowBillsToDeleteScenario showBillsToDeleteScenario,
                                      ShowDebtsScenario showDebtsScenario) {
         this.eventScenarioHelper = eventScenarioHelper;
@@ -51,6 +54,7 @@ public class IndividualScenarioFactory {
         this.showLastBillsScenario = showLastBillsScenario;
         this.addBillScenario = addBillScenario;
         this.deleteBillScenario = deleteBillScenario;
+        this.cancelBillDeletingScenario = cancelBillDeletingScenario;
         this.showBillsToDeleteScenario = showBillsToDeleteScenario;
         this.showDebtsScenario = showDebtsScenario;
     }
@@ -85,6 +89,10 @@ public class IndividualScenarioFactory {
 
         if (billScenarioHelper.isDeleteBillConfirmationSignal(request)) {
             selectedScenario = deleteBillScenario;
+        }
+
+        if (billScenarioHelper.isDeleteBillCancellationSignal(request)) {
+            selectedScenario = cancelBillDeletingScenario;
         }
 
         if (billScenarioHelper.isShowDebtsSignal(request)) {

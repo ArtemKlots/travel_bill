@@ -13,6 +13,9 @@ import com.travelBill.telegram.scenario.individual.bill.lastBills.ShowLastBillsS
 import com.travelBill.telegram.scenario.individual.event.ShowCurrentEventScenario;
 import com.travelBill.telegram.scenario.individual.event.ShowEventsListScenario;
 import com.travelBill.telegram.scenario.individual.event.SwitchEventScenario;
+import com.travelBill.telegram.scenario.individual.event.close.CloseEventRequestCancelScenario;
+import com.travelBill.telegram.scenario.individual.event.close.CloseEventRequestScenario;
+import com.travelBill.telegram.scenario.individual.event.close.CloseEventRequestSubmitScenario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +33,9 @@ public class IndividualScenarioFactory {
     private final DeleteBillScenario deleteBillScenario;
     private final ShowBillsToDeleteScenario showBillsToDeleteScenario;
     private final ShowDebtsScenario showDebtsScenario;
+    private final CloseEventRequestScenario closeEventRequestScenario;
+    private final CloseEventRequestCancelScenario closeEventRequestCancelScenario;
+    private final CloseEventRequestSubmitScenario closeEventRequestSubmitScenario;
 
 
     @Autowired
@@ -42,7 +48,10 @@ public class IndividualScenarioFactory {
                                      AddBillScenario addBillScenario,
                                      DeleteBillScenario deleteBillScenario,
                                      ShowBillsToDeleteScenario showBillsToDeleteScenario,
-                                     ShowDebtsScenario showDebtsScenario) {
+                                     ShowDebtsScenario showDebtsScenario,
+                                     CloseEventRequestScenario closeEventRequestScenario,
+                                     CloseEventRequestCancelScenario closeEventRequestCancelScenario,
+                                     CloseEventRequestSubmitScenario closeEventRequestSubmitScenario) {
         this.eventScenarioHelper = eventScenarioHelper;
         this.billScenarioHelper = billScenarioHelper;
         this.showEventsListScenario = showEventsListScenario;
@@ -53,6 +62,9 @@ public class IndividualScenarioFactory {
         this.deleteBillScenario = deleteBillScenario;
         this.showBillsToDeleteScenario = showBillsToDeleteScenario;
         this.showDebtsScenario = showDebtsScenario;
+        this.closeEventRequestScenario = closeEventRequestScenario;
+        this.closeEventRequestCancelScenario = closeEventRequestCancelScenario;
+        this.closeEventRequestSubmitScenario = closeEventRequestSubmitScenario;
     }
 
     public Scenario createScenario(Request request) throws ScenarioNotFoundException {
@@ -68,6 +80,18 @@ public class IndividualScenarioFactory {
 
         if (eventScenarioHelper.isShowCurrentEventSignal(request)) {
             selectedScenario = showCurrentEventScenario;
+        }
+
+        if (eventScenarioHelper.isCloseEventRequest(request)) {
+            selectedScenario = closeEventRequestScenario;
+        }
+
+        if (eventScenarioHelper.isCloseEventCancelSignal(request)) {
+            selectedScenario = closeEventRequestCancelScenario;
+        }
+
+        if (eventScenarioHelper.isCloseEventSumbitSignal(request)) {
+            selectedScenario = closeEventRequestSubmitScenario;
         }
 
         if (billScenarioHelper.isShowLastBillsSignal(request)) {

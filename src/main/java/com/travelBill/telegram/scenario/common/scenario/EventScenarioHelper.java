@@ -15,11 +15,24 @@ public class EventScenarioHelper {
         return request.hasCallbackQueryData() && request.callbackQueryData.startsWith("switch_to_event-");
     }
 
+    public boolean isCloseEventCancelSignal(Request request) {
+        return request.hasCallbackQueryData() && request.callbackQueryData.startsWith("close_event_request_cancel");
+    }
+
+
+    public boolean isCloseEventSumbitSignal(Request request) {
+        return request.hasCallbackQueryData() && request.callbackQueryData.startsWith("close_event_request_submit");
+    }
+
     public boolean isJoinEventsSignal(Request request) {
         return request.hasMessage() && request.message.toLowerCase().startsWith("/join");
     }
 
     public boolean isShowCurrentEventSignal(Request request) {
         return request.hasMessage() && request.message.equals("Show current event");
+    }
+
+    public boolean isCloseEventRequest(Request request) {
+        return request.hasMessage() && request.message.equals("Close event");
     }
 }

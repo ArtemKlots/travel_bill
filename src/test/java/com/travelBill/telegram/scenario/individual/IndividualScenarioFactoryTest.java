@@ -13,6 +13,9 @@ import com.travelBill.telegram.scenario.individual.bill.lastBills.ShowLastBillsS
 import com.travelBill.telegram.scenario.individual.event.ShowCurrentEventScenario;
 import com.travelBill.telegram.scenario.individual.event.ShowEventsListScenario;
 import com.travelBill.telegram.scenario.individual.event.SwitchEventScenario;
+import com.travelBill.telegram.scenario.individual.event.close.CloseEventRequestCancelScenario;
+import com.travelBill.telegram.scenario.individual.event.close.CloseEventRequestScenario;
+import com.travelBill.telegram.scenario.individual.event.close.CloseEventRequestSubmitScenario;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -32,6 +35,9 @@ class IndividualScenarioFactoryTest {
     private DeleteBillScenario deleteBillScenario = mock(DeleteBillScenario.class);
     private ShowBillsToDeleteScenario showBillsToDeleteScenario = mock(ShowBillsToDeleteScenario.class);
     private ShowDebtsScenario showDebtsScenario = mock(ShowDebtsScenario.class);
+    private CloseEventRequestScenario closeEventRequestScenarioMock = mock(CloseEventRequestScenario.class);
+    private CloseEventRequestSubmitScenario closeEventRequestSubmitScenarioMock = mock(CloseEventRequestSubmitScenario.class);
+    private CloseEventRequestCancelScenario closeEventRequestCancelScenarioMock = mock(CloseEventRequestCancelScenario.class);
     private Request request = mock(Request.class);
     private IndividualScenarioFactory individualScenarioFactory;
 
@@ -47,7 +53,10 @@ class IndividualScenarioFactoryTest {
                 addBillScenario,
                 deleteBillScenario,
                 showBillsToDeleteScenario,
-                showDebtsScenario);
+                showDebtsScenario,
+                closeEventRequestScenarioMock,
+                closeEventRequestCancelScenarioMock,
+                closeEventRequestSubmitScenarioMock);
     }
 
     @Test

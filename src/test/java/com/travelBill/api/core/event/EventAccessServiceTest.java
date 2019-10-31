@@ -6,7 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -46,7 +46,7 @@ class EventAccessServiceTest {
     void hasAccessToEvent_shouldReturnFalse_whenUserIsNotMemberOfEvent() {
         Event forbiddenEvent = new Event();
         forbiddenEvent.setId(11L);
-        user.setEvents(List.of(event));
+        user.setEvents(Collections.singletonList(event));
 
         when(userRepositoryMock.getOne(user.getId())).thenReturn(user);
         assertFalse(eventAccessService.hasAccessToEvent(user.getId(), forbiddenEvent.getId()));

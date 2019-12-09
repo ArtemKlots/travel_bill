@@ -19,6 +19,10 @@ public class BillScenarioHelper {
         return request.hasCallbackQueryData() && request.callbackQueryData.startsWith("delete_bill");
     }
 
+    public boolean isDeleteBillCancellationSignal(Request request) {
+        return request.hasCallbackQueryData() && request.callbackQueryData.contentEquals("cancel_bill_deleting");
+    }
+
     public boolean isShowDebtsSignal(Request request) {
         return request.hasMessage() && request.message.equals("Show debts");
     }

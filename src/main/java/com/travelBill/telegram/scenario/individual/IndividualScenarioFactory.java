@@ -1,6 +1,7 @@
 package com.travelBill.telegram.scenario.individual;
 
 import com.travelBill.telegram.driver.Request;
+import com.travelBill.telegram.scenario.DeletePreviousMessageScenario;
 import com.travelBill.telegram.scenario.common.ScenarioNotFoundException;
 import com.travelBill.telegram.scenario.common.scenario.BillScenarioHelper;
 import com.travelBill.telegram.scenario.common.scenario.EventScenarioHelper;
@@ -29,6 +30,7 @@ public class IndividualScenarioFactory {
     private final ShowLastBillsScenario showLastBillsScenario;
     private final AddBillScenario addBillScenario;
     private final DeleteBillScenario deleteBillScenario;
+    private final DeletePreviousMessageScenario deletePreviousMessageScenario;
     private final ShowBillsToDeleteScenario showBillsToDeleteScenario;
     private final ShowDebtsScenario showDebtsScenario;
     private final ShowTotalSpentByEventScenario showTotalSpentByEventScenario;
@@ -43,6 +45,7 @@ public class IndividualScenarioFactory {
                                      ShowLastBillsScenario showLastBillsScenario,
                                      AddBillScenario addBillScenario,
                                      DeleteBillScenario deleteBillScenario,
+                                     DeletePreviousMessageScenario deletePreviousMessageScenario,
                                      ShowBillsToDeleteScenario showBillsToDeleteScenario,
                                      ShowDebtsScenario showDebtsScenario, ShowTotalSpentByEventScenario showTotalSpentByEventScenario) {
         this.eventScenarioHelper = eventScenarioHelper;
@@ -53,6 +56,7 @@ public class IndividualScenarioFactory {
         this.showLastBillsScenario = showLastBillsScenario;
         this.addBillScenario = addBillScenario;
         this.deleteBillScenario = deleteBillScenario;
+        this.deletePreviousMessageScenario = deletePreviousMessageScenario;
         this.showBillsToDeleteScenario = showBillsToDeleteScenario;
         this.showDebtsScenario = showDebtsScenario;
         this.showTotalSpentByEventScenario = showTotalSpentByEventScenario;
@@ -73,6 +77,10 @@ public class IndividualScenarioFactory {
             selectedScenario = showCurrentEventScenario;
         }
 
+        if (eventScenarioHelper.isCancelEventSwitchingSignal(request)) {
+            selectedScenario = deletePreviousMessageScenario;
+        }
+
         if (billScenarioHelper.isShowLastBillsSignal(request)) {
             selectedScenario = showLastBillsScenario;
         }
@@ -88,6 +96,10 @@ public class IndividualScenarioFactory {
 
         if (billScenarioHelper.isDeleteBillConfirmationSignal(request)) {
             selectedScenario = deleteBillScenario;
+        }
+
+        if (billScenarioHelper.isDeleteBillCancellationSignal(request)) {
+            selectedScenario = deletePreviousMessageScenario;
         }
 
         if (billScenarioHelper.isShowDebtsSignal(request)) {

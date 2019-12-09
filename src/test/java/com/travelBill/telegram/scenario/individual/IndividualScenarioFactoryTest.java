@@ -1,6 +1,7 @@
 package com.travelBill.telegram.scenario.individual;
 
 import com.travelBill.telegram.driver.Request;
+import com.travelBill.telegram.scenario.DeletePreviousMessageScenario;
 import com.travelBill.telegram.scenario.common.ScenarioNotFoundException;
 import com.travelBill.telegram.scenario.common.scenario.BillScenarioHelper;
 import com.travelBill.telegram.scenario.common.scenario.EventScenarioHelper;
@@ -31,6 +32,7 @@ class IndividualScenarioFactoryTest {
     private ShowLastBillsScenario showLastBillsScenario = mock(ShowLastBillsScenario.class);
     private AddBillScenario addBillScenario = mock(AddBillScenario.class);
     private DeleteBillScenario deleteBillScenario = mock(DeleteBillScenario.class);
+    private DeletePreviousMessageScenario deletePreviousMessageScenarioMock = mock(DeletePreviousMessageScenario.class);
     private ShowBillsToDeleteScenario showBillsToDeleteScenario = mock(ShowBillsToDeleteScenario.class);
     private ShowDebtsScenario showDebtsScenario = mock(ShowDebtsScenario.class);
     private Request request = mock(Request.class);
@@ -48,6 +50,7 @@ class IndividualScenarioFactoryTest {
                 showLastBillsScenario,
                 addBillScenario,
                 deleteBillScenario,
+                deletePreviousMessageScenarioMock,
                 showBillsToDeleteScenario,
                 showDebtsScenario,
                 showTotalSpentByEventScenario);

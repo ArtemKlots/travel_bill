@@ -1,6 +1,7 @@
 package com.travelBill.telegram.scenario.individual;
 
 import com.travelBill.telegram.driver.Request;
+import com.travelBill.telegram.scenario.DeletePreviousMessageScenario;
 import com.travelBill.telegram.scenario.common.ScenarioNotFoundException;
 import com.travelBill.telegram.scenario.common.scenario.BillScenarioHelper;
 import com.travelBill.telegram.scenario.common.scenario.EventScenarioHelper;
@@ -16,6 +17,7 @@ import com.travelBill.telegram.scenario.individual.event.SwitchEventScenario;
 import com.travelBill.telegram.scenario.individual.event.close.CloseEventRequestCancelScenario;
 import com.travelBill.telegram.scenario.individual.event.close.CloseEventRequestScenario;
 import com.travelBill.telegram.scenario.individual.event.close.CloseEventRequestSubmitScenario;
+import com.travelBill.telegram.scenario.individual.event.totalSpent.ShowTotalSpentByEventScenario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,11 +33,13 @@ public class IndividualScenarioFactory {
     private final ShowLastBillsScenario showLastBillsScenario;
     private final AddBillScenario addBillScenario;
     private final DeleteBillScenario deleteBillScenario;
+    private final DeletePreviousMessageScenario deletePreviousMessageScenario;
     private final ShowBillsToDeleteScenario showBillsToDeleteScenario;
     private final ShowDebtsScenario showDebtsScenario;
     private final CloseEventRequestScenario closeEventRequestScenario;
     private final CloseEventRequestCancelScenario closeEventRequestCancelScenario;
     private final CloseEventRequestSubmitScenario closeEventRequestSubmitScenario;
+    private final ShowTotalSpentByEventScenario showTotalSpentByEventScenario;
 
 
     @Autowired
@@ -47,11 +51,13 @@ public class IndividualScenarioFactory {
                                      ShowLastBillsScenario showLastBillsScenario,
                                      AddBillScenario addBillScenario,
                                      DeleteBillScenario deleteBillScenario,
+                                     DeletePreviousMessageScenario deletePreviousMessageScenario,
                                      ShowBillsToDeleteScenario showBillsToDeleteScenario,
                                      ShowDebtsScenario showDebtsScenario,
                                      CloseEventRequestScenario closeEventRequestScenario,
                                      CloseEventRequestCancelScenario closeEventRequestCancelScenario,
-                                     CloseEventRequestSubmitScenario closeEventRequestSubmitScenario) {
+                                     CloseEventRequestSubmitScenario closeEventRequestSubmitScenario,
+                                     ShowTotalSpentByEventScenario showTotalSpentByEventScenario) {
         this.eventScenarioHelper = eventScenarioHelper;
         this.billScenarioHelper = billScenarioHelper;
         this.showEventsListScenario = showEventsListScenario;
@@ -60,11 +66,13 @@ public class IndividualScenarioFactory {
         this.showLastBillsScenario = showLastBillsScenario;
         this.addBillScenario = addBillScenario;
         this.deleteBillScenario = deleteBillScenario;
+        this.deletePreviousMessageScenario = deletePreviousMessageScenario;
         this.showBillsToDeleteScenario = showBillsToDeleteScenario;
         this.showDebtsScenario = showDebtsScenario;
         this.closeEventRequestScenario = closeEventRequestScenario;
         this.closeEventRequestCancelScenario = closeEventRequestCancelScenario;
         this.closeEventRequestSubmitScenario = closeEventRequestSubmitScenario;
+        this.showTotalSpentByEventScenario = showTotalSpentByEventScenario;
     }
 
     public Scenario createScenario(Request request) throws ScenarioNotFoundException {
@@ -83,7 +91,7 @@ public class IndividualScenarioFactory {
         }
 
         if (eventScenarioHelper.isCloseEventRequest(request)) {
-            selectedScenario = closeEventRequestScenario;
+            selectedScenario = deletePreviousMessageScenario;
         }
 
         if (eventScenarioHelper.isCloseEventCancelSignal(request)) {
@@ -111,8 +119,16 @@ public class IndividualScenarioFactory {
             selectedScenario = deleteBillScenario;
         }
 
+        if (billScenarioHelper.isDeleteBillCancellationSignal(request)) {
+            selectedScenario = deletePreviousMessageScenario;
+        }
+
         if (billScenarioHelper.isShowDebtsSignal(request)) {
             selectedScenario = showDebtsScenario;
+        }
+
+        if (billScenarioHelper.isShowTotalSignal(request)) {
+            selectedScenario = showTotalSpentByEventScenario;
         }
 
         if (isNull(selectedScenario)) {

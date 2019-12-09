@@ -1,6 +1,7 @@
 package com.travelBill.telegram.scenario.individual;
 
 import com.travelBill.telegram.driver.Request;
+import com.travelBill.telegram.scenario.DeletePreviousMessageScenario;
 import com.travelBill.telegram.scenario.common.ScenarioNotFoundException;
 import com.travelBill.telegram.scenario.common.scenario.BillScenarioHelper;
 import com.travelBill.telegram.scenario.common.scenario.EventScenarioHelper;
@@ -16,6 +17,7 @@ import com.travelBill.telegram.scenario.individual.event.SwitchEventScenario;
 import com.travelBill.telegram.scenario.individual.event.close.CloseEventRequestCancelScenario;
 import com.travelBill.telegram.scenario.individual.event.close.CloseEventRequestScenario;
 import com.travelBill.telegram.scenario.individual.event.close.CloseEventRequestSubmitScenario;
+import com.travelBill.telegram.scenario.individual.event.totalSpent.ShowTotalSpentByEventScenario;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -33,6 +35,7 @@ class IndividualScenarioFactoryTest {
     private ShowLastBillsScenario showLastBillsScenario = mock(ShowLastBillsScenario.class);
     private AddBillScenario addBillScenario = mock(AddBillScenario.class);
     private DeleteBillScenario deleteBillScenario = mock(DeleteBillScenario.class);
+    private DeletePreviousMessageScenario deletePreviousMessageScenarioMock = mock(DeletePreviousMessageScenario.class);
     private ShowBillsToDeleteScenario showBillsToDeleteScenario = mock(ShowBillsToDeleteScenario.class);
     private ShowDebtsScenario showDebtsScenario = mock(ShowDebtsScenario.class);
     private CloseEventRequestScenario closeEventRequestScenarioMock = mock(CloseEventRequestScenario.class);
@@ -40,6 +43,7 @@ class IndividualScenarioFactoryTest {
     private CloseEventRequestCancelScenario closeEventRequestCancelScenarioMock = mock(CloseEventRequestCancelScenario.class);
     private Request request = mock(Request.class);
     private IndividualScenarioFactory individualScenarioFactory;
+    private ShowTotalSpentByEventScenario showTotalSpentByEventScenario;
 
     @BeforeEach
     void setupContextProvider() {
@@ -52,11 +56,13 @@ class IndividualScenarioFactoryTest {
                 showLastBillsScenario,
                 addBillScenario,
                 deleteBillScenario,
+                deletePreviousMessageScenarioMock,
                 showBillsToDeleteScenario,
                 showDebtsScenario,
                 closeEventRequestScenarioMock,
                 closeEventRequestCancelScenarioMock,
-                closeEventRequestSubmitScenarioMock);
+                closeEventRequestSubmitScenarioMock,
+                showTotalSpentByEventScenario);
     }
 
     @Test

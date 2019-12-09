@@ -19,11 +19,19 @@ public class BillScenarioHelper {
         return request.hasCallbackQueryData() && request.callbackQueryData.startsWith("delete_bill");
     }
 
+    public boolean isDeleteBillCancellationSignal(Request request) {
+        return request.hasCallbackQueryData() && request.callbackQueryData.contentEquals("cancel_bill_deleting");
+    }
+
     public boolean isShowDebtsSignal(Request request) {
         return request.hasMessage() && request.message.equals("Show debts");
     }
 
     public boolean isShowLastBillsSignal(Request request) {
         return request.hasMessage() && request.message.equals("Show last bills");
+    }
+
+    public boolean isShowTotalSignal(Request request) {
+        return request.hasMessage() && request.message.equals("Show total");
     }
 }

@@ -49,6 +49,8 @@ public class ShowEventsListResponseBuilder implements ResponseBuilder {
             inlineKeyboard.addRow(button);
         }
 
+        inlineKeyboard.addRow(new InlineKeyboardButton().setText("Cancel").setCallbackData("cancel_event_switching"));
+
         return inlineKeyboard;
     }
 }

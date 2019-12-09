@@ -2,7 +2,7 @@ package com.travelBill.telegram.scenario.individual.event.close;
 
 import com.travelBill.api.core.event.Event;
 import com.travelBill.api.core.event.EventService;
-import com.travelBill.api.core.event.exceptions.EventAlreadyClosedException;
+import com.travelBill.api.core.event.exceptions.ClosedEventException;
 import com.travelBill.telegram.driver.BotApi;
 import com.travelBill.telegram.driver.ParseMode;
 import com.travelBill.telegram.driver.Request;
@@ -31,7 +31,7 @@ public class CloseEventRequestSubmitScenario implements Scenario {
         try {
             eventService.closeEvent(event.getId(), request.user.getId());
             response.message = String.format("Event *%s* was successfully *closed* ", event.getTitle());
-        } catch (EventAlreadyClosedException e) {
+        } catch (ClosedEventException e) {
             response.message = String.format("Cannot close event %s. *It is already closed*", event.getTitle());
         }
 

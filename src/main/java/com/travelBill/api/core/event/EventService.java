@@ -1,6 +1,6 @@
 package com.travelBill.api.core.event;
 
-import com.travelBill.api.core.event.exceptions.EventAlreadyClosedException;
+import com.travelBill.api.core.event.exceptions.ClosedEventException;
 import com.travelBill.api.core.event.exceptions.MemberAlreadyInEventException;
 import com.travelBill.api.core.exceptions.AccessDeniedException;
 import com.travelBill.api.core.user.User;
@@ -42,7 +42,7 @@ public class EventService {
         Event event = this.eventRepository.getOne(eventId);
 
         if (!event.isOpened()) {
-            throw new EventAlreadyClosedException();
+            throw new ClosedEventException();
         }
 
         event.setOpened(false);

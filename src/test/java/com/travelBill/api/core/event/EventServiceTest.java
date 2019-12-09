@@ -1,6 +1,6 @@
 package com.travelBill.api.core.event;
 
-import com.travelBill.api.core.event.exceptions.EventAlreadyClosedException;
+import com.travelBill.api.core.event.exceptions.ClosedEventException;
 import com.travelBill.api.core.exceptions.AccessDeniedException;
 import com.travelBill.api.core.user.User;
 import com.travelBill.api.core.user.UserService;
@@ -82,7 +82,7 @@ class EventServiceTest {
         when(eventAccessServiceMock.hasAccessToEvent(user.getId(), event.getId())).thenReturn(true);
         when(eventRepositorySpy.getOne(event.getId())).thenReturn(event);
 
-        assertThrows(EventAlreadyClosedException.class, () -> eventService.closeEvent(event.getId(), user.getId()));
+        assertThrows(ClosedEventException.class, () -> eventService.closeEvent(event.getId(), user.getId()));
     }
 
 }

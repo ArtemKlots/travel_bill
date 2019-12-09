@@ -13,6 +13,7 @@ import com.travelBill.telegram.scenario.individual.bill.lastBills.ShowLastBillsS
 import com.travelBill.telegram.scenario.individual.event.ShowCurrentEventScenario;
 import com.travelBill.telegram.scenario.individual.event.ShowEventsListScenario;
 import com.travelBill.telegram.scenario.individual.event.SwitchEventScenario;
+import com.travelBill.telegram.scenario.individual.event.totalSpent.ShowTotalSpentByEventScenario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,7 @@ public class IndividualScenarioFactory {
     private final DeleteBillScenario deleteBillScenario;
     private final ShowBillsToDeleteScenario showBillsToDeleteScenario;
     private final ShowDebtsScenario showDebtsScenario;
+    private final ShowTotalSpentByEventScenario showTotalSpentByEventScenario;
 
 
     @Autowired
@@ -42,7 +44,7 @@ public class IndividualScenarioFactory {
                                      AddBillScenario addBillScenario,
                                      DeleteBillScenario deleteBillScenario,
                                      ShowBillsToDeleteScenario showBillsToDeleteScenario,
-                                     ShowDebtsScenario showDebtsScenario) {
+                                     ShowDebtsScenario showDebtsScenario, ShowTotalSpentByEventScenario showTotalSpentByEventScenario) {
         this.eventScenarioHelper = eventScenarioHelper;
         this.billScenarioHelper = billScenarioHelper;
         this.showEventsListScenario = showEventsListScenario;
@@ -53,6 +55,7 @@ public class IndividualScenarioFactory {
         this.deleteBillScenario = deleteBillScenario;
         this.showBillsToDeleteScenario = showBillsToDeleteScenario;
         this.showDebtsScenario = showDebtsScenario;
+        this.showTotalSpentByEventScenario = showTotalSpentByEventScenario;
     }
 
     public Scenario createScenario(Request request) throws ScenarioNotFoundException {
@@ -89,6 +92,10 @@ public class IndividualScenarioFactory {
 
         if (billScenarioHelper.isShowDebtsSignal(request)) {
             selectedScenario = showDebtsScenario;
+        }
+
+        if (billScenarioHelper.isShowTotalSignal(request)) {
+            selectedScenario = showTotalSpentByEventScenario;
         }
 
         if (isNull(selectedScenario)) {

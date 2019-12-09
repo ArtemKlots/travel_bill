@@ -14,6 +14,10 @@ public class Response {
     public Response() {
     }
 
+    public Response(ParseMode parseMode) {
+        this.parseMode = parseMode;
+    }
+
     public Response(String message) {
         this.message = message;
     }

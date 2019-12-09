@@ -91,7 +91,7 @@ public class IndividualScenarioFactory {
         }
 
         if (eventScenarioHelper.isCloseEventRequest(request)) {
-            selectedScenario = deletePreviousMessageScenario;
+            selectedScenario = closeEventRequestScenario;
         }
 
         if (eventScenarioHelper.isCloseEventCancelSignal(request)) {

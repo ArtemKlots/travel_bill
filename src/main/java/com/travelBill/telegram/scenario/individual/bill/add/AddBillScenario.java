@@ -4,11 +4,13 @@ import com.travelBill.api.core.bill.Bill;
 import com.travelBill.api.core.bill.BillService;
 import com.travelBill.api.core.event.Event;
 import com.travelBill.api.core.event.EventService;
+import com.travelBill.api.core.event.exceptions.ClosedEventException;
 import com.travelBill.api.core.user.User;
 import com.travelBill.telegram.driver.BotApi;
 import com.travelBill.telegram.driver.Request;
 import com.travelBill.telegram.driver.Response;
 import com.travelBill.telegram.driver.ResponseBuilder;
+import com.travelBill.telegram.scenario.ClosedEventResponse;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
 import com.travelBill.telegram.scenario.individual.bill.AddBillCommandParser;
 import com.travelBill.telegram.scenario.individual.event.EventIsNotSelectedResponse;
@@ -48,6 +50,8 @@ public class AddBillScenario implements Scenario {
             ((AddBillSuccessResponseBuilder) responseBuilder).user = user;
 
             notifyInEventChat(user, event, bill);
+        } catch (ClosedEventException e) {
+            return new ClosedEventResponse(event);
         } catch (Exception e) {
             responseBuilder = new AddBillFailResponseBuilder();
             e.printStackTrace();

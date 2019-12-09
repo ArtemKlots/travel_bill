@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CloseEventRequestSubmitScenario implements Scenario {
+    private static final String lockSign = "\uD83D\uDD12";
     private final BotApi botApi;
     private final EventService eventService;
 
@@ -31,6 +32,7 @@ public class CloseEventRequestSubmitScenario implements Scenario {
         try {
             eventService.closeEvent(event.getId(), request.user.getId());
             response.message = String.format("Event *%s* was successfully *closed* ", event.getTitle());
+            botApi.sendMessage(event.getTelegramChatId(), new Response(String.format("%s %s closed this event", lockSign, request.user.getFullName())));
         } catch (ClosedEventException e) {
             response.message = String.format("Cannot close event %s. *It is already closed*", event.getTitle());
         }

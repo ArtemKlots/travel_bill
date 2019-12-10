@@ -8,6 +8,7 @@ import com.travelBill.telegram.scenario.common.scenario.Scenario;
 
 
 public class ManageEventScenario implements Scenario {
+    private static final String switchSign = "\uD83D\uDCDC";
 
     @Override
     public Response execute(Request request) {
@@ -15,7 +16,7 @@ public class ManageEventScenario implements Scenario {
         ReplyKeyboard keyboard = new ReplyKeyboard();
 
         ReplyKeyboardButton closeEventButton = new ReplyKeyboardButton().setText("Close event");
-        ReplyKeyboardButton switchToClosedEventButton = new ReplyKeyboardButton().setText("Switch to closed event");
+        ReplyKeyboardButton switchToClosedEventButton = new ReplyKeyboardButton().setText(switchSign + "Switch to closed event");
         ReplyKeyboardButton goBackButton = new ReplyKeyboardButton().setText("⬅️ Back to the previous menu");
 
         keyboard.addRow(closeEventButton);

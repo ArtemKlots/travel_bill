@@ -5,12 +5,14 @@ import com.travelBill.telegram.scenario.DeletePreviousMessageScenario;
 import com.travelBill.telegram.scenario.common.ScenarioNotFoundException;
 import com.travelBill.telegram.scenario.common.scenario.BillScenarioHelper;
 import com.travelBill.telegram.scenario.common.scenario.EventScenarioHelper;
+import com.travelBill.telegram.scenario.common.scenario.NavigationScenarioHelper;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
 import com.travelBill.telegram.scenario.individual.bill.add.AddBillScenario;
 import com.travelBill.telegram.scenario.individual.bill.debts.ShowDebtsScenario;
 import com.travelBill.telegram.scenario.individual.bill.delete.confirm.DeleteBillScenario;
 import com.travelBill.telegram.scenario.individual.bill.delete.request.ShowBillsToDeleteScenario;
 import com.travelBill.telegram.scenario.individual.bill.lastBills.ShowLastBillsScenario;
+import com.travelBill.telegram.scenario.individual.event.ManageEventScenario;
 import com.travelBill.telegram.scenario.individual.event.ShowCurrentEventScenario;
 import com.travelBill.telegram.scenario.individual.event.ShowEventsListScenario;
 import com.travelBill.telegram.scenario.individual.event.SwitchEventScenario;
@@ -18,6 +20,7 @@ import com.travelBill.telegram.scenario.individual.event.close.CloseEventRequest
 import com.travelBill.telegram.scenario.individual.event.close.CloseEventRequestScenario;
 import com.travelBill.telegram.scenario.individual.event.close.CloseEventRequestSubmitScenario;
 import com.travelBill.telegram.scenario.individual.event.totalSpent.ShowTotalSpentByEventScenario;
+import com.travelBill.telegram.scenario.navigation.GoBackScenario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +43,9 @@ public class IndividualScenarioFactory {
     private final CloseEventRequestCancelScenario closeEventRequestCancelScenario;
     private final CloseEventRequestSubmitScenario closeEventRequestSubmitScenario;
     private final ShowTotalSpentByEventScenario showTotalSpentByEventScenario;
+    private final ManageEventScenario manageEventScenario = new ManageEventScenario();
+    private final NavigationScenarioHelper navigationScenarioHelper = new NavigationScenarioHelper();
+    private final GoBackScenario goBackScenario = new GoBackScenario();
 
 
     @Autowired
@@ -102,6 +108,10 @@ public class IndividualScenarioFactory {
             selectedScenario = closeEventRequestSubmitScenario;
         }
 
+        if (eventScenarioHelper.isManageEventsRequest(request)) {
+            selectedScenario = manageEventScenario;
+        }
+
         if (billScenarioHelper.isShowLastBillsSignal(request)) {
             selectedScenario = showLastBillsScenario;
         }
@@ -129,6 +139,10 @@ public class IndividualScenarioFactory {
 
         if (billScenarioHelper.isShowTotalSignal(request)) {
             selectedScenario = showTotalSpentByEventScenario;
+        }
+
+        if (navigationScenarioHelper.isNavigationBack(request)) {
+            selectedScenario = goBackScenario;
         }
 
         if (isNull(selectedScenario)) {

@@ -15,10 +15,12 @@ public class PrivateChatKeyboardBuilder {
         ReplyKeyboardButton showLastBillsButton = new ReplyKeyboardButton().setText("Show last bills");
         ReplyKeyboardButton showDebtsButton = new ReplyKeyboardButton().setText("Show debts");
         ReplyKeyboardButton deleteBillButton = new ReplyKeyboardButton().setText("Delete bill");
+        ReplyKeyboardButton closeEventButton = new ReplyKeyboardButton().setText("Close event");
         ReplyKeyboardButton showTotalButton = new ReplyKeyboardButton().setText("Show total");
 
         keyboard.addRow(currentEventButton, switchEventButton);
         keyboard.addRow(deleteBillButton, showDebtsButton, showLastBillsButton);
+        keyboard.addRow(closeEventButton);
         keyboard.addRow(showTotalButton);
 
         return keyboard;

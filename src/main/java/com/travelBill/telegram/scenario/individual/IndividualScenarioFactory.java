@@ -14,6 +14,9 @@ import com.travelBill.telegram.scenario.individual.bill.lastBills.ShowLastBillsS
 import com.travelBill.telegram.scenario.individual.event.ShowCurrentEventScenario;
 import com.travelBill.telegram.scenario.individual.event.ShowEventsListScenario;
 import com.travelBill.telegram.scenario.individual.event.SwitchEventScenario;
+import com.travelBill.telegram.scenario.individual.event.close.CloseEventRequestCancelScenario;
+import com.travelBill.telegram.scenario.individual.event.close.CloseEventRequestScenario;
+import com.travelBill.telegram.scenario.individual.event.close.CloseEventRequestSubmitScenario;
 import com.travelBill.telegram.scenario.individual.event.totalSpent.ShowTotalSpentByEventScenario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +36,9 @@ public class IndividualScenarioFactory {
     private final DeletePreviousMessageScenario deletePreviousMessageScenario;
     private final ShowBillsToDeleteScenario showBillsToDeleteScenario;
     private final ShowDebtsScenario showDebtsScenario;
+    private final CloseEventRequestScenario closeEventRequestScenario;
+    private final CloseEventRequestCancelScenario closeEventRequestCancelScenario;
+    private final CloseEventRequestSubmitScenario closeEventRequestSubmitScenario;
     private final ShowTotalSpentByEventScenario showTotalSpentByEventScenario;
 
 
@@ -47,7 +53,11 @@ public class IndividualScenarioFactory {
                                      DeleteBillScenario deleteBillScenario,
                                      DeletePreviousMessageScenario deletePreviousMessageScenario,
                                      ShowBillsToDeleteScenario showBillsToDeleteScenario,
-                                     ShowDebtsScenario showDebtsScenario, ShowTotalSpentByEventScenario showTotalSpentByEventScenario) {
+                                     ShowDebtsScenario showDebtsScenario,
+                                     CloseEventRequestScenario closeEventRequestScenario,
+                                     CloseEventRequestCancelScenario closeEventRequestCancelScenario,
+                                     CloseEventRequestSubmitScenario closeEventRequestSubmitScenario,
+                                     ShowTotalSpentByEventScenario showTotalSpentByEventScenario) {
         this.eventScenarioHelper = eventScenarioHelper;
         this.billScenarioHelper = billScenarioHelper;
         this.showEventsListScenario = showEventsListScenario;
@@ -59,6 +69,9 @@ public class IndividualScenarioFactory {
         this.deletePreviousMessageScenario = deletePreviousMessageScenario;
         this.showBillsToDeleteScenario = showBillsToDeleteScenario;
         this.showDebtsScenario = showDebtsScenario;
+        this.closeEventRequestScenario = closeEventRequestScenario;
+        this.closeEventRequestCancelScenario = closeEventRequestCancelScenario;
+        this.closeEventRequestSubmitScenario = closeEventRequestSubmitScenario;
         this.showTotalSpentByEventScenario = showTotalSpentByEventScenario;
     }
 
@@ -77,8 +90,16 @@ public class IndividualScenarioFactory {
             selectedScenario = showCurrentEventScenario;
         }
 
-        if (eventScenarioHelper.isCancelEventSwitchingSignal(request)) {
-            selectedScenario = deletePreviousMessageScenario;
+        if (eventScenarioHelper.isCloseEventRequest(request)) {
+            selectedScenario = closeEventRequestScenario;
+        }
+
+        if (eventScenarioHelper.isCloseEventCancelSignal(request)) {
+            selectedScenario = closeEventRequestCancelScenario;
+        }
+
+        if (eventScenarioHelper.isCloseEventSumbitSignal(request)) {
+            selectedScenario = closeEventRequestSubmitScenario;
         }
 
         if (billScenarioHelper.isShowLastBillsSignal(request)) {

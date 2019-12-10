@@ -1,6 +1,10 @@
 package com.travelBill.api.core.bill;
 
 import com.travelBill.api.core.bill.statistic.CurrencyStatisticItem;
+import com.travelBill.api.core.event.Event;
+import com.travelBill.api.core.event.exceptions.ClosedEventException;
+import com.travelBill.api.core.exceptions.AccessDeniedException;
+import com.travelBill.api.core.user.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -8,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 class BillServiceTest {
@@ -114,5 +119,74 @@ class BillServiceTest {
 
         assertEquals(UAH, result.get(1).currency);
         assertEquals(500, result.get(1).amount);
+    }
+
+    @Test
+    void delete_shouldThrowAccessDeniedException_whenTryDeletBillByNotOwner() {
+        User owner = new User();
+        owner.setId(1L);
+        User hacker = new User();
+        hacker.setId(2L);
+
+        Event event = new Event();
+        event.setOpened(false);
+
+        Bill bill = new Bill();
+        bill.setEvent(event);
+        bill.setUser(owner);
+
+        assertThrows(AccessDeniedException.class, () -> billService.delete(bill, hacker));
+    }
+
+    @Test
+    void delete_shouldThrowClosedEventException_whenTryToDeleteBillForClosedEvent() {
+        User user = new User();
+        user.setId(1L);
+        Event event = new Event();
+        event.setOpened(false);
+
+        Bill bill = new Bill();
+        bill.setEvent(event);
+        bill.setUser(user);
+
+        assertThrows(ClosedEventException.class, () -> billService.delete(bill, user));
+    }
+
+    @Test
+    void delete_shouldCallDeleteFromRepository_whenOwnerTryToDeleteBillFromOpenEvent() {
+        User user = new User();
+        user.setId(1L);
+        Event event = new Event();
+        event.setOpened(true);
+
+        Bill bill = new Bill();
+        bill.setEvent(event);
+        bill.setUser(user);
+
+        billService.delete(bill, user);
+        verify(billRepository).deleteById(bill.getId());
+    }
+
+    @Test
+    void save_shouldThrowClosedEventException_whenTryCreateBillForClosedEvent() {
+        Event event = new Event();
+        event.setOpened(false);
+
+        Bill bill = new Bill();
+        bill.setEvent(event);
+
+        assertThrows(ClosedEventException.class, () -> billService.save(bill));
+    }
+
+    @Test
+    void save_shouldCallSaveFromRepository_whenTryCreateBillForOpenedEvent() {
+        Event event = new Event();
+        event.setOpened(true);
+
+        Bill bill = new Bill();
+        bill.setEvent(event);
+
+        billService.save(bill);
+        verify(billRepository).save(bill);
     }
 }

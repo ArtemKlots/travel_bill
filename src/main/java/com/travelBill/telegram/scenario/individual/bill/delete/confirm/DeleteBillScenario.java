@@ -2,9 +2,12 @@ package com.travelBill.telegram.scenario.individual.bill.delete.confirm;
 
 import com.travelBill.api.core.bill.Bill;
 import com.travelBill.api.core.bill.BillService;
+import com.travelBill.api.core.event.Event;
+import com.travelBill.api.core.event.exceptions.ClosedEventException;
 import com.travelBill.telegram.driver.BotApi;
 import com.travelBill.telegram.driver.Request;
 import com.travelBill.telegram.driver.Response;
+import com.travelBill.telegram.scenario.ClosedEventResponse;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
 import com.travelBill.telegram.scenario.individual.event.EventIsNotSelectedResponse;
 import org.springframework.stereotype.Service;
@@ -26,7 +29,9 @@ public class DeleteBillScenario implements Scenario {
 
     @Override
     public Response execute(Request request) {
-        if (isNull(request.user.getCurrentEvent())) {
+        Event currentEvent = request.user.getCurrentEvent();
+
+        if (isNull(currentEvent)) {
             return new EventIsNotSelectedResponse();
         }
 
@@ -34,13 +39,18 @@ public class DeleteBillScenario implements Scenario {
         Long billId = Long.parseLong(stringBillId);
         Bill billToRemove = billService.findById(billId, request.user.getId());
 
-        billService.delete(billToRemove, request.user);
-        botApi.sendMessage(request.user.getCurrentEvent().getTelegramChatId(), buildGroupResponse(request, billToRemove));
-        botApi.deleteMessage(request.chatId, request.messageId);
+        try {
+            billService.delete(billToRemove, request.user);
+            Response groupResponse = buildGroupResponse(request, billToRemove);
+            botApi.sendMessage(currentEvent.getTelegramChatId(), groupResponse);
+        } catch (ClosedEventException e) {
+            return new ClosedEventResponse(currentEvent);
+        } finally {
+            botApi.deleteMessage(request.chatId, request.messageId);
+        }
 
         DeleteBillPrivateChatResponseBuilder responseBuilder = new DeleteBillPrivateChatResponseBuilder();
         responseBuilder.bill = billToRemove;
-
         return responseBuilder.build();
     }
 

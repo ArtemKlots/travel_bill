@@ -1,0 +1,2 @@
+ALTER TABLE `event`
+    ADD COLUMN closed_at DATETIME DEFAULT NULL;

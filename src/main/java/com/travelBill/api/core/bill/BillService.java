@@ -1,6 +1,7 @@
 package com.travelBill.api.core.bill;
 
 import com.travelBill.api.core.bill.statistic.CurrencyStatisticItem;
+import com.travelBill.api.core.event.exceptions.ClosedEventException;
 import com.travelBill.api.core.exceptions.AccessDeniedException;
 import com.travelBill.api.core.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,16 +48,35 @@ public class BillService {
         return bill;
     }
 
+    /**
+     * @param bill
+     * @return new bill
+     * @throws ClosedEventException when event is closed
+     */
     public Bill save(Bill bill) {
+        if (!bill.getEvent().isOpened()) {
+            throw new ClosedEventException();
+        }
+
         return billRepository.save(bill);
     }
 
+    /**
+     * @param bill to delete
+     * @param user who deletes
+     * @throws AccessDeniedException when provided user is not owner
+     * @throws ClosedEventException  when event is closed
+     */
     public void delete(Bill bill, User user) {
-        if (bill.getUser().getId().equals(user.getId())) {
-            billRepository.deleteById(bill.getId());
-        } else {
+        if (!bill.getUser().getId().equals(user.getId())) {
             throw new AccessDeniedException("You've tried to access not your bill");
         }
+
+        if (!bill.getEvent().isOpened()) {
+            throw new ClosedEventException();
+        }
+
+        billRepository.deleteById(bill.getId());
     }
 
     public List<Bill> selectTop10ByUserIdOrderByCreatedAtDesc(Long id) {

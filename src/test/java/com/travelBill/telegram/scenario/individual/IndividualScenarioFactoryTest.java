@@ -14,6 +14,9 @@ import com.travelBill.telegram.scenario.individual.bill.lastBills.ShowLastBillsS
 import com.travelBill.telegram.scenario.individual.event.ShowCurrentEventScenario;
 import com.travelBill.telegram.scenario.individual.event.ShowEventsListScenario;
 import com.travelBill.telegram.scenario.individual.event.SwitchEventScenario;
+import com.travelBill.telegram.scenario.individual.event.close.CloseEventRequestCancelScenario;
+import com.travelBill.telegram.scenario.individual.event.close.CloseEventRequestScenario;
+import com.travelBill.telegram.scenario.individual.event.close.CloseEventRequestSubmitScenario;
 import com.travelBill.telegram.scenario.individual.event.totalSpent.ShowTotalSpentByEventScenario;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,6 +38,9 @@ class IndividualScenarioFactoryTest {
     private DeletePreviousMessageScenario deletePreviousMessageScenarioMock = mock(DeletePreviousMessageScenario.class);
     private ShowBillsToDeleteScenario showBillsToDeleteScenario = mock(ShowBillsToDeleteScenario.class);
     private ShowDebtsScenario showDebtsScenario = mock(ShowDebtsScenario.class);
+    private CloseEventRequestScenario closeEventRequestScenarioMock = mock(CloseEventRequestScenario.class);
+    private CloseEventRequestSubmitScenario closeEventRequestSubmitScenarioMock = mock(CloseEventRequestSubmitScenario.class);
+    private CloseEventRequestCancelScenario closeEventRequestCancelScenarioMock = mock(CloseEventRequestCancelScenario.class);
     private Request request = mock(Request.class);
     private IndividualScenarioFactory individualScenarioFactory;
     private ShowTotalSpentByEventScenario showTotalSpentByEventScenario;
@@ -53,6 +59,9 @@ class IndividualScenarioFactoryTest {
                 deletePreviousMessageScenarioMock,
                 showBillsToDeleteScenario,
                 showDebtsScenario,
+                closeEventRequestScenarioMock,
+                closeEventRequestCancelScenarioMock,
+                closeEventRequestSubmitScenarioMock,
                 showTotalSpentByEventScenario);
     }
 

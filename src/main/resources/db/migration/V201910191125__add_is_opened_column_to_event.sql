@@ -1,0 +1,2 @@
+ALTER TABLE `event`
+    ADD COLUMN is_opened TINYINT(1) DEFAULT 1;

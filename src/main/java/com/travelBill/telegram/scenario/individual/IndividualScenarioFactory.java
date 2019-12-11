@@ -12,10 +12,7 @@ import com.travelBill.telegram.scenario.individual.bill.debts.ShowDebtsScenario;
 import com.travelBill.telegram.scenario.individual.bill.delete.confirm.DeleteBillScenario;
 import com.travelBill.telegram.scenario.individual.bill.delete.request.ShowBillsToDeleteScenario;
 import com.travelBill.telegram.scenario.individual.bill.lastBills.ShowLastBillsScenario;
-import com.travelBill.telegram.scenario.individual.event.ManageEventScenario;
-import com.travelBill.telegram.scenario.individual.event.ShowCurrentEventScenario;
-import com.travelBill.telegram.scenario.individual.event.ShowEventsListScenario;
-import com.travelBill.telegram.scenario.individual.event.SwitchEventScenario;
+import com.travelBill.telegram.scenario.individual.event.*;
 import com.travelBill.telegram.scenario.individual.event.close.CloseEventRequestCancelScenario;
 import com.travelBill.telegram.scenario.individual.event.close.CloseEventRequestScenario;
 import com.travelBill.telegram.scenario.individual.event.close.CloseEventRequestSubmitScenario;
@@ -46,6 +43,7 @@ public class IndividualScenarioFactory {
     private final ManageEventScenario manageEventScenario = new ManageEventScenario();
     private final NavigationScenarioHelper navigationScenarioHelper = new NavigationScenarioHelper();
     private final GoBackScenario goBackScenario = new GoBackScenario();
+    private final ShowClosedEventsListScenario showClosedEventsListScenario = new ShowClosedEventsListScenario();
 
 
     @Autowired
@@ -110,6 +108,10 @@ public class IndividualScenarioFactory {
 
         if (eventScenarioHelper.isManageEventsRequest(request)) {
             selectedScenario = manageEventScenario;
+        }
+
+        if (eventScenarioHelper.isSwitchToClosedEventRequest(request)) {
+            selectedScenario = showClosedEventsListScenario;
         }
 
         if (billScenarioHelper.isShowLastBillsSignal(request)) {

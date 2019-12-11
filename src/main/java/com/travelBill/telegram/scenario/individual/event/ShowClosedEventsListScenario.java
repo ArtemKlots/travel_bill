@@ -4,13 +4,11 @@ import com.travelBill.api.core.event.Event;
 import com.travelBill.telegram.driver.Request;
 import com.travelBill.telegram.driver.Response;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
-import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.stream.Collectors;
 
-@Service
-public class ShowEventsListScenario implements Scenario {
+public class ShowClosedEventsListScenario implements Scenario {
 
     @Override
     public Response execute(Request request) {
@@ -18,12 +16,9 @@ public class ShowEventsListScenario implements Scenario {
         responseBuilder.events = request.user
                 .getEvents()
                 .stream()
-                .filter(Event::isOpened)
-                .sorted(Comparator.comparing(Event::getClosedAt))
+                .filter(event -> !event.isOpened())
+                .sorted(Comparator.comparing(Event::getClosedAt).thenComparing(Event::getCreatedAt))
                 .collect(Collectors.toList());
-
         return responseBuilder.build();
     }
-
-
 }

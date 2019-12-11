@@ -22,16 +22,21 @@ public class CloseEventRequestScenario implements Scenario {
         }
 
         Event currentEvent = request.user.getCurrentEvent();
-        Response response = new Response(String.format("Are you sure that you would like to close event *%s*", currentEvent.getTitle()));
+        Response response = new Response();
         response.parseMode = MARKDOWN;
 
-        InlineKeyboard inlineKeyboard = new InlineKeyboard();
-        inlineKeyboard.addRow(
-                new InlineKeyboardButton().setText("✅ Yes").setCallbackData("close_event_request_submit-" + currentEvent.getId()),
-                new InlineKeyboardButton().setText("❌ No").setCallbackData("close_event_request_cancel")
-        );
+        if (currentEvent.isOpened()) {
+            response.message = String.format("Are you sure that you would like to close event *%s*", currentEvent.getTitle());
+            InlineKeyboard inlineKeyboard = new InlineKeyboard();
+            inlineKeyboard.addRow(
+                    new InlineKeyboardButton().setText("✅ Yes").setCallbackData("close_event_request_submit-" + currentEvent.getId()),
+                    new InlineKeyboardButton().setText("❌ No").setCallbackData("close_event_request_cancel")
+            );
 
-        response.inlineKeyboard = inlineKeyboard;
+            response.inlineKeyboard = inlineKeyboard;
+        } else {
+            response.message = String.format("Cannot close event %s. *It is already closed*", currentEvent.getTitle());
+        }
 
         return response;
     }

@@ -90,6 +90,10 @@ public class IndividualScenarioFactory {
             selectedScenario = switchEventScenario;
         }
 
+        if (eventScenarioHelper.isCancelEventSwitchingSignal(request)) {
+            selectedScenario = deletePreviousMessageScenario;
+        }
+
         if (eventScenarioHelper.isShowCurrentEventSignal(request)) {
             selectedScenario = showCurrentEventScenario;
         }

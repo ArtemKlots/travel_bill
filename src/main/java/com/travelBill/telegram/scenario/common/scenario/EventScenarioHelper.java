@@ -15,6 +15,10 @@ public class EventScenarioHelper {
         return request.hasCallbackQueryData() && request.callbackQueryData.startsWith("switch_to_event-");
     }
 
+    public boolean isCancelEventSwitchingSignal(Request request) {
+        return request.hasCallbackQueryData() && request.callbackQueryData.equals("cancel_event_switching");
+    }
+
     public boolean isCloseEventCancelSignal(Request request) {
         return request.hasCallbackQueryData() && request.callbackQueryData.startsWith("close_event_request_cancel");
     }

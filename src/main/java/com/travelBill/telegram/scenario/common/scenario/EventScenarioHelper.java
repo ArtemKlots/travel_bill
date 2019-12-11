@@ -37,7 +37,7 @@ public class EventScenarioHelper {
     }
 
     public boolean isCloseEventRequest(Request request) {
-        return request.hasMessage() && request.message.equals("Close event");
+        return request.hasMessage() && request.message.contains("Close event");
     }
 
     public boolean isManageEventsRequest(Request request) {

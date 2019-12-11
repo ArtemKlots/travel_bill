@@ -10,9 +10,10 @@ import com.travelBill.telegram.driver.Response;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
 import org.springframework.stereotype.Service;
 
+import static com.travelBill.Icons.LOCKED;
+
 @Service
 public class CloseEventRequestSubmitScenario implements Scenario {
-    private static final String lockSign = "\uD83D\uDD12";
     private final BotApi botApi;
     private final EventService eventService;
 
@@ -32,7 +33,7 @@ public class CloseEventRequestSubmitScenario implements Scenario {
         try {
             eventService.closeEvent(event.getId(), request.user.getId());
             response.message = String.format("Event *%s* was successfully *closed* ", event.getTitle());
-            botApi.sendMessage(event.getTelegramChatId(), new Response(String.format("%s %s closed this event", lockSign, request.user.getFullName())));
+            botApi.sendMessage(event.getTelegramChatId(), new Response(String.format("%s %s closed this event", LOCKED, request.user.getFullName())));
         } catch (ClosedEventException e) {
             response.message = String.format("Cannot close event %s. *It is already closed*", event.getTitle());
         }

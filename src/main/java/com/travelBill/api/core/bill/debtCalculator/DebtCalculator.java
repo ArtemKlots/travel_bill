@@ -1,6 +1,7 @@
 package com.travelBill.api.core.bill.debtCalculator;
 
 import com.travelBill.api.core.bill.Bill;
+import com.travelBill.api.core.debt.Debt;
 import com.travelBill.api.core.event.Event;
 import com.travelBill.api.core.user.User;
 import org.springframework.stereotype.Service;
@@ -43,11 +44,11 @@ public class DebtCalculator {
                     if (debtorDebt < payerOverpay) {
                         payerBalance.amount -= debtorDebt;
                         debtorBalance.amount += debtorDebt;
-                        debt.amount += debtorDebt;
+                        debt.addAmount(debtorDebt);
                     } else {
                         payerBalance.amount -= payerOverpay;
                         debtorBalance.amount += payerOverpay;
-                        debt.amount += payerOverpay;
+                        debt.addAmount(payerOverpay);
                     }
                     debts.add(debt);
                 });

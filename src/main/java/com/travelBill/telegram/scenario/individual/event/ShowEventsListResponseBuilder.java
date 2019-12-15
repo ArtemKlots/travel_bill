@@ -18,7 +18,9 @@ public class ShowEventsListResponseBuilder implements ResponseBuilder {
     public Response build() {
         Response response = new Response();
         response.message = getMessage();
-        response.inlineKeyboard = getKeyboard();
+        if (events.size() > 0) {
+            response.inlineKeyboard = getKeyboard();
+        }
         return response;
     }
 

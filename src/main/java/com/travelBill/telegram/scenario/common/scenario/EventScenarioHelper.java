@@ -15,6 +15,10 @@ public class EventScenarioHelper {
         return request.hasCallbackQueryData() && request.callbackQueryData.startsWith("switch_to_event-");
     }
 
+    public boolean isCancelEventSwitchingSignal(Request request) {
+        return request.hasCallbackQueryData() && request.callbackQueryData.equals("cancel_event_switching");
+    }
+
     public boolean isCloseEventCancelSignal(Request request) {
         return request.hasCallbackQueryData() && request.callbackQueryData.startsWith("close_event_request_cancel");
     }
@@ -33,6 +37,14 @@ public class EventScenarioHelper {
     }
 
     public boolean isCloseEventRequest(Request request) {
-        return request.hasMessage() && request.message.equals("Close event");
+        return request.hasMessage() && request.message.contains("Close event");
+    }
+
+    public boolean isManageEventsRequest(Request request) {
+        return request.hasMessage() && request.message.equals("Manage events");
+    }
+
+    public boolean isSwitchToClosedEventRequest(Request request) {
+        return request.hasMessage() && request.message.contains("Switch to closed event");
     }
 }

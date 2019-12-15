@@ -1,4 +1,4 @@
-package com.travelBill.api.core.bill.debtCalculator;
+package com.travelBill.api.core.debt.debtCalculator;
 
 import com.travelBill.api.core.bill.Bill;
 import com.travelBill.api.core.user.User;

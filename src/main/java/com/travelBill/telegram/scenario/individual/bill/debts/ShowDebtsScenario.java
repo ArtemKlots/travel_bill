@@ -1,7 +1,7 @@
 package com.travelBill.telegram.scenario.individual.bill.debts;
 
-import com.travelBill.api.core.bill.debtCalculator.DebtCalculator;
 import com.travelBill.api.core.debt.Debt;
+import com.travelBill.api.core.debt.debtCalculator.DebtCalculator;
 import com.travelBill.api.core.event.Event;
 import com.travelBill.api.core.event.EventService;
 import com.travelBill.api.core.user.User;

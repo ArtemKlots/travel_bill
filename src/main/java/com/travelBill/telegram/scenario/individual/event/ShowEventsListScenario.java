@@ -19,7 +19,7 @@ public class ShowEventsListScenario implements Scenario {
                 .getEvents()
                 .stream()
                 .filter(Event::isOpened)
-                .sorted(Comparator.comparing(Event::getClosedAt))
+                .sorted(Comparator.comparing(Event::getCreatedAt))
                 .collect(Collectors.toList());
 
         return responseBuilder.build();

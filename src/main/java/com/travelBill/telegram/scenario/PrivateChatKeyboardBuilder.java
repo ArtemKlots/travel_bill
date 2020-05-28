@@ -10,6 +10,8 @@ public class PrivateChatKeyboardBuilder {
     public ReplyKeyboard build() {
         ReplyKeyboard keyboard = new ReplyKeyboard();
 
+        ReplyKeyboardButton sendMoneyButton = new ReplyKeyboardButton().setText("Send money");
+
         ReplyKeyboardButton currentEventButton = new ReplyKeyboardButton().setText("Show current event");
         ReplyKeyboardButton switchEventButton = new ReplyKeyboardButton().setText("Switch event");
         ReplyKeyboardButton showLastBillsButton = new ReplyKeyboardButton().setText("Show last bills");
@@ -19,7 +21,7 @@ public class PrivateChatKeyboardBuilder {
 
         ReplyKeyboardButton manageEvents = new ReplyKeyboardButton().setText("Manage events");
 
-        keyboard.addRow(currentEventButton, switchEventButton);
+        keyboard.addRow(sendMoneyButton, currentEventButton, switchEventButton);
         keyboard.addRow(deleteBillButton, showDebtsButton, showLastBillsButton);
         keyboard.addRow(manageEvents, showTotalButton);
 

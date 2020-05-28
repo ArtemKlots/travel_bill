@@ -18,6 +18,14 @@ public class DebtService {
         this.debtRepository = debtRepository;
     }
 
+    public Debt add(Debt debt) {
+        return debtRepository.save(debt);
+    }
+
+    public List<DebtSumDto> getBalanceForUser(Long userId) {
+        return debtRepository.getDebtsForUser(userId);
+    }
+
     public Debt save(Debt debt) {
         return debtRepository.save(debt);
     }

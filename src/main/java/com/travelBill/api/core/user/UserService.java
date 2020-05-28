@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 @Service
 @Transactional
@@ -44,6 +45,15 @@ public class UserService {
 
     public User findUserByTelegramId(Integer id) {
         return userRepository.findUserByTelegramId(id);
+    }
+
+    public User findById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
+    }
+
+    public List<User> getLastContactedUsersAnd(Long userId, List<Long> included, int limit) {
+        return userRepository.getLastContactedUsersAnd(userId, included, limit);
     }
 
     public User save(User user) {

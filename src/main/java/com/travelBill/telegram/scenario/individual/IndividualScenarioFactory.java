@@ -3,30 +3,35 @@ package com.travelBill.telegram.scenario.individual;
 import com.travelBill.telegram.driver.Request;
 import com.travelBill.telegram.scenario.DeletePreviousMessageScenario;
 import com.travelBill.telegram.scenario.common.ScenarioNotFoundException;
-import com.travelBill.telegram.scenario.common.scenario.BillScenarioHelper;
-import com.travelBill.telegram.scenario.common.scenario.EventScenarioHelper;
-import com.travelBill.telegram.scenario.common.scenario.NavigationScenarioHelper;
-import com.travelBill.telegram.scenario.common.scenario.Scenario;
+import com.travelBill.telegram.scenario.common.scenario.*;
 import com.travelBill.telegram.scenario.individual.bill.add.AddBillScenario;
 import com.travelBill.telegram.scenario.individual.bill.debts.ShowDebtsScenario;
 import com.travelBill.telegram.scenario.individual.bill.delete.confirm.DeleteBillScenario;
 import com.travelBill.telegram.scenario.individual.bill.delete.request.ShowBillsToDeleteScenario;
 import com.travelBill.telegram.scenario.individual.bill.lastBills.ShowLastBillsScenario;
+import com.travelBill.telegram.scenario.individual.debt.RequestAmountScenario;
+import com.travelBill.telegram.scenario.individual.debt.SelectDebtorScenario;
+import com.travelBill.telegram.scenario.individual.debt.SendMoneyScenario;
 import com.travelBill.telegram.scenario.individual.event.*;
 import com.travelBill.telegram.scenario.individual.event.close.CloseEventRequestCancelScenario;
 import com.travelBill.telegram.scenario.individual.event.close.CloseEventRequestScenario;
 import com.travelBill.telegram.scenario.individual.event.close.CloseEventRequestSubmitScenario;
 import com.travelBill.telegram.scenario.individual.event.totalSpent.ShowTotalSpentByEventScenario;
 import com.travelBill.telegram.scenario.navigation.GoBackScenario;
+import com.travelBill.telegram.user.state.UserState;
+import com.travelBill.telegram.user.state.UserStateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import static com.travelBill.telegram.user.state.State.SEND_MONEY;
+import static com.travelBill.telegram.user.state.State.START;
 import static java.util.Objects.isNull;
 
 @Service
 public class IndividualScenarioFactory {
     private final EventScenarioHelper eventScenarioHelper;
     private final BillScenarioHelper billScenarioHelper;
+    private final DebtScenarioHelper debtScenarioHelper = new DebtScenarioHelper();
     private final ShowEventsListScenario showEventsListScenario;
     private final ShowCurrentEventScenario showCurrentEventScenario;
     private final SwitchEventScenario switchEventScenario;
@@ -40,10 +45,14 @@ public class IndividualScenarioFactory {
     private final CloseEventRequestCancelScenario closeEventRequestCancelScenario;
     private final CloseEventRequestSubmitScenario closeEventRequestSubmitScenario;
     private final ShowTotalSpentByEventScenario showTotalSpentByEventScenario;
+    private final SelectDebtorScenario selectDebtorScenario;
+    private final SendMoneyScenario sendMoneyScenario;
     private final ManageEventScenario manageEventScenario = new ManageEventScenario();
     private final NavigationScenarioHelper navigationScenarioHelper = new NavigationScenarioHelper();
     private final GoBackScenario goBackScenario = new GoBackScenario();
     private final ShowClosedEventsListScenario showClosedEventsListScenario = new ShowClosedEventsListScenario();
+    private final UserStateService userStateService;
+    private final RequestAmountScenario requestAmountScenario;
 
 
     @Autowired
@@ -61,7 +70,11 @@ public class IndividualScenarioFactory {
                                      CloseEventRequestScenario closeEventRequestScenario,
                                      CloseEventRequestCancelScenario closeEventRequestCancelScenario,
                                      CloseEventRequestSubmitScenario closeEventRequestSubmitScenario,
-                                     ShowTotalSpentByEventScenario showTotalSpentByEventScenario) {
+                                     ShowTotalSpentByEventScenario showTotalSpentByEventScenario,
+                                     SelectDebtorScenario selectDebtorScenario,
+                                     SendMoneyScenario sendMoneyScenario,
+                                     UserStateService userStateService,
+                                     RequestAmountScenario requestAmountScenario) {
         this.eventScenarioHelper = eventScenarioHelper;
         this.billScenarioHelper = billScenarioHelper;
         this.showEventsListScenario = showEventsListScenario;
@@ -77,10 +90,18 @@ public class IndividualScenarioFactory {
         this.closeEventRequestCancelScenario = closeEventRequestCancelScenario;
         this.closeEventRequestSubmitScenario = closeEventRequestSubmitScenario;
         this.showTotalSpentByEventScenario = showTotalSpentByEventScenario;
+        this.selectDebtorScenario = selectDebtorScenario;
+        this.sendMoneyScenario = sendMoneyScenario;
+        this.userStateService = userStateService;
+        this.requestAmountScenario = requestAmountScenario;
     }
 
     public Scenario createScenario(Request request) throws ScenarioNotFoundException {
         Scenario selectedScenario = null;
+
+        if (request.hasCallbackQueryData() && request.callbackQueryData.equals("delete_previous_message")) {
+            selectedScenario = deletePreviousMessageScenario;
+        }
 
         if (eventScenarioHelper.isShowEventsSignal(request)) {
             selectedScenario = showEventsListScenario;
@@ -122,11 +143,6 @@ public class IndividualScenarioFactory {
             selectedScenario = showLastBillsScenario;
         }
 
-        if (billScenarioHelper.isContribution(request)) {
-            selectedScenario = addBillScenario;
-        }
-
-
         if (billScenarioHelper.isDeleteBillRequestSignal(request)) {
             selectedScenario = showBillsToDeleteScenario;
         }
@@ -147,8 +163,25 @@ public class IndividualScenarioFactory {
             selectedScenario = showTotalSpentByEventScenario;
         }
 
+        if (debtScenarioHelper.isSelectDebtorRequest(request)) {
+            selectedScenario = selectDebtorScenario;
+        }
+
+        if (debtScenarioHelper.isRequestAmountRequest(request)) {
+            selectedScenario = requestAmountScenario;
+        }
+
         if (navigationScenarioHelper.isNavigationBack(request)) {
             selectedScenario = goBackScenario;
+        }
+
+        UserState userState = userStateService.get(request.user.getId());
+        if (billScenarioHelper.isContribution(request) && (userState == null || userState.getState() == START)) {
+            selectedScenario = addBillScenario;
+        }
+
+        if (billScenarioHelper.isContribution(request) && userState != null && userState.getState() == SEND_MONEY) {
+            selectedScenario = sendMoneyScenario;
         }
 
         if (isNull(selectedScenario)) {

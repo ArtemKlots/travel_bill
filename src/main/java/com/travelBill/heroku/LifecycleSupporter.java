@@ -41,5 +41,17 @@ public class LifecycleSupporter {
         }
     }
 
+    @Scheduled(fixedRate = 1 * 60 * 1000)
+    public void reportHealth2() {
+        try {
+            URL url = new URL("https://artemkl-healthcheck.herokuapp.com/api/tasks/8/i-am-alive");
+            URLConnection connection = url.openConnection();
+            InputStream is = connection.getInputStream();
+            is.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }

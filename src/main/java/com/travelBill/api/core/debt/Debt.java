@@ -73,6 +73,11 @@ public class Debt {
             return this;
         }
 
+        public DebtBuilder withComment(String comment) {
+            debt.comment = comment;
+            return this;
+        }
+
         public Debt build() {
             return debt;
         }

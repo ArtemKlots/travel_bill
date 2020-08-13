@@ -22,6 +22,9 @@ public class ApplicationConfiguration {
     @Value("${HEALTH_CHECK_URL}")
     private String heathCheckUrl;
 
+    @Value("${HEALTH_CHECK2_URL}")
+    private String heathCheck2Url;
+
     @Value("${TELEGRAM_BOT_MENTION}")
     @NotEmpty
     private String telegramBotMention;
@@ -49,6 +52,14 @@ public class ApplicationConfiguration {
 
     public void setHeathCheckUrl(String heathCheckUrl) {
         this.heathCheckUrl = heathCheckUrl;
+    }
+
+    public String getHeathCheck2Url() {
+        return heathCheck2Url;
+    }
+
+    public void setHeathCheck2Url(String heathCheck2Url) {
+        this.heathCheck2Url = heathCheck2Url;
     }
 
     public String getTelegramBotMention() {

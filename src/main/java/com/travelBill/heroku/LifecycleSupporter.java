@@ -6,6 +6,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -44,10 +45,14 @@ public class LifecycleSupporter {
     @Scheduled(fixedRate = 1 * 60 * 1000)
     public void reportHealth2() {
         try {
-            URL url = new URL("https://artemkl-healthcheck.herokuapp.com/api/tasks/8/i-am-alive");
-            URLConnection connection = url.openConnection();
-            InputStream is = connection.getInputStream();
-            is.close();
+            String requestUrl = applicationConfiguration.getHeathCheck2Url();
+            if (requestUrl != null) {
+                URL url = new URL(requestUrl);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("POST");
+                InputStream is = connection.getInputStream();
+                is.close();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

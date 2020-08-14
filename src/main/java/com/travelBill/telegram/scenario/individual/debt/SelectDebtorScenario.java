@@ -32,6 +32,11 @@ public class SelectDebtorScenario implements Scenario {
         List<Long> debtorsIds = debts.stream()
                 .map(DebtSumDto::getDebtorId)
                 .collect(Collectors.toList());
+
+        if (debtorsIds.size() == 0) {
+            return new Response("You have neither debts nor debtors to send money");
+        }
+
         List<User> lastContactedUsersAndDebtors = userService.getLastContactedUsersAnd(request.user.getId(), debtorsIds, 10);
 
         String message = "Your balance: \n";

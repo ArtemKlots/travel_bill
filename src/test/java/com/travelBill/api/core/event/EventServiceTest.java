@@ -1,5 +1,8 @@
 package com.travelBill.api.core.event;
 
+import com.travelBill.api.core.debt.Debt;
+import com.travelBill.api.core.debt.DebtService;
+import com.travelBill.api.core.debt.debtCalculator.DebtCalculator;
 import com.travelBill.api.core.event.exceptions.ClosedEventException;
 import com.travelBill.api.core.exceptions.AccessDeniedException;
 import com.travelBill.api.core.user.User;
@@ -8,22 +11,27 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class EventServiceTest {
     private EventService eventService;
+    private DebtService debtServiceMock = mock(DebtService.class);
     private EventAccessService eventAccessServiceMock = mock(EventAccessService.class);
     private EventRepository eventRepositorySpy = spy(EventRepository.class);
     private UserService userServiceSpy = mock(UserService.class);
+    private DebtCalculator debtCalculatorMock = mock(DebtCalculator.class);
 
     private User user;
     private Event event;
 
     @BeforeEach
     void setupContext() {
-        eventService = new EventService(eventRepositorySpy, userServiceSpy, eventAccessServiceMock);
+        eventService = new EventService(eventRepositorySpy, debtServiceMock, userServiceSpy, eventAccessServiceMock);
+        eventService.debtCalculator = debtCalculatorMock;
+
         event = new Event();
         user = new User();
 
@@ -83,6 +91,21 @@ class EventServiceTest {
         when(eventRepositorySpy.getOne(event.getId())).thenReturn(event);
 
         assertThrows(ClosedEventException.class, () -> eventService.closeEvent(event.getId(), user.getId()));
+    }
+
+    @Test
+    void closeEvent_shouldSaveAllDebtsForEvent() {
+        List<Debt> debts = new ArrayList<>();
+        event.setOpened(true);
+
+        when(eventAccessServiceMock.hasAccessToEvent(user.getId(), event.getId())).thenReturn(true);
+        doReturn(event).when(eventRepositorySpy).getOne(event.getId());
+        doReturn(event).when(eventRepositorySpy).save(event);
+        doReturn(debts).when(debtCalculatorMock).calculate(event);
+
+        eventService.closeEvent(event.getId(), user.getId());
+        verify(debtCalculatorMock).calculate(event);
+        verify(debtServiceMock).saveAll(debts, event);
     }
 
 }

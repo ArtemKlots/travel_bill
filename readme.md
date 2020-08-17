@@ -1,5 +1,7 @@
 ## Setup environment
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e1d86f35a09948449de97257412abe46)](https://app.codacy.com/manual/ArtemKlots/travel_bill?utm_source=github.com&utm_medium=referral&utm_content=ArtemKlots/travel_bill&utm_campaign=Badge_Grade_Dashboard)
+
 #### Database
 
 To configure database connection you should set up the following environment variables:

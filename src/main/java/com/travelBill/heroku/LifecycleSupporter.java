@@ -46,7 +46,7 @@ public class LifecycleSupporter {
     public void reportHealth2() {
         try {
             String requestUrl = applicationConfiguration.getHeathCheck2Url();
-            if (requestUrl != null) {
+            if (requestUrl != null && requestUrl.length() != 0) {
                 URL url = new URL(requestUrl);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("POST");

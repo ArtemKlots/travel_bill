@@ -9,6 +9,7 @@ import com.travelBill.telegram.scenario.individual.bill.debts.ShowDebtsScenario;
 import com.travelBill.telegram.scenario.individual.bill.delete.confirm.DeleteBillScenario;
 import com.travelBill.telegram.scenario.individual.bill.delete.request.ShowBillsToDeleteScenario;
 import com.travelBill.telegram.scenario.individual.bill.lastBills.ShowLastBillsScenario;
+import com.travelBill.telegram.scenario.individual.debt.GetAllContactsScenario;
 import com.travelBill.telegram.scenario.individual.debt.RequestAmountScenario;
 import com.travelBill.telegram.scenario.individual.debt.SelectDebtorScenario;
 import com.travelBill.telegram.scenario.individual.debt.SendMoneyScenario;
@@ -46,6 +47,7 @@ public class IndividualScenarioFactory {
     private final CloseEventRequestSubmitScenario closeEventRequestSubmitScenario;
     private final ShowTotalSpentByEventScenario showTotalSpentByEventScenario;
     private final SelectDebtorScenario selectDebtorScenario;
+    private final GetAllContactsScenario getAllContactsScenario;
     private final SendMoneyScenario sendMoneyScenario;
     private final ManageEventScenario manageEventScenario = new ManageEventScenario();
     private final NavigationScenarioHelper navigationScenarioHelper = new NavigationScenarioHelper();
@@ -72,7 +74,7 @@ public class IndividualScenarioFactory {
                                      CloseEventRequestSubmitScenario closeEventRequestSubmitScenario,
                                      ShowTotalSpentByEventScenario showTotalSpentByEventScenario,
                                      SelectDebtorScenario selectDebtorScenario,
-                                     SendMoneyScenario sendMoneyScenario,
+                                     GetAllContactsScenario getAllContactsScenario, SendMoneyScenario sendMoneyScenario,
                                      UserStateService userStateService,
                                      RequestAmountScenario requestAmountScenario) {
         this.eventScenarioHelper = eventScenarioHelper;
@@ -91,6 +93,7 @@ public class IndividualScenarioFactory {
         this.closeEventRequestSubmitScenario = closeEventRequestSubmitScenario;
         this.showTotalSpentByEventScenario = showTotalSpentByEventScenario;
         this.selectDebtorScenario = selectDebtorScenario;
+        this.getAllContactsScenario = getAllContactsScenario;
         this.sendMoneyScenario = sendMoneyScenario;
         this.userStateService = userStateService;
         this.requestAmountScenario = requestAmountScenario;
@@ -169,6 +172,10 @@ public class IndividualScenarioFactory {
 
         if (debtScenarioHelper.isRequestAmountRequest(request)) {
             selectedScenario = requestAmountScenario;
+        }
+
+        if (debtScenarioHelper.isAllContactsRequest(request)) {
+            selectedScenario = getAllContactsScenario;
         }
 
         if (navigationScenarioHelper.isNavigationBack(request)) {

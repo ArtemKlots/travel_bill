@@ -12,4 +12,8 @@ public class DebtScenarioHelper {
     public boolean isRequestAmountRequest(Request request) {
         return request.hasCallbackQueryData() && request.callbackQueryData.startsWith("send_money_to_");
     }
+
+    public boolean isAllContactsRequest(Request request) {
+        return request.hasCallbackQueryData() && request.callbackQueryData.equals("select_debtor-all_contacts");
+    }
 }

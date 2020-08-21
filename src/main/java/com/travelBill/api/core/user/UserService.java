@@ -52,8 +52,8 @@ public class UserService {
                 .orElseThrow(EntityNotFoundException::new);
     }
 
-    public List<User> getLastContactedUsersAnd(Long userId, List<Long> included, int limit) {
-        return userRepository.getLastContactedUsersAnd(userId, included, limit);
+    public List<User> getAllContactedUsers(Long userId) {
+        return userRepository.getAllContactedUsers(userId);
     }
 
     public User save(User user) {

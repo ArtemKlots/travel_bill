@@ -20,7 +20,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "    from event_user  " +
             "    where user_id = :user_id" +
             "  ) " +
-            ") or id in (:included_ids)) limit :limit",
+            ")) order by user.first_name, user.last_name",
             nativeQuery = true)
-    List<User> getLastContactedUsersAnd(@Param("user_id") Long userId, @Param("included_ids") List<Long> includedIds, @Param("limit") int limit);
+    List<User> getAllContactedUsers(@Param("user_id") Long userId);
 }

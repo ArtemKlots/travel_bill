@@ -2,10 +2,10 @@ package com.travelBill.telegram.scenario.individual.debt;
 
 import com.travelBill.api.core.debt.DebtService;
 import com.travelBill.api.core.debt.DebtSumDto;
-import com.travelBill.api.core.user.User;
-import com.travelBill.api.core.user.UserService;
 import com.travelBill.telegram.driver.Request;
 import com.travelBill.telegram.driver.Response;
+import com.travelBill.telegram.driver.keyboard.inline.InlineKeyboard;
+import com.travelBill.telegram.driver.keyboard.inline.InlineKeyboardButton;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
 import org.springframework.stereotype.Service;
 
@@ -15,47 +15,47 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.travelBill.Icons.GLOWING_STAR;
+
 @Service
 public class SelectDebtorScenario implements Scenario {
     private final DebtService debtService;
-    private final UserService userService;
 
-    public SelectDebtorScenario(DebtService debtService, UserService userService) {
+    public SelectDebtorScenario(DebtService debtService) {
         this.debtService = debtService;
-        this.userService = userService;
     }
 
 
     @Override
     public Response execute(Request request) {
         List<DebtSumDto> debts = debtService.getBalanceForUser(request.user.getId());
-        List<Long> debtorsIds = debts.stream()
-                .map(DebtSumDto::getDebtorId)
-                .collect(Collectors.toList());
 
-        if (debtorsIds.size() == 0) {
-            return new Response("You have neither debts nor debtors to send money");
-        }
+        InlineKeyboardButton lastEventMembersButton = new InlineKeyboardButton().setText(GLOWING_STAR + "Show all contacts").setCallbackData("select_debtor-all_contacts");
+        InlineKeyboardButton cancelButton = new InlineKeyboardButton().setText("Cancel").setCallbackData("delete_previous_message");
+        Response response = new Response();
+        response.inlineKeyboard = new InlineKeyboard();
 
-        List<User> lastContactedUsersAndDebtors = userService.getLastContactedUsersAnd(request.user.getId(), debtorsIds, 10);
+        if (debts.size() == 0) {
+            response.message = "You have neither debts nor debtors to send money";
+        } else {
 
-        String message = "Your balance: \n";
-        Set<Map.Entry<Long, List<DebtSumDto>>> entrySet = debts.stream().collect(Collectors.groupingBy(DebtSumDto::getDebtorId)).entrySet();
-        for (Map.Entry<Long, List<DebtSumDto>> entry : entrySet) {
-            message = message.concat(String.format("%s %s:\n", entry.getValue().get(0).getUserFirstName(), entry.getValue().get(0).getUserLastName()));
+            String message = "Your balance: \n";
+            Set<Map.Entry<Long, List<DebtSumDto>>> entrySet = debts.stream().collect(Collectors.groupingBy(DebtSumDto::getDebtorId)).entrySet();
+            for (Map.Entry<Long, List<DebtSumDto>> entry : entrySet) {
+                message = message.concat(String.format("%s %s:\n", entry.getValue().get(0).getUserFirstName(), entry.getValue().get(0).getUserLastName()));
 
-            for (DebtSumDto dto : entry.getValue()) {
-                message = message.concat(String.format("  %s \t%s\n", dto.getCurrency(), new DecimalFormat("#,###.00").format(dto.getAmount())));
+                for (DebtSumDto dto : entry.getValue()) {
+                    message = message.concat(String.format("  %s \t%s\n", dto.getCurrency(), new DecimalFormat("#,###.00").format(dto.getAmount())));
+                }
+                message = message.concat("\n");
+
             }
-            message = message.concat("\n");
-
+            response.message = message + "Select recipient:";
+            response.inlineKeyboard = new DebtorListKeyboardBuilder().buildByDebts(debts);
         }
 
-
-        Response response = new Response(message + "Select recipient:");
-
-        response.inlineKeyboard = new DebtorListKeyboardBuilder().build(lastContactedUsersAndDebtors);
-
+        response.inlineKeyboard.addRow(lastEventMembersButton);
+        response.inlineKeyboard.addRow(cancelButton);
         return response;
     }
 }

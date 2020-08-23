@@ -48,7 +48,7 @@ class DebtRepositoryTest {
     }
 
     @Test
-    void getDebtsForUser_shouldResolveDebts_whenOnePeronPaidInOneCurrency() {
+    void getDebtsForUser_shouldResolveDebts_whenOnePersonPaidInOneCurrency() {
         Debt poorUserDebt1 = Debt.newBuilder()
                 .withDebtor(poorUser)
                 .withPayer(richUser)
@@ -68,13 +68,19 @@ class DebtRepositoryTest {
         List<DebtSumDto> debtsForPoorUser = debtRepository.getDebtsForUser(poorUser.getId());
         List<DebtSumDto> debtsForRichUser = debtRepository.getDebtsForUser(richUser.getId());
 
-        assertEquals(debtsForPoorUser.size(), 0);
+        assertEquals(debtsForPoorUser.size(), 1);
         assertEquals(debtsForRichUser.size(), 1);
         assertEquals(debtsForRichUser.get(0).getAmount(), 110);
         assertEquals(debtsForRichUser.get(0).getCurrency(), USD);
         assertEquals(debtsForRichUser.get(0).getDebtorId(), poorUser.getId());
         assertEquals(debtsForRichUser.get(0).getUserFirstName(), poorUser.getFirstName());
         assertEquals(debtsForRichUser.get(0).getUserLastName(), poorUser.getLastName());
+
+        assertEquals(debtsForPoorUser.get(0).getAmount(), -110);
+        assertEquals(debtsForPoorUser.get(0).getCurrency(), USD);
+        assertEquals(debtsForPoorUser.get(0).getDebtorId(), richUser.getId());
+        assertEquals(debtsForPoorUser.get(0).getUserFirstName(), richUser.getFirstName());
+        assertEquals(debtsForPoorUser.get(0).getUserLastName(), richUser.getLastName());
     }
 
     @Test
@@ -115,7 +121,7 @@ class DebtRepositoryTest {
     }
 
     @Test
-    void getDebtsForUser_shouldResolveDebts_whenOnePeronPaidInTwoCurrencies() {
+    void getDebtsForUser_shouldResolveDebts_whenOnePersonPaidInTwoCurrencies() {
         Debt poorUserUsdDebt1 = Debt.newBuilder()
                 .withDebtor(poorUser)
                 .withPayer(richUser)
@@ -147,7 +153,7 @@ class DebtRepositoryTest {
         List<DebtSumDto> debtsForPoorUser = debtRepository.getDebtsForUser(poorUser.getId());
         List<DebtSumDto> debtsForRichUser = debtRepository.getDebtsForUser(richUser.getId());
 
-        assertEquals(debtsForPoorUser.size(), 0);
+        assertEquals(debtsForPoorUser.size(), 2);
         assertEquals(debtsForRichUser.size(), 2);
         assertEquals(debtsForRichUser.get(0).getCurrency(), USD);
         assertEquals(debtsForRichUser.get(0).getAmount(), 30);
@@ -155,6 +161,13 @@ class DebtRepositoryTest {
         assertEquals(debtsForRichUser.get(1).getAmount(), 25);
         assertEquals(debtsForRichUser.get(1).getCurrency(), EUR);
         assertEquals(debtsForRichUser.get(1).getDebtorId(), poorUser.getId());
+
+        assertEquals(debtsForPoorUser.get(0).getCurrency(), USD);
+        assertEquals(debtsForPoorUser.get(0).getAmount(), -30);
+        assertEquals(debtsForPoorUser.get(0).getDebtorId(), richUser.getId());
+        assertEquals(debtsForPoorUser.get(1).getAmount(), -25);
+        assertEquals(debtsForPoorUser.get(1).getCurrency(), EUR);
+        assertEquals(debtsForPoorUser.get(1).getDebtorId(), richUser.getId());
     }
 
     @Test

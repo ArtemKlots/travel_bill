@@ -4,7 +4,7 @@ import com.travelBill.telegram.driver.keyboard.reply.ReplyKeyboard;
 import com.travelBill.telegram.driver.keyboard.reply.ReplyKeyboardButton;
 import org.springframework.stereotype.Service;
 
-import static com.travelBill.telegram.UserCommand.SHOW_DEBTS;
+import static com.travelBill.telegram.UserCommand.EVENT_DEBTS;
 
 @Service
 public class PrivateChatKeyboardBuilder {
@@ -17,7 +17,7 @@ public class PrivateChatKeyboardBuilder {
         ReplyKeyboardButton currentEventButton = new ReplyKeyboardButton().setText("Show current event");
         ReplyKeyboardButton switchEventButton = new ReplyKeyboardButton().setText("Switch event");
         ReplyKeyboardButton showLastBillsButton = new ReplyKeyboardButton().setText("Show last bills");
-        ReplyKeyboardButton showDebtsButton = new ReplyKeyboardButton().setText(SHOW_DEBTS);
+        ReplyKeyboardButton showDebtsButton = new ReplyKeyboardButton().setText(EVENT_DEBTS);
         ReplyKeyboardButton deleteBillButton = new ReplyKeyboardButton().setText("Delete bill");
         ReplyKeyboardButton showTotalButton = new ReplyKeyboardButton().setText("Show total");
 

@@ -2,7 +2,7 @@ package com.travelBill.telegram;
 
 public enum UserCommand {
 
-    SHOW_DEBTS("Show debts");
+    EVENT_DEBTS("Event debts");
 
     private final String value;
 

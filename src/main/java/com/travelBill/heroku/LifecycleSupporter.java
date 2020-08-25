@@ -24,7 +24,7 @@ public class LifecycleSupporter {
         try {
             URL url = new URL(applicationConfiguration.getLifecycleUrl());
             URLConnection connection = url.openConnection();
-            InputStream is = connection.getInputStream();
+            connection.getInputStream();
         } catch (Exception e) {
             e.printStackTrace();
         }

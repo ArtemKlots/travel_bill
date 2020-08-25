@@ -9,6 +9,7 @@ import com.travelBill.telegram.driver.UpdateRequestMapper;
 import com.travelBill.telegram.exceptions.UserIsNotSetUpException;
 import com.travelBill.telegram.scenario.ScenarioFactory;
 import com.travelBill.telegram.scenario.UnknownScenario;
+import com.travelBill.telegram.scenario.common.ScenarioNotFoundException;
 import com.travelBill.telegram.user.ActivityService;
 import com.travelBill.telegram.user.TelegramUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,9 +55,13 @@ public class TelegramBot extends TelegramLongPollingBot {
                 execute(message);
             }
             activityService.registerActivity(request);
+        } catch (ScenarioNotFoundException e) {
+            e.printStackTrace();
+            rollbarLogger.warn(e, update.toString());
         } catch (Exception e) {
             e.printStackTrace();
             rollbarLogger.error(e, update.toString());
+        } finally {
             respondWithError(request);
         }
     }

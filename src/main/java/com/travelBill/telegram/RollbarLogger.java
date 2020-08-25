@@ -22,6 +22,12 @@ public class RollbarLogger {
         }
     }
 
+    void warn(Exception e, String message) {
+        if (rollbar != null) {
+            rollbar.warning(e, message);
+        }
+    }
+
     void error(Exception e, String message) {
         if (rollbar != null) {
             rollbar.error(e, message);

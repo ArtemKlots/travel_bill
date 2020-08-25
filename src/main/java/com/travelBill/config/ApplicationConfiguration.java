@@ -29,6 +29,12 @@ public class ApplicationConfiguration {
     @NotEmpty
     private String telegramBotMention;
 
+    @Value("${ROLLBAR_ACCESS_KEY}")
+    private String rollbarAccessKey;
+
+    @Value("${ROLLBAR_ENVIRONMENT}")
+    private String rollbarEnv;
+
 
     public String getTelegramKey() {
         return telegramKey;
@@ -68,5 +74,21 @@ public class ApplicationConfiguration {
 
     public void setTelegramBotMention(String telegramBotMention) {
         this.telegramBotMention = telegramBotMention;
+    }
+
+    public String getRollbarAccessKey() {
+        return rollbarAccessKey;
+    }
+
+    public void setRollbarAccessKey(String rollbarAccessKey) {
+        this.rollbarAccessKey = rollbarAccessKey;
+    }
+
+    public String getRollbarEnv() {
+        return rollbarEnv;
+    }
+
+    public void setRollbarEnv(String rollbarEnv) {
+        this.rollbarEnv = rollbarEnv;
     }
 }

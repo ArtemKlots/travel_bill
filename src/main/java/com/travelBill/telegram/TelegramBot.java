@@ -27,16 +27,19 @@ public class TelegramBot extends TelegramLongPollingBot {
     private final ActivityService activityService;
     private final ScenarioFactory scenarioFactory;
     private final ApplicationConfiguration applicationConfiguration;
+    private final RollbarLogger rollbarLogger;
 
     @Autowired
     public TelegramBot(TelegramUserService telegramUserService,
                        ActivityService activityService,
                        ScenarioFactory scenarioFactory,
-                       ApplicationConfiguration applicationConfiguration) {
+                       ApplicationConfiguration applicationConfiguration,
+                       RollbarLogger rollbarLogger) {
         this.telegramUserService = telegramUserService;
         this.activityService = activityService;
         this.scenarioFactory = scenarioFactory;
         this.applicationConfiguration = applicationConfiguration;
+        this.rollbarLogger = rollbarLogger;
     }
 
     @Override
@@ -53,6 +56,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             activityService.registerActivity(request);
         } catch (Exception e) {
             e.printStackTrace();
+            rollbarLogger.error(e, update.toString());
             respondWithError(request);
         }
     }

@@ -4,6 +4,8 @@ import com.travelBill.telegram.driver.Request;
 import com.travelBill.telegram.scenario.individual.bill.AddBillCommandParser;
 import org.springframework.stereotype.Service;
 
+import static com.travelBill.telegram.UserCommand.SHOW_DEBTS;
+
 @Service
 public class BillScenarioHelper {
 
@@ -24,7 +26,7 @@ public class BillScenarioHelper {
     }
 
     public boolean isShowDebtsSignal(Request request) {
-        return request.hasMessage() && request.message.equals("Show debts");
+        return request.hasMessage() && request.message.equals(SHOW_DEBTS.getValue());
     }
 
     public boolean isShowLastBillsSignal(Request request) {

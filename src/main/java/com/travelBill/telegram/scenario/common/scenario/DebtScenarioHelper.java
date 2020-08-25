@@ -2,10 +2,12 @@ package com.travelBill.telegram.scenario.common.scenario;
 
 import com.travelBill.telegram.driver.Request;
 
+import static com.travelBill.telegram.UserCommand.SEND_MONEY;
+
 public class DebtScenarioHelper {
 
     public boolean isSelectDebtorRequest(Request request) {
-        return request.hasMessage() && request.message.equals("Send money");
+        return request.hasMessage() && request.message.equals(SEND_MONEY);
     }
 
 

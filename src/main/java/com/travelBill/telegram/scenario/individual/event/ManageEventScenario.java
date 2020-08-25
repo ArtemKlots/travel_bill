@@ -6,7 +6,7 @@ import com.travelBill.telegram.driver.keyboard.reply.ReplyKeyboard;
 import com.travelBill.telegram.driver.keyboard.reply.ReplyKeyboardButton;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
 
-import static com.travelBill.Icons.*;
+import static com.travelBill.telegram.UserCommand.*;
 
 
 public class ManageEventScenario implements Scenario {
@@ -16,9 +16,9 @@ public class ManageEventScenario implements Scenario {
         Response response = new Response("What would you like to do?");
         ReplyKeyboard keyboard = new ReplyKeyboard();
 
-        ReplyKeyboardButton closeEventButton = new ReplyKeyboardButton().setText(LOCKED + " Close event");
-        ReplyKeyboardButton switchToClosedEventButton = new ReplyKeyboardButton().setText(SCROLL + " Switch to closed event");
-        ReplyKeyboardButton goBackButton = new ReplyKeyboardButton().setText(LEFT_ARROW + " Back to the previous menu");
+        ReplyKeyboardButton closeEventButton = new ReplyKeyboardButton().setText(CLOSE_EVENT);
+        ReplyKeyboardButton switchToClosedEventButton = new ReplyKeyboardButton().setText(SWITCH_TO_CLOSED_EVENT);
+        ReplyKeyboardButton goBackButton = new ReplyKeyboardButton().setText(GO_BACK);
 
         keyboard.addRow(closeEventButton);
         keyboard.addRow(switchToClosedEventButton);

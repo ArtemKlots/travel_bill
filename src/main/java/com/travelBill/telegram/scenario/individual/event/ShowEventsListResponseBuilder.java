@@ -32,7 +32,7 @@ public class ShowEventsListResponseBuilder implements ResponseBuilder {
         String messageText;
         switch (events.size()) {
             case (0):
-                messageText = "Sorry, but you still have no events";
+                messageText = "Sorry, but you don't have event to switch";
                 break;
             case (1):
                 messageText = "Here is your event:";

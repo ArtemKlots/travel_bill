@@ -3,12 +3,14 @@ package com.travelBill.telegram.scenario.common.scenario;
 import com.travelBill.telegram.driver.Request;
 import org.springframework.stereotype.Service;
 
+import static com.travelBill.telegram.UserCommand.*;
+
 @Service
 public class EventScenarioHelper {
     //TODO extract duplicated strings in one place
 
     public boolean isShowEventsSignal(Request request) {
-        return request.hasMessage() && request.message.equals("Switch event");
+        return request.hasMessage() && request.message.equals(SWITCH_EVENT);
     }
 
     public boolean isSwitchEventSignal(Request request) {
@@ -33,18 +35,18 @@ public class EventScenarioHelper {
     }
 
     public boolean isShowCurrentEventSignal(Request request) {
-        return request.hasMessage() && request.message.equals("Show current event");
+        return request.hasMessage() && request.message.equals(CURRENT_EVENT);
     }
 
     public boolean isCloseEventRequest(Request request) {
-        return request.hasMessage() && request.message.contains("Close event");
+        return request.hasMessage() && request.message.equals(CLOSE_EVENT);
     }
 
     public boolean isManageEventsRequest(Request request) {
-        return request.hasMessage() && request.message.equals("Manage events");
+        return request.hasMessage() && request.message.equals(MANAGE_EVENTS);
     }
 
     public boolean isSwitchToClosedEventRequest(Request request) {
-        return request.hasMessage() && request.message.contains("Switch to closed event");
+        return request.hasMessage() && request.message.contains(SWITCH_TO_CLOSED_EVENT);
     }
 }

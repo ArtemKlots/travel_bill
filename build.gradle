@@ -51,5 +51,11 @@ dependencies {
 	// https://mvnrepository.com/artifact/com.h2database/h2
 	testCompile group: 'mysql', name: 'mysql-connector-java', version: '8.0.13'
 	compile 'com.rollbar:rollbar-java:1.+'
+	// https://mvnrepository.com/artifact/org.junit.platform/junit-platform-console-standalone
+	testCompile group: 'org.junit.platform', name: 'junit-platform-console-standalone', version: '1.6.2'
 
+}
+
+test {
+	useJUnitPlatform()
 }

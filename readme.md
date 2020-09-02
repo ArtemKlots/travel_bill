@@ -1,4 +1,5 @@
-[![Codeship Status for ArtemKlots/travel_bill](https://app.codeship.com/projects/2d56b6b0-bc7e-0137-f28c-7207021c806d/status?branch=master)](https://app.codeship.com/projects/365326)
+[![Codeship Status for ArtemKlots/travel_bill](https://app.codeship.com/projects/2d56b6b0-bc7e-0137-f28c-7207021c806d/status?branch=master)](https://app.codeship.com/projects/365326) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/e1d86f35a09948449de97257412abe46)](https://app.codacy.com/manual/ArtemKlots/travel_bill?utm_source=github.com&utm_medium=referral&utm_content=ArtemKlots/travel_bill&utm_campaign=Badge_Grade_Dashboard)
+
 
 # Setup environment
 

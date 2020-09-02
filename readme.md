@@ -1,3 +1,5 @@
+[![Codeship Status for ArtemKlots/travel_bill](https://app.codeship.com/projects/2d56b6b0-bc7e-0137-f28c-7207021c806d/status?branch=master)](https://app.codeship.com/projects/365326)
+
 # Setup environment
 
 ## Infrastructure

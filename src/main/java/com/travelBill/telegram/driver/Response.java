@@ -22,6 +22,11 @@ public class Response {
         this.message = message;
     }
 
+    public Response(ParseMode parseMode, String message) {
+        this.parseMode = parseMode;
+        this.message = message;
+    }
+
     public boolean isEmpty() {
         return isNull(message) && isNull(replyKeyboard) && isNull(inlineKeyboard);
     }

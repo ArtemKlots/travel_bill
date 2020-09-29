@@ -5,6 +5,7 @@ import com.travelBill.api.core.debt.Debt;
 import com.travelBill.api.core.debt.DebtService;
 import com.travelBill.api.core.user.User;
 import com.travelBill.api.core.user.UserService;
+import com.travelBill.telegram.driver.BotApi;
 import com.travelBill.telegram.driver.ParseMode;
 import com.travelBill.telegram.driver.Request;
 import com.travelBill.telegram.driver.Response;
@@ -20,11 +21,13 @@ public class SendMoneyScenario implements Scenario {
     private final DebtService debtService;
     private final UserService userService;
     private final UserStateService userStateService;
+    private final BotApi botApi;
 
-    public SendMoneyScenario(DebtService debtService, UserService userService, UserStateService userStateService) {
+    public SendMoneyScenario(DebtService debtService, UserService userService, UserStateService userStateService, BotApi botApi) {
         this.debtService = debtService;
         this.userService = userService;
         this.userStateService = userStateService;
+        this.botApi = botApi;
     }
 
     @Override
@@ -46,6 +49,10 @@ public class SendMoneyScenario implements Scenario {
         userStateService.change(new UserState(request.user, State.START));
         response.message = String.format("Done! *%s %s* was successfully sent to *%s*", debt.getAmount(), debt.getCurrency(), debt.getDebtor().getFullName());
         response.parseMode = ParseMode.MARKDOWN;
+
+        String debtorMessage = String.format("*%s* sent *%s %s* to you", request.user.getFullName(), debt.getAmount(), debt.getCurrency());
+        Response debtorResponse = new Response(ParseMode.MARKDOWN, debtorMessage);
+        botApi.sendMessage(Long.valueOf(debtor.getTelegramId()), debtorResponse);
 
         return response;
     }

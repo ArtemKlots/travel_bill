@@ -6,8 +6,17 @@ import com.travelBill.telegram.driver.keyboard.inline.InlineKeyboard;
 import com.travelBill.telegram.driver.keyboard.inline.InlineKeyboardButton;
 
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class DebtorListKeyboardBuilder {
+    public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
+        Map<Object, Boolean> seen = new ConcurrentHashMap<>();
+        return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
+    }
 
     public InlineKeyboard buildByUsers(List<User> users) {
         InlineKeyboard keyboard = new InlineKeyboard();
@@ -25,7 +34,11 @@ public class DebtorListKeyboardBuilder {
     public InlineKeyboard buildByDebts(List<DebtSumDto> debts) {
         InlineKeyboard keyboard = new InlineKeyboard();
 
-        debts.forEach(debt -> {
+        List<DebtSumDto> debtsWithUniqueDebtor = debts.stream()
+                .filter(distinctByKey(DebtSumDto::getDebtorId))
+                .collect(Collectors.toList());
+
+        debtsWithUniqueDebtor.forEach(debt -> {
             String text = "";
             if (debt.getUserFirstName() != null) {
                 text += debt.getUserFirstName();

@@ -1,5 +1,6 @@
 package com.travelBill.telegram;
 
+import com.travelBill.api.core.exceptions.AccessDeniedException;
 import com.travelBill.api.core.user.User;
 import com.travelBill.config.ApplicationConfiguration;
 import com.travelBill.telegram.driver.Request;
@@ -55,6 +56,9 @@ public class TelegramBot extends TelegramLongPollingBot {
                 execute(message);
             }
             activityService.registerActivity(request);
+        } catch (AccessDeniedException e) {
+            rollbarLogger.warn(e, update.toString());
+            respondWithMessage(request, e.getMessage());
         } catch (ScenarioNotFoundException e) {
             e.printStackTrace();
             rollbarLogger.warn(e, update.toString());
@@ -93,6 +97,12 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     private void respondWithError(Request request) {
         Response response = new UnknownScenario().execute(request);
+        SendMessage sendMessage = new ResponseSendMessageMapper().mapTo(response, request.chatId);
+        sneak(() -> execute(sendMessage));
+    }
+
+    private void respondWithMessage(Request request, String message) {
+        Response response = new Response(message);
         SendMessage sendMessage = new ResponseSendMessageMapper().mapTo(response, request.chatId);
         sneak(() -> execute(sendMessage));
     }

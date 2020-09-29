@@ -16,6 +16,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.travelBill.Icons.GLOWING_STAR;
+import static java.util.Objects.isNull;
 
 @Service
 public class SelectDebtorScenario implements Scenario {
@@ -42,7 +43,10 @@ public class SelectDebtorScenario implements Scenario {
             String message = "Your balance: \n";
             Set<Map.Entry<Long, List<DebtSumDto>>> entrySet = debts.stream().collect(Collectors.groupingBy(DebtSumDto::getDebtorId)).entrySet();
             for (Map.Entry<Long, List<DebtSumDto>> entry : entrySet) {
-                message = message.concat(String.format("%s %s:\n", entry.getValue().get(0).getUserFirstName(), entry.getValue().get(0).getUserLastName()));
+                String firstName = isNull(entry.getValue().get(0).getUserFirstName()) ? "" : entry.getValue().get(0).getUserFirstName();
+                String lastName = isNull(entry.getValue().get(0).getUserLastName()) ? "" : entry.getValue().get(0).getUserLastName();
+                String fullName = firstName.concat(lastName).trim().concat(":\n");
+                message = message.concat(fullName);
 
                 for (DebtSumDto dto : entry.getValue()) {
                     message = message.concat(String.format("  %s \t%s\n", dto.getCurrency(), new DecimalFormat("#,###.00").format(dto.getAmount())));

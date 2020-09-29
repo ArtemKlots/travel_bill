@@ -50,7 +50,7 @@ public class SendMoneyScenario implements Scenario {
         response.message = String.format("Done! *%s %s* was successfully sent to *%s*", debt.getAmount(), debt.getCurrency(), debt.getDebtor().getFullName());
         response.parseMode = ParseMode.MARKDOWN;
 
-        String debtorMessage = String.format("*%s* sent *%s %s* to you", request.user.getFullName(), debt.getAmount(), debt.getCurrency());
+        String debtorMessage = String.format("*%s* sent *%s %s* to you. \nComment: *%s*", request.user.getFullName(), debt.getAmount(), debt.getCurrency(), bill.getPurpose());
         Response debtorResponse = new Response(ParseMode.MARKDOWN, debtorMessage);
         botApi.sendMessage(Long.valueOf(debtor.getTelegramId()), debtorResponse);
 

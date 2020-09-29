@@ -58,10 +58,10 @@ public class TelegramBot extends TelegramLongPollingBot {
         } catch (ScenarioNotFoundException e) {
             e.printStackTrace();
             rollbarLogger.warn(e, update.toString());
+            respondWithError(request);
         } catch (Exception e) {
             e.printStackTrace();
             rollbarLogger.error(e, update.toString());
-        } finally {
             respondWithError(request);
         }
     }

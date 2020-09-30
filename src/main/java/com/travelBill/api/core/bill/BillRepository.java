@@ -8,4 +8,6 @@ public interface BillRepository extends JpaRepository<Bill, Long> {
     List<Bill> findTop10ByUserIdOrderByCreatedAtDesc(Long id);
 
     List<Bill> findTop10ByUserIdAndEventIdOrderByCreatedAtDesc(Long userId, Long eventId);
+
+    List<Bill> findByEventId(Long eventId);
 }

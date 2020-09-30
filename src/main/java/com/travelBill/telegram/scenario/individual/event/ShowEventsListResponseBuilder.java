@@ -18,7 +18,9 @@ public class ShowEventsListResponseBuilder implements ResponseBuilder {
     public Response build() {
         Response response = new Response();
         response.message = getMessage();
-        response.inlineKeyboard = getKeyboard();
+        if (events.size() > 0) {
+            response.inlineKeyboard = getKeyboard();
+        }
         return response;
     }
 
@@ -30,7 +32,7 @@ public class ShowEventsListResponseBuilder implements ResponseBuilder {
         String messageText;
         switch (events.size()) {
             case (0):
-                messageText = "Sorry, but you still have no events";
+                messageText = "Sorry, but you don't have event to switch";
                 break;
             case (1):
                 messageText = "Here is your event:";
@@ -48,6 +50,8 @@ public class ShowEventsListResponseBuilder implements ResponseBuilder {
             InlineKeyboardButton button = new InlineKeyboardButton().setText(event.getTitle()).setCallbackData("switch_to_event-" + event.getId());
             inlineKeyboard.addRow(button);
         }
+
+        inlineKeyboard.addRow(new InlineKeyboardButton().setText("Cancel").setCallbackData("cancel_event_switching"));
 
         return inlineKeyboard;
     }

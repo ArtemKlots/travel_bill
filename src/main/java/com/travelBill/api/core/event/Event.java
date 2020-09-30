@@ -52,6 +52,12 @@ public class Event {
     @Column
     private LocalDateTime lastActivity;
 
+    @Column
+    private boolean isOpened = true;
+
+    @Column
+    private LocalDateTime closedAt;
+
     public Long getId() {
         return id;
     }
@@ -122,5 +128,21 @@ public class Event {
 
     public void setLastActivity(LocalDateTime lastActivity) {
         this.lastActivity = lastActivity;
+    }
+
+    public boolean isOpened() {
+        return isOpened;
+    }
+
+    public void setOpened(boolean opened) {
+        isOpened = opened;
+    }
+
+    public LocalDateTime getClosedAt() {
+        return closedAt;
+    }
+
+    public void setClosedAt(LocalDateTime closedAt) {
+        this.closedAt = closedAt;
     }
 }

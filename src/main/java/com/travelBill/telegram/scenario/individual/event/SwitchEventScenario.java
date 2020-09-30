@@ -5,6 +5,7 @@ import com.travelBill.api.core.user.UserService;
 import com.travelBill.telegram.driver.BotApi;
 import com.travelBill.telegram.driver.Request;
 import com.travelBill.telegram.driver.Response;
+import com.travelBill.telegram.scenario.PrivateChatKeyboardBuilder;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import static com.travelBill.telegram.driver.ParseMode.MARKDOWN;
 public class SwitchEventScenario implements Scenario {
     private final UserService userService;
     private final BotApi botApi;
+    private final PrivateChatKeyboardBuilder privateChatKeyboardBuilder = new PrivateChatKeyboardBuilder();
 
     public SwitchEventScenario(UserService userService, BotApi botApi) {
         this.userService = userService;
@@ -43,6 +45,7 @@ public class SwitchEventScenario implements Scenario {
         Response response = new Response();
         response.parseMode = MARKDOWN;
         response.message = String.format("You successfully switched to the event *%s*", updatedUser.getCurrentEvent().getTitle());
+        response.replyKeyboard = privateChatKeyboardBuilder.build();
         return response;
     }
 }

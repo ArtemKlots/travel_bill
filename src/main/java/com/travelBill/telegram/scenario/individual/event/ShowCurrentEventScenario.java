@@ -16,7 +16,7 @@ public class ShowCurrentEventScenario implements Scenario {
     public Response execute(Request request) {
         Event currentEvent = request.user.getCurrentEvent();
         Response response = new Response();
-        //TODO get rid from external dependency
+
         response.parseMode = MARKDOWN;
 
         if (isNull(currentEvent)) {

@@ -1,7 +1,7 @@
 package com.travelBill.api.core.bill;
 
 
-import com.travelBill.api.core.bill.debtCalculator.DeprecatedDebtCalculator;
+import com.travelBill.api.core.debt.debtCalculator.DeprecatedDebtCalculator;
 import com.travelBill.api.core.user.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

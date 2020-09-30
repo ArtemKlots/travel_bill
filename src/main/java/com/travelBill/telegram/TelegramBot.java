@@ -1,5 +1,6 @@
 package com.travelBill.telegram;
 
+import com.travelBill.api.core.exceptions.AccessDeniedException;
 import com.travelBill.api.core.user.User;
 import com.travelBill.config.ApplicationConfiguration;
 import com.travelBill.telegram.driver.Request;
@@ -9,6 +10,7 @@ import com.travelBill.telegram.driver.UpdateRequestMapper;
 import com.travelBill.telegram.exceptions.UserIsNotSetUpException;
 import com.travelBill.telegram.scenario.ScenarioFactory;
 import com.travelBill.telegram.scenario.UnknownScenario;
+import com.travelBill.telegram.scenario.common.ScenarioNotFoundException;
 import com.travelBill.telegram.user.ActivityService;
 import com.travelBill.telegram.user.TelegramUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,16 +29,19 @@ public class TelegramBot extends TelegramLongPollingBot {
     private final ActivityService activityService;
     private final ScenarioFactory scenarioFactory;
     private final ApplicationConfiguration applicationConfiguration;
+    private final RollbarLogger rollbarLogger;
 
     @Autowired
     public TelegramBot(TelegramUserService telegramUserService,
                        ActivityService activityService,
                        ScenarioFactory scenarioFactory,
-                       ApplicationConfiguration applicationConfiguration) {
+                       ApplicationConfiguration applicationConfiguration,
+                       RollbarLogger rollbarLogger) {
         this.telegramUserService = telegramUserService;
         this.activityService = activityService;
         this.scenarioFactory = scenarioFactory;
         this.applicationConfiguration = applicationConfiguration;
+        this.rollbarLogger = rollbarLogger;
     }
 
     @Override
@@ -51,8 +56,16 @@ public class TelegramBot extends TelegramLongPollingBot {
                 execute(message);
             }
             activityService.registerActivity(request);
+        } catch (AccessDeniedException e) {
+            rollbarLogger.warn(e, update.toString());
+            respondWithMessage(request, e.getMessage());
+        } catch (ScenarioNotFoundException e) {
+            e.printStackTrace();
+            rollbarLogger.warn(e, update.toString());
+            respondWithError(request);
         } catch (Exception e) {
             e.printStackTrace();
+            rollbarLogger.error(e, update.toString());
             respondWithError(request);
         }
     }
@@ -84,6 +97,12 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     private void respondWithError(Request request) {
         Response response = new UnknownScenario().execute(request);
+        SendMessage sendMessage = new ResponseSendMessageMapper().mapTo(response, request.chatId);
+        sneak(() -> execute(sendMessage));
+    }
+
+    private void respondWithMessage(Request request, String message) {
+        Response response = new Response(message);
         SendMessage sendMessage = new ResponseSendMessageMapper().mapTo(response, request.chatId);
         sneak(() -> execute(sendMessage));
     }

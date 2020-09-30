@@ -1,15 +1,50 @@
-package com.travelBill.api.core.bill.debtCalculator;
+package com.travelBill.api.core.debt;
 
 import com.travelBill.api.core.user.User;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
+@Entity
+@Table(name = "debt")
 public class Debt {
 
-    User debtor;
-    User payer;
-    double amount;
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    private Long id;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "debtor_id")
+    private User debtor;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "payer_id")
+    private User payer;
+
+    @Column
+    private double amount;
+
+    @Column
     private String currency;
+
+    @Column
+    private String comment;
+
+    @Column
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @Column
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 
     public static DebtBuilder newBuilder() {
         return new Debt().new DebtBuilder();
@@ -38,9 +73,22 @@ public class Debt {
             return this;
         }
 
+        public DebtBuilder withComment(String comment) {
+            debt.comment = comment;
+            return this;
+        }
+
         public Debt build() {
             return debt;
         }
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public User getDebtor() {
@@ -67,12 +115,40 @@ public class Debt {
         this.amount = amount;
     }
 
+    public void addAmount(double amount) {
+        this.amount += amount;
+    }
+
     public String getCurrency() {
         return currency;
     }
 
     public void setCurrency(String currency) {
         this.currency = currency;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override

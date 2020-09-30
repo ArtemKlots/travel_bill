@@ -12,8 +12,6 @@ import java.util.Objects;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-import static javax.persistence.GenerationType.IDENTITY;
-
 @Entity
 @Table(name = "bill")
 public class Bill {

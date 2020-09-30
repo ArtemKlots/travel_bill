@@ -32,6 +32,10 @@ public class BotApi {
         httpService.post(getApiUrl() + DELETE_MESSAGE_RESOURCE, params);
     }
 
+    public void deleteMessage(Request request) {
+        this.deleteMessage(request.chatId, request.messageId);
+    }
+
     public void sendMessage(Long chatId, Response response) {
         List<NameValuePair> params = new ArrayList<>(2);
         params.add(new BasicNameValuePair("chat_id", chatId.toString()));

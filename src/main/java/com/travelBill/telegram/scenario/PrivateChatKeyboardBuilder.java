@@ -4,20 +4,28 @@ import com.travelBill.telegram.driver.keyboard.reply.ReplyKeyboard;
 import com.travelBill.telegram.driver.keyboard.reply.ReplyKeyboardButton;
 import org.springframework.stereotype.Service;
 
+import static com.travelBill.telegram.UserCommand.*;
+
 @Service
 public class PrivateChatKeyboardBuilder {
 
     public ReplyKeyboard build() {
         ReplyKeyboard keyboard = new ReplyKeyboard();
 
-        ReplyKeyboardButton currentEventButton = new ReplyKeyboardButton().setText("Show current event");
-        ReplyKeyboardButton switchEventButton = new ReplyKeyboardButton().setText("Switch event");
-        ReplyKeyboardButton showLastBillsButton = new ReplyKeyboardButton().setText("Show last bills");
-        ReplyKeyboardButton showDebtsButton = new ReplyKeyboardButton().setText("Show debts");
-        ReplyKeyboardButton deleteBillButton = new ReplyKeyboardButton().setText("Delete bill");
+        ReplyKeyboardButton sendMoneyButton = new ReplyKeyboardButton().setText(ONE_TO_ONE_MENU);
 
-        keyboard.addRow(currentEventButton, switchEventButton);
-        keyboard.addRow(deleteBillButton, showDebtsButton, showLastBillsButton);
+        ReplyKeyboardButton currentEventButton = new ReplyKeyboardButton().setText(CURRENT_EVENT);
+        ReplyKeyboardButton switchEventButton = new ReplyKeyboardButton().setText(SWITCH_EVENT);
+        ReplyKeyboardButton showLastBillsButton = new ReplyKeyboardButton().setText(RECENT_BILLS);
+        ReplyKeyboardButton eventDebtsButton = new ReplyKeyboardButton().setText(EVENT_DEBTS);
+        ReplyKeyboardButton deleteBillButton = new ReplyKeyboardButton().setText(DELETE_BILL);
+        ReplyKeyboardButton showTotalButton = new ReplyKeyboardButton().setText(EVENT_STATISTIC);
+
+        ReplyKeyboardButton manageEvents = new ReplyKeyboardButton().setText(MANAGE_EVENTS);
+
+        keyboard.addRow(sendMoneyButton, currentEventButton, switchEventButton);
+        keyboard.addRow(deleteBillButton, showLastBillsButton, manageEvents);
+        keyboard.addRow(eventDebtsButton, showTotalButton);
 
         return keyboard;
     }

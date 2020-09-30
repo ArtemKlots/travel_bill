@@ -6,7 +6,9 @@ public class UserCommand {
     public static final String DELETE_BILL = "Delete bill";
     public static final String RECENT_BILLS = "Recent bills";
 
+    public static final String ONE_TO_ONE_MENU = "1:1";
     public static final String SEND_MONEY = "Send money";
+    public static final String ONE_TO_ONE_HISTORY = "Money transfer history";
 
     public static final String EVENT_DEBTS = "Event debts";
     public static final String SWITCH_EVENT = "Switch event";

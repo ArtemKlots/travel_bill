@@ -9,10 +9,7 @@ import com.travelBill.telegram.scenario.individual.bill.debts.ShowDebtsScenario;
 import com.travelBill.telegram.scenario.individual.bill.delete.confirm.DeleteBillScenario;
 import com.travelBill.telegram.scenario.individual.bill.delete.request.ShowBillsToDeleteScenario;
 import com.travelBill.telegram.scenario.individual.bill.lastBills.ShowLastBillsScenario;
-import com.travelBill.telegram.scenario.individual.debt.GetAllContactsScenario;
-import com.travelBill.telegram.scenario.individual.debt.RequestAmountScenario;
-import com.travelBill.telegram.scenario.individual.debt.SelectDebtorScenario;
-import com.travelBill.telegram.scenario.individual.debt.SendMoneyScenario;
+import com.travelBill.telegram.scenario.individual.debt.*;
 import com.travelBill.telegram.scenario.individual.event.*;
 import com.travelBill.telegram.scenario.individual.event.close.CloseEventRequestCancelScenario;
 import com.travelBill.telegram.scenario.individual.event.close.CloseEventRequestScenario;
@@ -53,8 +50,10 @@ public class IndividualScenarioFactory {
     private final NavigationScenarioHelper navigationScenarioHelper = new NavigationScenarioHelper();
     private final GoBackScenario goBackScenario = new GoBackScenario();
     private final ShowClosedEventsListScenario showClosedEventsListScenario = new ShowClosedEventsListScenario();
+    private final OneToOneMenuScenario oneToOneMenuScenario = new OneToOneMenuScenario();
     private final UserStateService userStateService;
     private final RequestAmountScenario requestAmountScenario;
+    private final ShowHistoryScenario showHistoryScenario;
 
 
     @Autowired
@@ -76,7 +75,7 @@ public class IndividualScenarioFactory {
                                      SelectDebtorScenario selectDebtorScenario,
                                      GetAllContactsScenario getAllContactsScenario, SendMoneyScenario sendMoneyScenario,
                                      UserStateService userStateService,
-                                     RequestAmountScenario requestAmountScenario) {
+                                     RequestAmountScenario requestAmountScenario, ShowHistoryScenario showHistoryScenario) {
         this.eventScenarioHelper = eventScenarioHelper;
         this.billScenarioHelper = billScenarioHelper;
         this.showEventsListScenario = showEventsListScenario;
@@ -97,6 +96,7 @@ public class IndividualScenarioFactory {
         this.sendMoneyScenario = sendMoneyScenario;
         this.userStateService = userStateService;
         this.requestAmountScenario = requestAmountScenario;
+        this.showHistoryScenario = showHistoryScenario;
     }
 
     public Scenario createScenario(Request request) throws ScenarioNotFoundException {
@@ -176,6 +176,14 @@ public class IndividualScenarioFactory {
 
         if (debtScenarioHelper.isAllContactsRequest(request)) {
             selectedScenario = getAllContactsScenario;
+        }
+
+        if (debtScenarioHelper.isOneToOneMenuRequest(request)) {
+            selectedScenario = oneToOneMenuScenario;
+        }
+
+        if (debtScenarioHelper.isShowHistoryRequest(request)) {
+            selectedScenario = showHistoryScenario;
         }
 
         if (navigationScenarioHelper.isNavigationBack(request)) {

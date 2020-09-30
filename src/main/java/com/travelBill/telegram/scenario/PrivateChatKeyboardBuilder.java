@@ -12,7 +12,7 @@ public class PrivateChatKeyboardBuilder {
     public ReplyKeyboard build() {
         ReplyKeyboard keyboard = new ReplyKeyboard();
 
-        ReplyKeyboardButton sendMoneyButton = new ReplyKeyboardButton().setText(SEND_MONEY);
+        ReplyKeyboardButton sendMoneyButton = new ReplyKeyboardButton().setText(ONE_TO_ONE_MENU);
 
         ReplyKeyboardButton currentEventButton = new ReplyKeyboardButton().setText(CURRENT_EVENT);
         ReplyKeyboardButton switchEventButton = new ReplyKeyboardButton().setText(SWITCH_EVENT);

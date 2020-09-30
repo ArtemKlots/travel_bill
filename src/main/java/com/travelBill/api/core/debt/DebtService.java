@@ -26,12 +26,16 @@ public class DebtService {
         return debtRepository.getDebtsForUser(userId);
     }
 
+    public List<Debt> getHistoryForUser(Long userId) {
+        return debtRepository.getHistoryForUser(userId);
+    }
+
     public Debt save(Debt debt) {
         return debtRepository.save(debt);
     }
 
     public List<Debt> saveAll(List<Debt> debts, Event event) {
-        debts.forEach(debt -> debt.setComment(String.format("Payment from event %s", event.getTitle())));
+        debts.forEach(debt -> debt.setComment(String.format("Auto-calculated when event \"%s \" was closed", event.getTitle())));
         return debtRepository.saveAll(debts);
     }
 }

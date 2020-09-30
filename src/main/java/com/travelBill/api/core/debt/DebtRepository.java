@@ -25,4 +25,13 @@ public interface DebtRepository extends JpaRepository<Debt, Long> {
             "  having sum(money) != 0;",
             nativeQuery = true)
     List<DebtSumDto> getDebtsForUser(@Param("user_id") Long userId);
+
+    @Query(value = "" +
+            "select * " +
+            "from debt " +
+            "where payer_id=:user_id or debtor_id=:user_id " +
+            "order by created_at desc " +
+            "limit 50",
+            nativeQuery = true)
+    List<Debt> getHistoryForUser(@Param("user_id") Long userId);
 }

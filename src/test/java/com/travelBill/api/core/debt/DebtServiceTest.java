@@ -45,6 +45,6 @@ class DebtServiceTest {
         doReturn(debts).when(debtRepositorySpy).saveAll(debts);
         debtService.saveAll(debts, event);
 
-        assertEquals("Payment from event " + eventTitle, debts.get(0).getComment());
+        assertEquals("Auto-calculated when event \"" + eventTitle + " \" was closed", debts.get(0).getComment());
     }
 }

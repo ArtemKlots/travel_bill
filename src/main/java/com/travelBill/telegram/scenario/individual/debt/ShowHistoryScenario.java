@@ -29,6 +29,10 @@ public class ShowHistoryScenario implements Scenario {
         List<Debt> debts = debtService.getHistoryForUser(request.user.getId());
         Collections.reverse(debts);
 
+        if (debts.size() == 0) {
+            return new Response("Your history is empty");
+        }
+
         Response response = new Response(MARKDOWN);
         StringBuilder messageBuilder = new StringBuilder();
 

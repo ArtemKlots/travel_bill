@@ -1,6 +1,5 @@
 package com.travelBill.splitBill.core.item;
 
-import com.travelBill.api.core.user.User;
 import com.travelBill.splitBill.core.bill.SbBill;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -35,11 +34,6 @@ public class Item {
     @ManyToOne
     @JoinColumn(name = "bill_id")
     private SbBill bill;
-
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
 
     public Long getId() {
         return id;
@@ -89,13 +83,6 @@ public class Item {
         this.bill = sbBill;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
@@ -111,11 +98,11 @@ public class Item {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Item item = (Item) o;
-        return Double.compare(item.amount, amount) == 0 && Double.compare(item.price, price) == 0 && id.equals(item.id) && title.equals(item.title) && Objects.equals(createdAt, item.createdAt) && Objects.equals(updatedAt, item.updatedAt) && bill.equals(item.bill) && user.equals(item.user);
+        return Double.compare(item.amount, amount) == 0 && Double.compare(item.price, price) == 0 && id.equals(item.id) && title.equals(item.title) && Objects.equals(createdAt, item.createdAt) && Objects.equals(updatedAt, item.updatedAt) && bill.equals(item.bill);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, amount, price, createdAt, updatedAt, bill, user);
+        return Objects.hash(id, title, amount, price, createdAt, updatedAt, bill);
     }
 }

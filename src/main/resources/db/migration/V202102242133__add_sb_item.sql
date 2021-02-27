@@ -7,7 +7,6 @@ CREATE TABLE `sb_item`
     `created_at` datetime DEFAULT NULL,
     `updated_at` datetime DEFAULT NULL,
     `bill_id`    bigint(20)    NOT NULL,
-    `user_id`    bigint(20)    NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8
@@ -15,6 +14,4 @@ CREATE TABLE `sb_item`
 
 ALTER TABLE sb_item
     ADD CONSTRAINT fk_sb_item_sb_bill_bill_id FOREIGN KEY (bill_id) REFERENCES sb_bill (id);
-ALTER TABLE sb_item
-    ADD CONSTRAINT fk_sb_item_user_user_id FOREIGN KEY (user_id) REFERENCES user (id);
 

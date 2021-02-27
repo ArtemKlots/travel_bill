@@ -23,6 +23,7 @@ public class GetAllContactsScenario implements Scenario {
     @Override
     public Response execute(Request request) {
         botApi.deleteMessage(request);
+        // TODO: Make debt service and include here split bill debts
         List<User> users = userService.getAllContactedUsers(request.user.getId());
 
         if (users.size() == 0) {

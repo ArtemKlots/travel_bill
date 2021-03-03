@@ -27,4 +27,9 @@ public class ItemWebService {
         item.setBill(bill);
         return modelMapper.map(itemService.save(item), ItemDto.class);
     }
+
+    public void delete(Long itemId, Long userId) {
+        // TODO: check access
+        itemService.deleteById(itemId);
+    }
 }

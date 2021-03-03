@@ -22,4 +22,9 @@ public class ItemController {
         item.setId(itemId);
         return itemWebService.save(item, 1L);
     }
+
+    @DeleteMapping(value = "{itemId}")
+    public void deleteItem(@PathVariable Long itemId) {
+        itemWebService.delete(itemId, 1L);
+    }
 }

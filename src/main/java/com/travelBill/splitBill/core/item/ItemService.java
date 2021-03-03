@@ -21,4 +21,7 @@ public class ItemService {
         return itemRepository.save(item);
     }
 
+    public void deleteById(Long itemId) {
+        itemRepository.deleteById(itemId);
+    }
 }

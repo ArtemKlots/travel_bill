@@ -2,13 +2,11 @@ package com.travelBill.splitBill.core.bill;
 
 import com.travelBill.api.core.user.User;
 import com.travelBill.api.core.user.UserService;
-import com.travelBill.splitBill.core.MemberAlreadyInBillException;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -48,22 +46,4 @@ public class SbBillService {
         return sbBill;
     }
 
-    public SbBill addMember(SbBill sbBill, User member) {
-        if (isNewMember(sbBill, member)) {
-            sbBill.getMembers().add(member);
-            return save(sbBill);
-        } else {
-            throw new MemberAlreadyInBillException();
-        }
-
-    }
-
-    private boolean isNewMember(SbBill sbBill, User member) {
-        List<User> matchedUser = sbBill.getMembers()
-                .stream()
-                .filter(u -> u.getId().equals(member.getId()))
-                .collect(Collectors.toList());
-
-        return matchedUser.size() == 0;
-    }
 }

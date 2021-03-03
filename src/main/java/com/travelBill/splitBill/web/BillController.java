@@ -26,10 +26,14 @@ public class BillController {
     }
 
     @PutMapping(value = "{billId}")
-    public BillDto setBillDetails(@PathVariable Long billId, @RequestBody BillDto body) {
+    public DetailedBillDto setBillDetails(@PathVariable Long billId, @RequestBody DetailedBillDto body) {
         // TODO: provide user id
         return billWebService.setBillDetails(billId, body, 1L);
     }
 
-
+    @GetMapping(value = "{billId}/items")
+    public List<ItemDto> getBillItems(@PathVariable Long billId) {
+        // TODO: provide user id
+        return billWebService.getBillItems(billId, 1L);
+    }
 }

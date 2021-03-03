@@ -23,6 +23,14 @@ public class BillWebService {
         this.modelMapper = modelMapper;
     }
 
+    public SbBill findById(Long billId, Long userId) {
+        SbBill bill = sbBillService.findById(billId);
+        if (!Objects.equals(bill.getOwner().getId(), userId)) {
+            throw new AccessDeniedException();
+        }
+        return bill;
+    }
+
     public List<BillDto> getBillsByUserId(Long userId) {
         return sbBillService.getBillsByOwnerId(userId)
                 .stream()
@@ -35,7 +43,7 @@ public class BillWebService {
         return modelMapper.map(sbBillService.findById(billId), DetailedBillDto.class);
     }
 
-    public BillDto setBillDetails(Long billId, BillDto newValues, Long userId) {
+    public DetailedBillDto setBillDetails(Long billId, DetailedBillDto newValues, Long userId) {
         SbBill sbBill = sbBillService.findById(billId);
         if (!sbBill.getOwner().getId().equals(userId)) throw new AccessDeniedException();
         // Check if user able to rename user
@@ -50,11 +58,20 @@ public class BillWebService {
         sbBill.setCurrency(newValues.getCurrency());
         sbBill.setMembers(users);
 
-        return this.convertToDto(sbBillService.save(sbBill));
+        return this.convertToDetailedDto(sbBillService.save(sbBill));
     }
 
     private BillDto convertToDto(SbBill sbBill) {
         return modelMapper.map(sbBill, BillDto.class);
+    }
+
+    public List<ItemDto> getBillItems(Long billId, Long userId) {
+        //TODO: check access
+        return sbBillService.findById(billId)
+                .getItems()
+                .stream()
+                .map(item -> modelMapper.map(item, ItemDto.class))
+                .collect(Collectors.toList());
     }
 
     private DetailedBillDto convertToDetailedDto(SbBill sbBill) {

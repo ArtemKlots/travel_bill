@@ -79,11 +79,11 @@ public class SbBill {
         this.currency = currency;
     }
 
-    public List<Item> getBills() {
+    public List<Item> getItems() {
         return items;
     }
 
-    public void setBills(List<Item> items) {
+    public void setItems(List<Item> items) {
         this.items = items;
     }
 

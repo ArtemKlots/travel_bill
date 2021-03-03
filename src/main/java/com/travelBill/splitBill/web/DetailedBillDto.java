@@ -12,6 +12,8 @@ public class DetailedBillDto {
 
     private List<UserDto> members;
 
+    List<ItemDto> items;
+
     public Long getId() {
         return id;
     }
@@ -42,5 +44,13 @@ public class DetailedBillDto {
 
     public void setMembers(List<UserDto> members) {
         this.members = members;
+    }
+
+    public List<ItemDto> getItems() {
+        return items;
+    }
+
+    public void setItems(List<ItemDto> items) {
+        this.items = items;
     }
 }

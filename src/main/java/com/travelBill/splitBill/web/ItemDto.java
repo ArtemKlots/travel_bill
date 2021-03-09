@@ -1,6 +1,8 @@
 package com.travelBill.splitBill.web;
 
 
+import java.util.List;
+
 public class ItemDto {
 
     private Long id;
@@ -12,6 +14,8 @@ public class ItemDto {
     private double price;
 
     private Long billId;
+
+    private List<AssignDto> assigns;
 
     public Long getId() {
         return id;
@@ -51,5 +55,13 @@ public class ItemDto {
 
     public void setBillId(Long billId) {
         this.billId = billId;
+    }
+
+    public List<AssignDto> getAssigns() {
+        return assigns;
+    }
+
+    public void setAssigns(List<AssignDto> assigns) {
+        this.assigns = assigns;
     }
 }

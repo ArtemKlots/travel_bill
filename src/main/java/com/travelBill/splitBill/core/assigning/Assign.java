@@ -13,12 +13,13 @@ import java.util.Objects;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
-@Table(name = "sb_assigning")
-public class Assigning {
+@Table(name = "sb_assigns")
+public class Assign {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
+    //TODO: validate values below 0
     private double amount;
 
     @Column
@@ -91,8 +92,8 @@ public class Assigning {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Assigning assigning = (Assigning) o;
-        return Double.compare(assigning.amount, amount) == 0 && id.equals(assigning.id) && Objects.equals(createdAt, assigning.createdAt) && Objects.equals(updatedAt, assigning.updatedAt) && item.equals(assigning.item) && user.equals(assigning.user);
+        Assign assign = (Assign) o;
+        return Double.compare(assign.amount, amount) == 0 && id.equals(assign.id) && Objects.equals(createdAt, assign.createdAt) && Objects.equals(updatedAt, assign.updatedAt) && item.equals(assign.item) && user.equals(assign.user);
     }
 
     @Override

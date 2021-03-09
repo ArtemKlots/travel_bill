@@ -3,6 +3,7 @@ package com.travelBill.splitBill.core.item;
 import com.travelBill.api.core.user.UserService;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
 @Service
@@ -23,5 +24,9 @@ public class ItemService {
 
     public void deleteById(Long itemId) {
         itemRepository.deleteById(itemId);
+    }
+
+    public Item findById(Long itemId) {
+        return itemRepository.findById(itemId).orElseThrow(EntityNotFoundException::new);
     }
 }

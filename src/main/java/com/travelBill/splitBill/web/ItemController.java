@@ -27,4 +27,9 @@ public class ItemController {
     public void deleteItem(@PathVariable Long itemId) {
         itemWebService.delete(itemId, 1L);
     }
+
+    @PostMapping(value = "{itemId}/assign")
+    public AssignDto assign(@PathVariable Long itemId, @RequestBody AssignDto assigning) {
+        return itemWebService.assign(itemId, assigning, 1L);
+    }
 }

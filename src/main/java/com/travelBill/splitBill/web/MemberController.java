@@ -1,6 +1,7 @@
 package com.travelBill.splitBill.web;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,7 +18,7 @@ public class MemberController {
 
     // TODO: provide user id
     @GetMapping(value = "")
-    public List<UserDto> getBillsByUserId() {
-        return memberWebService.getAllContactedUsers(1L);
+    public List<UserDto> getBillsByUserId(@RequestAttribute Long userId) {
+        return memberWebService.getAllContactedUsers(userId);
     }
 }

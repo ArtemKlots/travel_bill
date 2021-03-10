@@ -15,25 +15,25 @@ public class BillController {
 
     // TODO: provide user id
     @GetMapping(value = "")
-    public List<BillDto> getBillsByUserId() {
-        return billWebService.getBillsByUserId(1L);
+    public List<BillDto> getBillsByUserId(@RequestAttribute Long userId) {
+        return billWebService.getBillsByUserId(userId);
     }
 
     @GetMapping(value = "{billId}")
-    public DetailedBillDto getBillDetails(@PathVariable Long billId) {
+    public DetailedBillDto getBillDetails(@PathVariable Long billId, @RequestAttribute Long userId) {
         // TODO: provide user id
-        return billWebService.getBillDetails(billId, 1L);
+        return billWebService.getBillDetails(billId, userId);
     }
 
     @PutMapping(value = "{billId}")
-    public DetailedBillDto setBillDetails(@PathVariable Long billId, @RequestBody DetailedBillDto body) {
+    public DetailedBillDto setBillDetails(@PathVariable Long billId, @RequestBody DetailedBillDto body, @RequestAttribute Long userId) {
         // TODO: provide user id
-        return billWebService.setBillDetails(billId, body, 1L);
+        return billWebService.setBillDetails(billId, body, userId);
     }
 
     @GetMapping(value = "{billId}/items")
-    public List<ItemDto> getBillItems(@PathVariable Long billId) {
+    public List<ItemDto> getBillItems(@PathVariable Long billId, @RequestAttribute Long userId) {
         // TODO: provide user id
-        return billWebService.getBillItems(billId, 1L);
+        return billWebService.getBillItems(billId, userId);
     }
 }

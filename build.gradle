@@ -41,7 +41,9 @@ dependencies {
 	// https://mvnrepository.com/artifact/com.rainerhahnekamp/sneakythrow
 	compile group: 'com.rainerhahnekamp', name: 'sneakythrow', version: '1.1.0'
 	compile "org.flywaydb:flyway-core:5.2.4"
-	
+	// https://mvnrepository.com/artifact/com.auth0/java-jwt
+	implementation group: 'com.auth0', name: 'java-jwt', version: '3.14.0'
+
 	testImplementation('org.junit.jupiter:junit-jupiter-api:5.4.2')
 	testCompile('org.junit.jupiter:junit-jupiter-params:5.4.2')
 	testCompile "org.mockito:mockito-core:2.21.0"

@@ -13,23 +13,23 @@ public class ItemController {
 
     // TODO: provide user id
     @PostMapping(value = "")
-    public ItemDto addItem(@RequestBody ItemDto item) {
-        return itemWebService.save(item, 1L);
+    public ItemDto addItem(@RequestBody ItemDto item, @RequestAttribute Long userId) {
+        return itemWebService.save(item, userId);
     }
 
     @PutMapping(value = "{itemId}")
-    public ItemDto updateItem(@PathVariable Long itemId, @RequestBody ItemDto item) {
+    public ItemDto updateItem(@PathVariable Long itemId, @RequestBody ItemDto item, @RequestAttribute Long userId) {
         item.setId(itemId);
-        return itemWebService.save(item, 1L);
+        return itemWebService.save(item, userId);
     }
 
     @DeleteMapping(value = "{itemId}")
-    public void deleteItem(@PathVariable Long itemId) {
-        itemWebService.delete(itemId, 1L);
+    public void deleteItem(@PathVariable Long itemId, @RequestAttribute Long userId) {
+        itemWebService.delete(itemId, userId);
     }
 
     @PostMapping(value = "{itemId}/assign")
-    public AssignDto assign(@PathVariable Long itemId, @RequestBody AssignDto assigning) {
-        return itemWebService.assign(itemId, assigning, 1L);
+    public AssignDto assign(@PathVariable Long itemId, @RequestBody AssignDto assigning, @RequestAttribute Long userId) {
+        return itemWebService.assign(itemId, assigning, userId);
     }
 }

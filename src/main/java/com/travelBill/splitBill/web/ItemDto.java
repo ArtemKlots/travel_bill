@@ -1,6 +1,7 @@
 package com.travelBill.splitBill.web;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ItemDto {
@@ -58,6 +59,7 @@ public class ItemDto {
     }
 
     public List<AssignDto> getAssigns() {
+        if (assigns == null) return new ArrayList<>();
         return assigns;
     }
 

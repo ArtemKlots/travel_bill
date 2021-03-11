@@ -13,6 +13,7 @@ public class RollbarLogger {
 
     RollbarLogger(ApplicationConfiguration applicationConfiguration) {
         try {
+            if (applicationConfiguration.getRollbarAccessKey().length() == 0) return;
             Config config = ConfigBuilder.withAccessToken(applicationConfiguration.getRollbarAccessKey())
                     .environment(applicationConfiguration.getRollbarEnv())
                     .build();

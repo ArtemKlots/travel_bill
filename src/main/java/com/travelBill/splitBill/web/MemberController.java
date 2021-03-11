@@ -1,5 +1,6 @@
 package com.travelBill.splitBill.web;
 
+import com.travelBill.splitBill.web.responseDto.UserDto;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;

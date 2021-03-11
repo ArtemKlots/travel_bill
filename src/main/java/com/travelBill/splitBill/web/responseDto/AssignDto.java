@@ -1,4 +1,4 @@
-package com.travelBill.splitBill.web;
+package com.travelBill.splitBill.web.responseDto;
 
 public class AssignDto {
     private Long id;

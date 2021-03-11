@@ -2,6 +2,7 @@ package com.travelBill.splitBill.web;
 
 import com.travelBill.api.core.user.User;
 import com.travelBill.splitBill.core.user.SbUserService;
+import com.travelBill.splitBill.web.responseDto.UserDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 

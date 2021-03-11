@@ -4,6 +4,9 @@ import com.travelBill.api.core.user.User;
 import com.travelBill.splitBill.core.AccessDeniedException;
 import com.travelBill.splitBill.core.bill.SbBill;
 import com.travelBill.splitBill.core.bill.SbBillService;
+import com.travelBill.splitBill.web.responseDto.BillDto;
+import com.travelBill.splitBill.web.responseDto.DetailedBillDto;
+import com.travelBill.splitBill.web.responseDto.ItemDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 

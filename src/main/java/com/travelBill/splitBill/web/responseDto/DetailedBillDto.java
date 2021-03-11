@@ -1,8 +1,8 @@
-package com.travelBill.splitBill.web;
+package com.travelBill.splitBill.web.responseDto;
 
 import java.util.List;
 
-public class BillDto {
+public class DetailedBillDto {
 
     private Long id;
 
@@ -11,6 +11,8 @@ public class BillDto {
     private String currency;
 
     private List<UserDto> members;
+
+    List<ItemDto> items;
 
     public Long getId() {
         return id;
@@ -42,5 +44,13 @@ public class BillDto {
 
     public void setMembers(List<UserDto> members) {
         this.members = members;
+    }
+
+    public List<ItemDto> getItems() {
+        return items;
+    }
+
+    public void setItems(List<ItemDto> items) {
+        this.items = items;
     }
 }

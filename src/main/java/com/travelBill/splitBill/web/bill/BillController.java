@@ -1,4 +1,4 @@
-package com.travelBill.splitBill.web;
+package com.travelBill.splitBill.web.bill;
 
 import com.travelBill.splitBill.web.responseDto.BillDto;
 import com.travelBill.splitBill.web.responseDto.DetailedBillDto;
@@ -16,7 +16,6 @@ public class BillController {
         this.billWebService = billWebService;
     }
 
-    // TODO: provide user id
     @GetMapping(value = "")
     public List<BillDto> getBillsByUserId(@RequestAttribute Long userId) {
         return billWebService.getBillsByUserId(userId);
@@ -24,9 +23,7 @@ public class BillController {
 
     @GetMapping(value = "{billId}")
     public DetailedBillDto getBillDetails(@PathVariable Long billId, @RequestAttribute Long userId) {
-        throw new NullPointerException();
-        // TODO: provide user id
-//        return billWebService.getBillDetails(billId, userId);
+        return billWebService.getBillDetails(billId, userId);
     }
 
     @PutMapping(value = "{billId}")
@@ -37,7 +34,6 @@ public class BillController {
 
     @GetMapping(value = "{billId}/items")
     public List<ItemDto> getBillItems(@PathVariable Long billId, @RequestAttribute Long userId) {
-        // TODO: provide user id
         return billWebService.getBillItems(billId, userId);
     }
 }

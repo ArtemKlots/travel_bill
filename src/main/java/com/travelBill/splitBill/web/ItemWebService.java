@@ -5,6 +5,7 @@ import com.travelBill.api.core.user.UserService;
 import com.travelBill.splitBill.core.assigning.Assign;
 import com.travelBill.splitBill.core.assigning.AssignsRepository;
 import com.travelBill.splitBill.core.bill.SbBill;
+import com.travelBill.splitBill.core.bill.SbBillService;
 import com.travelBill.splitBill.core.item.Item;
 import com.travelBill.splitBill.core.item.ItemService;
 import com.travelBill.splitBill.web.responseDto.AssignDto;
@@ -15,15 +16,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class ItemWebService {
     private final ItemService itemService;
-    private final BillWebService billWebService;
+    private final SbBillService sbBillService;
     private final AssignsRepository assigningRepository;
     private final UserService userService;
     private final ModelMapper modelMapper;
 
 
-    public ItemWebService(ItemService itemService, BillWebService billWebService, AssignsRepository assigningRepository, UserService userService, ModelMapper modelMapper) {
+    public ItemWebService(ItemService itemService, SbBillService sbBillService, AssignsRepository assigningRepository, UserService userService, ModelMapper modelMapper) {
         this.itemService = itemService;
-        this.billWebService = billWebService;
+        this.sbBillService = sbBillService;
         this.assigningRepository = assigningRepository;
         this.userService = userService;
         this.modelMapper = modelMapper;
@@ -31,8 +32,7 @@ public class ItemWebService {
 
 
     public ItemDto save(ItemDto itemDto, Long userId) {
-        // TODO: check access
-        SbBill bill = billWebService.findById(itemDto.getBillId(), userId);
+        SbBill bill = sbBillService.findById(itemDto.getBillId(), userId);
         Item item = modelMapper.map(itemDto, Item.class);
         item.setBill(bill);
         return modelMapper.map(itemService.save(item), ItemDto.class);

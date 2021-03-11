@@ -1,12 +1,14 @@
 package com.travelBill.splitBill.core.bill;
 
-import com.travelBill.api.core.user.User;
+import com.travelBill.TravelBillException;
 import com.travelBill.api.core.user.UserService;
+import com.travelBill.splitBill.core.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Transactional
@@ -28,22 +30,27 @@ public class SbBillService {
         return this.SBBillRepository.getSbBillsByOwnerId(id);
     }
 
-    public SbBill findById(Long id) throws EntityNotFoundException {
+    private SbBill findById(Long id) throws EntityNotFoundException {
         return this.SBBillRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
     }
 
-    public SbBill save(SbBill sbBill) {
-        return SBBillRepository.save(sbBill);
+    public SbBill findById(Long billId, Long requesterId) {
+        SbBill bill = this.findById(billId);
+        //TODO: validate whether owner is always in member list
+        boolean hasAccess = bill.getMembers().stream().anyMatch(user -> Objects.equals(user.getId(), requesterId));
+        if (!hasAccess) throw new AccessDeniedException();
+
+        return bill;
     }
 
-    public SbBill save(String title, User creator, Long chatId) {
-        SbBill sbBill = new SbBill();
-        sbBill.setTitle(title);
-        sbBill.setOwner(creator);
-        sbBill = save(sbBill);
+    public SbBill save(SbBill sbBill, Long requesterId) {
+        boolean containsOwner = sbBill.getMembers().stream().anyMatch(user -> Objects.equals(user.getId(), requesterId));
 
-        return sbBill;
+        if (!sbBill.getOwner().getId().equals(requesterId)) throw new AccessDeniedException();
+        if (!containsOwner) throw new TravelBillException("You cannot remove yourself from member list");
+
+        return SBBillRepository.save(sbBill);
     }
 
 }

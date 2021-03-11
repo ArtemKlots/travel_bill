@@ -38,7 +38,7 @@ public class Item {
     @JoinColumn(name = "bill_id")
     private SbBill bill;
 
-    @OneToMany(mappedBy = "item")
+    @OneToMany(mappedBy = "item", orphanRemoval = true)
     private List<Assign> assigns;
 
     public Long getId() {

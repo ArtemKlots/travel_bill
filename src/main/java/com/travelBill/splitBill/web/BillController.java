@@ -21,8 +21,9 @@ public class BillController {
 
     @GetMapping(value = "{billId}")
     public DetailedBillDto getBillDetails(@PathVariable Long billId, @RequestAttribute Long userId) {
+        throw new NullPointerException();
         // TODO: provide user id
-        return billWebService.getBillDetails(billId, userId);
+//        return billWebService.getBillDetails(billId, userId);
     }
 
     @PutMapping(value = "{billId}")

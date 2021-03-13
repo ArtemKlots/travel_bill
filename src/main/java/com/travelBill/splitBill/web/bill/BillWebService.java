@@ -1,6 +1,7 @@
 package com.travelBill.splitBill.web.bill;
 
 import com.travelBill.api.core.user.User;
+import com.travelBill.api.core.user.UserService;
 import com.travelBill.splitBill.core.bill.SbBill;
 import com.travelBill.splitBill.core.bill.SbBillService;
 import com.travelBill.splitBill.web.responseDto.BillDto;
@@ -15,11 +16,13 @@ import java.util.stream.Collectors;
 @Service
 public class BillWebService {
     private final SbBillService sbBillService;
+    private final UserService userService;
     private final ModelMapper modelMapper;
 
 
-    public BillWebService(SbBillService sbBillService, ModelMapper modelMapper) {
+    public BillWebService(SbBillService sbBillService, UserService userService, ModelMapper modelMapper) {
         this.sbBillService = sbBillService;
+        this.userService = userService;
         this.modelMapper = modelMapper;
     }
 
@@ -36,17 +39,18 @@ public class BillWebService {
 
     public DetailedBillDto setBillDetails(Long billId, DetailedBillDto newValues, Long userId) {
         SbBill sbBill = sbBillService.findById(billId, userId);
-        // Check if user able to rename user
-        List<User> users = newValues.getMembers()
+        List<Long> providedUserIds = newValues.getMembers()
                 .stream()
-                .map(userDto -> modelMapper.map(userDto, User.class))
+                .map(userDto -> modelMapper.map(userDto, User.class).getId())
                 .collect(Collectors.toList());
+        List<User> users = userService.findAllById(providedUserIds);
 
         sbBill.setTitle(newValues.getTitle());
         sbBill.setCurrency(newValues.getCurrency());
         sbBill.setMembers(users);
+        SbBill updatedBill = sbBillService.save(sbBill, userId);
 
-        return modelMapper.map(sbBill, DetailedBillDto.class);
+        return modelMapper.map(updatedBill, DetailedBillDto.class);
     }
 
     private BillDto convertToDto(SbBill sbBill) {

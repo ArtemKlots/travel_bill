@@ -28,7 +28,6 @@ public class BillController {
 
     @PutMapping(value = "{billId}")
     public DetailedBillDto setBillDetails(@PathVariable Long billId, @RequestBody DetailedBillDto body, @RequestAttribute Long userId) {
-        // TODO: provide user id
         return billWebService.setBillDetails(billId, body, userId);
     }
 

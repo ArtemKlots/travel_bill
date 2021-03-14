@@ -67,6 +67,33 @@ public class DebtCalculatorTest {
     }
 
     @Test
+    void shouldCalculateDebt_ForOneItem_OneAmount_OneNotOwnerUser() {
+        Assign user2Assign = new Assign();
+
+        bill.setItems(Collections.singletonList(item1));
+        bill.setMembers(Arrays.asList(owner, user2));
+        bill.setOwner(owner);
+        bill.setTitle("Test");
+
+        item1.setAmount(1);
+        item1.setPrice(10);
+        item1.setTitle("Test");
+
+        user2Assign.setUser(user2);
+        user2Assign.setAmount(1);
+
+        item1.setAssigns(Collections.singletonList(user2Assign));
+
+        List<Debt> debts = new DebtCalculator().calculate(bill);
+        assertEquals(1, debts.size());
+        assertEquals(10, debts.get(0).getAmount());
+        assertEquals(bill.getTitle(), debts.get(0).getComment());
+        assertEquals(bill.getCurrency(), debts.get(0).getCurrency());
+        assertEquals(bill.getOwner(), debts.get(0).getPayer());
+        assertEquals(user2, debts.get(0).getDebtor());
+    }
+
+    @Test
     void shouldCalculateDebt_ForOneItem_OneAmount_TwoUsers_AndEqualsParts() {
         Assign user1Assign = new Assign();
         Assign user2Assign = new Assign();

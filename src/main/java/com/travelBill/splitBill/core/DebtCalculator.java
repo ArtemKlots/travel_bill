@@ -18,7 +18,7 @@ public class DebtCalculator {
         for (User member : members) {
             double debtAmount = 0;
             for (Item item : bill.getItems()) {
-                if (item.getAssigns().size() == 0) break;
+                if (item.getAssigns().size() == 0) continue;
                 double assignsCount = getAssignsCount(item);
                 List<Assign> memberAssigns = getAssignsForOneMember(item, member);
                 //TODO: Choose better data type
@@ -29,7 +29,7 @@ public class DebtCalculator {
                 }
             }
 
-            if (debtAmount == 0) break;
+            if (debtAmount == 0) continue;
 
             Debt debt = createDebt(debtAmount, bill, member);
             debts.add(debt);

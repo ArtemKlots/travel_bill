@@ -1,10 +1,13 @@
 package com.travelBill.splitBill.web.bill;
 
+import com.travelBill.api.core.debt.Debt;
 import com.travelBill.api.core.user.User;
 import com.travelBill.api.core.user.UserService;
+import com.travelBill.splitBill.core.DebtCalculator;
 import com.travelBill.splitBill.core.bill.SbBill;
 import com.travelBill.splitBill.core.bill.SbBillService;
 import com.travelBill.splitBill.web.responseDto.BillDto;
+import com.travelBill.splitBill.web.responseDto.DebtDto;
 import com.travelBill.splitBill.web.responseDto.DetailedBillDto;
 import com.travelBill.splitBill.web.responseDto.ItemDto;
 import org.modelmapper.ModelMapper;
@@ -34,7 +37,12 @@ public class BillWebService {
     }
 
     public DetailedBillDto getBillDetails(Long billId, Long userId) {
-        return modelMapper.map(sbBillService.findById(billId, userId), DetailedBillDto.class);
+        SbBill bill = sbBillService.findById(billId, userId);
+        DetailedBillDto detailedBillDto = modelMapper.map(bill, DetailedBillDto.class);
+        List<Debt> debts = new DebtCalculator().calculate(bill);
+        List<DebtDto> debtsDto = debts.stream().map(debt -> modelMapper.map(debt, DebtDto.class)).collect(Collectors.toList());
+        detailedBillDto.setDebts(debtsDto);
+        return detailedBillDto;
     }
 
     public DetailedBillDto setBillDetails(Long billId, DetailedBillDto newValues, Long userId) {

@@ -1,5 +1,8 @@
 package com.travelBill.splitBill.web.responseDto;
 
+import com.travelBill.api.core.debt.Debt;
+import com.travelBill.api.core.debt.DebtSumDto;
+
 import java.util.List;
 
 public class DetailedBillDto {
@@ -13,6 +16,8 @@ public class DetailedBillDto {
     private List<UserDto> members;
 
     List<ItemDto> items;
+
+    List<DebtDto> debts;
 
     public Long getId() {
         return id;
@@ -52,5 +57,13 @@ public class DetailedBillDto {
 
     public void setItems(List<ItemDto> items) {
         this.items = items;
+    }
+
+    public List<DebtDto> getDebts() {
+        return debts;
+    }
+
+    public void setDebts(List<DebtDto> debts) {
+        this.debts = debts;
     }
 }

@@ -3,6 +3,7 @@ package com.travelBill.splitBill.core.bill;
 import com.travelBill.TravelBillException;
 import com.travelBill.api.core.user.UserService;
 import com.travelBill.splitBill.core.AccessDeniedException;
+import com.travelBill.splitBill.core.ClosedBillException;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -45,6 +46,7 @@ public class SbBillService {
     }
 
     public SbBill save(SbBill sbBill, Long requesterId) {
+        if (!sbBill.isOpened()) throw new ClosedBillException();
         boolean containsOwner = sbBill.getMembers().stream().anyMatch(user -> Objects.equals(user.getId(), requesterId));
 
         if (!sbBill.getOwner().getId().equals(requesterId)) throw new AccessDeniedException();

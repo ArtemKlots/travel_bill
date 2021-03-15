@@ -35,4 +35,9 @@ public class BillController {
     public List<ItemDto> getBillItems(@PathVariable Long billId, @RequestAttribute Long userId) {
         return billWebService.getBillItems(billId, userId);
     }
+
+    @PostMapping(value = "{billId}/close")
+    public DetailedBillDto closeBill(@PathVariable Long billId, @RequestAttribute Long userId) {
+        return billWebService.closeBill(billId, userId);
+    }
 }

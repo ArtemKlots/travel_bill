@@ -2,6 +2,7 @@ package com.travelBill.splitBill.web;
 
 import com.travelBill.api.core.user.User;
 import com.travelBill.api.core.user.UserService;
+import com.travelBill.splitBill.core.ClosedBillException;
 import com.travelBill.splitBill.core.assigning.Assign;
 import com.travelBill.splitBill.core.assigning.AssignsRepository;
 import com.travelBill.splitBill.core.bill.SbBill;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 public class ItemWebService {
     private final ItemService itemService;
     private final SbBillService sbBillService;
+    //TODO: remove repository dependency from here and make closed bill chack in service
     private final AssignsRepository assigningRepository;
     private final UserService userService;
     private final ModelMapper modelMapper;
@@ -45,6 +47,7 @@ public class ItemWebService {
 
     public AssignDto assign(Long itemId, AssignDto assignDto, Long userId) {
         Item item = itemService.findById(itemId);
+        if (!item.getBill().isOpened()) throw new ClosedBillException();
         Assign existingAssign = item.getAssigns().stream().filter(i -> i.getUser().getId().equals(userId)).findFirst().orElse(null);
 
         if (existingAssign != null && assignDto.getAmount() == 0) {

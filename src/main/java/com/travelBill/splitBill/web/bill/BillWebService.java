@@ -1,8 +1,10 @@
 package com.travelBill.splitBill.web.bill;
 
 import com.travelBill.api.core.debt.Debt;
+import com.travelBill.api.core.debt.DebtService;
 import com.travelBill.api.core.user.User;
 import com.travelBill.api.core.user.UserService;
+import com.travelBill.splitBill.core.ClosedBillException;
 import com.travelBill.splitBill.core.DebtCalculator;
 import com.travelBill.splitBill.core.bill.SbBill;
 import com.travelBill.splitBill.core.bill.SbBillService;
@@ -12,7 +14,9 @@ import com.travelBill.splitBill.web.responseDto.DetailedBillDto;
 import com.travelBill.splitBill.web.responseDto.ItemDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,12 +24,14 @@ import java.util.stream.Collectors;
 public class BillWebService {
     private final SbBillService sbBillService;
     private final UserService userService;
+    private final DebtService debtService;
     private final ModelMapper modelMapper;
 
 
-    public BillWebService(SbBillService sbBillService, UserService userService, ModelMapper modelMapper) {
+    public BillWebService(SbBillService sbBillService, UserService userService, DebtService debtService, ModelMapper modelMapper) {
         this.sbBillService = sbBillService;
         this.userService = userService;
+        this.debtService = debtService;
         this.modelMapper = modelMapper;
     }
 
@@ -60,6 +66,27 @@ public class BillWebService {
 
         return modelMapper.map(updatedBill, DetailedBillDto.class);
     }
+
+    @Transactional
+    public DetailedBillDto closeBill(Long billId, Long userId) {
+        SbBill bill = sbBillService.findById(billId, userId);
+        if (!bill.isOpened()) throw new ClosedBillException();
+        List<Debt> debts = new DebtCalculator().calculate(bill);
+
+        bill.setOpened(false);
+        bill.setClosedAt(LocalDateTime.now());
+
+        SbBill updatedBill = sbBillService.save(bill, userId);
+
+        List<DebtDto> debtsDto = debts.stream().map(debt -> modelMapper.map(debt, DebtDto.class)).collect(Collectors.toList());
+        DetailedBillDto detailedBillDto = modelMapper.map(updatedBill, DetailedBillDto.class);
+        detailedBillDto.setDebts(debtsDto);
+
+        List<Debt> debtsWithoutOwner = debts.stream().filter(debt -> debt.getDebtor().getId().equals(bill.getOwner().getId())).collect(Collectors.toList());
+        debtService.saveAll(debtsWithoutOwner);
+        return detailedBillDto;
+    }
+
 
     private BillDto convertToDto(SbBill sbBill) {
         return modelMapper.map(sbBill, BillDto.class);

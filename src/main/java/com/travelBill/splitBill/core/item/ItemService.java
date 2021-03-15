@@ -1,6 +1,7 @@
 package com.travelBill.splitBill.core.item;
 
 import com.travelBill.api.core.user.UserService;
+import com.travelBill.splitBill.core.ClosedBillException;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -19,6 +20,7 @@ public class ItemService {
     }
 
     public Item save(Item item) {
+        if (!item.getBill().isOpened()) throw new ClosedBillException();
         return itemRepository.save(item);
     }
 

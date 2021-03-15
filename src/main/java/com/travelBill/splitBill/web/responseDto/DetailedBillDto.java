@@ -19,6 +19,10 @@ public class DetailedBillDto {
 
     List<DebtDto> debts;
 
+    boolean isOpened;
+
+    Long ownerId;
+
     public Long getId() {
         return id;
     }
@@ -65,5 +69,21 @@ public class DetailedBillDto {
 
     public void setDebts(List<DebtDto> debts) {
         this.debts = debts;
+    }
+
+    public boolean isOpened() {
+        return isOpened;
+    }
+
+    public void setOpened(boolean opened) {
+        isOpened = opened;
+    }
+
+    public Long getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
     }
 }

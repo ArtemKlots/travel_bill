@@ -20,6 +20,7 @@ import com.travelBill.telegram.scenario.individual.event.close.CloseEventRequest
 import com.travelBill.telegram.scenario.individual.event.close.CloseEventRequestScenario;
 import com.travelBill.telegram.scenario.individual.event.close.CloseEventRequestSubmitScenario;
 import com.travelBill.telegram.scenario.individual.event.totalSpent.ShowTotalSpentByEventScenario;
+import com.travelBill.telegram.scenario.splitBill.SplitBillScenarioFactory;
 import com.travelBill.telegram.user.state.UserState;
 import com.travelBill.telegram.user.state.UserStateService;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,6 +56,7 @@ class IndividualScenarioFactoryTest {
     private UserStateService userStateServiceMock = mock(UserStateService.class);
     private RequestAmountScenario requestAmountScenarioMock = mock(RequestAmountScenario.class);
     private ShowHistoryScenario showHistoryScenarioMock = mock(ShowHistoryScenario.class);
+    private SplitBillScenarioFactory splitBillScenarioFactory = mock(SplitBillScenarioFactory.class);
     private Request request;
     private User user;
 
@@ -80,7 +82,8 @@ class IndividualScenarioFactoryTest {
                 sendMoneyScenarioMock,
                 userStateServiceMock,
                 requestAmountScenarioMock,
-                showHistoryScenarioMock);
+                showHistoryScenarioMock,
+                splitBillScenarioFactory);
 
         user = new User();
         user.setId(1L);

@@ -15,6 +15,7 @@ import java.util.Objects;
 
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
+    //TODO: extract secret
     private final Algorithm algorithmHS = Algorithm.HMAC256("secret");
     private final JWTVerifier verifier = JWT.require(algorithmHS)
             .acceptExpiresAt(2592000) //30 days

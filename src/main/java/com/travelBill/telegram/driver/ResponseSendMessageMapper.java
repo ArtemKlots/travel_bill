@@ -12,7 +12,10 @@ import static org.telegram.telegrambots.meta.api.methods.ParseMode.MARKDOWN;
 public class ResponseSendMessageMapper {
     public SendMessage mapTo(Response response, Long chatId) {
         SendMessage message = new SendMessage();
-        message.setChatId(chatId);
+        // According to latest changes User identifiers will have up to 52 significant bits, so a 64-bit integer or double-precision float type would still be safe for storing them.
+        // So, current Long type should be enough
+        // https://core.telegram.org/bots/api#march-9-2021
+        message.setChatId(chatId.toString());
 
         if (!isNull(response.message)) {
             message.setText(response.message);

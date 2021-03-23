@@ -25,6 +25,7 @@ public class KeyboardMapper {
                 mappedButton.setText(typedButton.text);
                 mappedButton.setUrl(typedButton.url);
                 mappedButton.setCallbackData(typedButton.callbackData);
+                //TODO: login url
                 row.add(mappedButton);
             });
             keyboard.add(row);

@@ -43,7 +43,7 @@ public class UserService {
         }
     }
 
-    public User findUserByTelegramId(Integer id) {
+    public User findUserByTelegramId(Long id) {
         return userRepository.findUserByTelegramId(id);
     }
 

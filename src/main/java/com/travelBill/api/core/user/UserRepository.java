@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    User findUserByTelegramId(Integer id);
+    User findUserByTelegramId(Long id);
 
     @Query(value = "" +
             "select * from user where id != :user_id and (id in ( " +

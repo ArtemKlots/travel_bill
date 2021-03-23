@@ -29,7 +29,7 @@ public class User {
     )
     private List<Event> events;
 
-    private Integer telegramId;
+    private Long telegramId;
 
     @ManyToOne
     @JoinColumn(name = "current_event_id")
@@ -97,11 +97,11 @@ public class User {
         this.events = events;
     }
 
-    public Integer getTelegramId() {
+    public Long getTelegramId() {
         return telegramId;
     }
 
-    public void setTelegramId(Integer telegramId) {
+    public void setTelegramId(Long telegramId) {
         this.telegramId = telegramId;
     }
 

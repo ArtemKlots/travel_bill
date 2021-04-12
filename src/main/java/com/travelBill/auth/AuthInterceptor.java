@@ -5,6 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.travelBill.config.ApplicationConfiguration;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -15,11 +16,14 @@ import java.util.Objects;
 
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
-    //TODO: extract secret
-    private final Algorithm algorithmHS = Algorithm.HMAC256("secret");
-    private final JWTVerifier verifier = JWT.require(algorithmHS)
-            .acceptExpiresAt(2592000) //30 days
-            .build();
+    private final JWTVerifier verifier;
+
+    public AuthInterceptor(ApplicationConfiguration applicationConfiguration) {
+        Algorithm algorithmHS = Algorithm.HMAC256(applicationConfiguration.getJwtSecret());
+        verifier = JWT.require(algorithmHS)
+                .acceptExpiresAt(2592000) //30 days
+                .build();
+    }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {

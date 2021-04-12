@@ -37,6 +37,14 @@ public class ApplicationConfiguration {
     @Value("${ROLLBAR_ENVIRONMENT}")
     private String rollbarEnv;
 
+    @Value("${JWT_SECRET}")
+    @NotEmpty
+    private String jwtSecret;
+
+    @Value("${LOGIN_URL}")
+    @NotEmpty
+    private String loginUrl;
+
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
@@ -96,5 +104,21 @@ public class ApplicationConfiguration {
 
     public void setRollbarEnv(String rollbarEnv) {
         this.rollbarEnv = rollbarEnv;
+    }
+
+    public String getJwtSecret() {
+        return jwtSecret;
+    }
+
+    public void setJwtSecret(String jwtSecret) {
+        this.jwtSecret = jwtSecret;
+    }
+
+    public String getLoginUrl() {
+        return loginUrl;
+    }
+
+    public void setLoginUrl(String loginUrl) {
+        this.loginUrl = loginUrl;
     }
 }

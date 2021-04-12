@@ -34,4 +34,10 @@ public class RollbarLogger {
             rollbar.error(e, message);
         }
     }
+
+    public void error(Exception e) {
+        if (rollbar != null) {
+            rollbar.error(e);
+        }
+    }
 }

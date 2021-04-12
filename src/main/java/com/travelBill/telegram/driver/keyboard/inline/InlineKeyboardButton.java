@@ -8,6 +8,7 @@ import com.travelBill.telegram.driver.keyboard.Button;
 public class InlineKeyboardButton extends Button {
     public String url;
     public String callbackData;
+    public LoginUrl loginUrl;
 
     public InlineKeyboardButton setText(String text) {
         this.text = text;

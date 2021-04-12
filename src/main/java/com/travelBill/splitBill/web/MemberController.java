@@ -17,7 +17,6 @@ public class MemberController {
         this.memberWebService = memberWebService;
     }
 
-    // TODO: provide user id
     @GetMapping(value = "")
     public List<UserDto> getBillsByUserId(@RequestAttribute Long userId) {
         return memberWebService.getAllContactedUsers(userId);

@@ -47,6 +47,9 @@ public class SbBillService {
 
     public SbBill save(SbBill sbBill, Long requesterId) {
         if (!sbBill.isOpened()) throw new ClosedBillException();
+        if (sbBill.getCurrency() == null) {
+            throw new TravelBillException("Currency cannot be empty");
+        }
         boolean containsOwner = sbBill.getMembers().stream().anyMatch(user -> Objects.equals(user.getId(), requesterId));
 
         if (!sbBill.getOwner().getId().equals(requesterId)) throw new AccessDeniedException();
@@ -56,10 +59,6 @@ public class SbBillService {
     }
 
     public SbBill add(SbBill sbBill, Long requesterId) {
-        if (sbBill.getCurrency() == null) {
-            throw new TravelBillException("Currency cannot be empty");
-        }
-
         if (sbBill.getItems() != null) {
             sbBill.getItems().forEach(item -> item.setAssigns(null));
         }

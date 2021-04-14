@@ -42,6 +42,13 @@ public class BillWebService {
                 .collect(Collectors.toList());
     }
 
+
+    public DetailedBillDto addBill(DetailedBillDto newBill, Long userId) {
+        SbBill sbBill = modelMapper.map(newBill, SbBill.class);
+        SbBill bill = sbBillService.add(sbBill, userId);
+        return modelMapper.map(bill, DetailedBillDto.class);
+    }
+
     public DetailedBillDto getBillDetails(Long billId, Long userId) {
         SbBill bill = sbBillService.findById(billId, userId);
         DetailedBillDto detailedBillDto = modelMapper.map(bill, DetailedBillDto.class);

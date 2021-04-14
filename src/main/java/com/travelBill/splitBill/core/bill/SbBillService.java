@@ -1,6 +1,7 @@
 package com.travelBill.splitBill.core.bill;
 
 import com.travelBill.TravelBillException;
+import com.travelBill.api.core.user.User;
 import com.travelBill.api.core.user.UserService;
 import com.travelBill.splitBill.core.AccessDeniedException;
 import com.travelBill.splitBill.core.ClosedBillException;
@@ -8,8 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 @Transactional
@@ -53,6 +53,22 @@ public class SbBillService {
         if (!containsOwner) throw new TravelBillException("You cannot remove yourself from member list");
 
         return SBBillRepository.save(sbBill);
+    }
+
+    public SbBill add(SbBill sbBill, Long requesterId) {
+        if (sbBill.getCurrency() == null) {
+            throw new TravelBillException("Currency cannot be empty");
+        }
+
+        if (sbBill.getItems() != null) {
+            sbBill.getItems().forEach(item -> item.setAssigns(null));
+        }
+
+        User creator = userService.findById(requesterId);
+        sbBill.setOpened(true);
+        sbBill.setOwner(creator);
+        sbBill.setMembers(Collections.singletonList(creator));
+        return save(sbBill, requesterId);
     }
 
 }

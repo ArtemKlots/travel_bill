@@ -21,6 +21,11 @@ public class BillController {
         return billWebService.getBillsByUserId(userId);
     }
 
+    @PostMapping(value = "")
+    public DetailedBillDto addBill(@RequestBody DetailedBillDto body, @RequestAttribute Long userId) {
+        return billWebService.addBill(body, userId);
+    }
+
     @GetMapping(value = "{billId}")
     public DetailedBillDto getBillDetails(@PathVariable Long billId, @RequestAttribute Long userId) {
         return billWebService.getBillDetails(billId, userId);

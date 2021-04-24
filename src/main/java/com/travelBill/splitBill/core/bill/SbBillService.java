@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -30,6 +31,11 @@ public class SbBillService {
     public List<SbBill> getBillsByOwnerId(Long id) {
         return this.SBBillRepository.getSbBillsByOwnerId(id);
     }
+
+    public List<SbBill> getAllBillsForUser(Long id) {
+        return this.SBBillRepository.getSbBillsByMembersId(id);
+    }
+
 
     private SbBill findById(Long id) throws EntityNotFoundException {
         return this.SBBillRepository.findById(id)
@@ -68,6 +74,16 @@ public class SbBillService {
         sbBill.setOwner(creator);
         sbBill.setMembers(Collections.singletonList(creator));
         return save(sbBill, requesterId);
+    }
+
+    public SbBill close(Long billId, Long requesterId) {
+        SbBill bill = findById(billId, requesterId);
+        if (!bill.isOpened()) throw new ClosedBillException();
+        if (!bill.getOwner().getId().equals(requesterId)) throw new AccessDeniedException();
+
+        bill.setOpened(false);
+        bill.setClosedAt(LocalDateTime.now());
+        return SBBillRepository.save(bill);
     }
 
 }

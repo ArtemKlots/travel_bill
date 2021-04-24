@@ -1,5 +1,6 @@
 package com.travelBill.splitBill.web;
 
+import com.travelBill.TravelBillException;
 import com.travelBill.api.core.user.User;
 import com.travelBill.api.core.user.UserService;
 import com.travelBill.splitBill.core.ClosedBillException;
@@ -49,6 +50,10 @@ public class ItemWebService {
         Item item = itemService.findById(itemId);
         if (!item.getBill().isOpened()) throw new ClosedBillException();
         Assign existingAssign = item.getAssigns().stream().filter(i -> i.getUser().getId().equals(userId)).findFirst().orElse(null);
+
+        if (existingAssign == null && assignDto.getAmount() == 0) {
+            throw new TravelBillException("Cannot create new assignment with amount 0");
+        }
 
         if (existingAssign != null && assignDto.getAmount() == 0) {
             assigningRepository.deleteById(existingAssign.getId());

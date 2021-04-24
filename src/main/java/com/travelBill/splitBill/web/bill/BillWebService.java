@@ -35,6 +35,13 @@ public class BillWebService {
         this.modelMapper = modelMapper;
     }
 
+    public List<BillDto> getBillsForUser(Long userId) {
+        return sbBillService.getAllBillsForUser(userId)
+                .stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
     public List<BillDto> getBillsByUserId(Long userId) {
         return sbBillService.getBillsByOwnerId(userId)
                 .stream()
@@ -76,20 +83,14 @@ public class BillWebService {
 
     @Transactional
     public DetailedBillDto closeBill(Long billId, Long userId) {
-        SbBill bill = sbBillService.findById(billId, userId);
-        if (!bill.isOpened()) throw new ClosedBillException();
-        List<Debt> debts = new DebtCalculator().calculate(bill);
-
-        bill.setOpened(false);
-        bill.setClosedAt(LocalDateTime.now());
-
-        SbBill updatedBill = sbBillService.save(bill, userId);
+        SbBill closedBill = sbBillService.close(billId, userId);
+        List<Debt> debts = new DebtCalculator().calculate(closedBill);
 
         List<DebtDto> debtsDto = debts.stream().map(debt -> modelMapper.map(debt, DebtDto.class)).collect(Collectors.toList());
-        DetailedBillDto detailedBillDto = modelMapper.map(updatedBill, DetailedBillDto.class);
+        DetailedBillDto detailedBillDto = modelMapper.map(closedBill, DetailedBillDto.class);
         detailedBillDto.setDebts(debtsDto);
 
-        List<Debt> debtsWithoutOwner = debts.stream().filter(debt -> debt.getDebtor().getId().equals(bill.getOwner().getId())).collect(Collectors.toList());
+        List<Debt> debtsWithoutOwner = debts.stream().filter(debt -> debt.getDebtor().getId().equals(closedBill.getOwner().getId())).collect(Collectors.toList());
         debtService.saveAll(debtsWithoutOwner);
         return detailedBillDto;
     }

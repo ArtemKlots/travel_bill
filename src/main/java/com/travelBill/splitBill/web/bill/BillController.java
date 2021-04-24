@@ -18,7 +18,7 @@ public class BillController {
 
     @GetMapping(value = "")
     public List<BillDto> getBillsByUserId(@RequestAttribute Long userId) {
-        return billWebService.getBillsByUserId(userId);
+        return billWebService.getBillsForUser(userId);
     }
 
     @PostMapping(value = "")

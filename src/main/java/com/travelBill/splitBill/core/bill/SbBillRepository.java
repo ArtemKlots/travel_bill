@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface SbBillRepository extends JpaRepository<SbBill, Long> {
     List<SbBill> getSbBillsByOwnerId(Long ownerId);
+    List<SbBill> getSbBillsByMembersId(Long ownerId);
 }

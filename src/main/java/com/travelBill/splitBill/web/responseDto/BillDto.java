@@ -12,6 +12,8 @@ public class BillDto {
 
     private List<UserDto> members;
 
+    boolean isOpened;
+
     public Long getId() {
         return id;
     }
@@ -42,5 +44,13 @@ public class BillDto {
 
     public void setMembers(List<UserDto> members) {
         this.members = members;
+    }
+
+    public boolean isOpened() {
+        return isOpened;
+    }
+
+    public void setOpened(boolean opened) {
+        isOpened = opened;
     }
 }

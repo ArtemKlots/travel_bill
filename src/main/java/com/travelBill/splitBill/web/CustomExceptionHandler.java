@@ -1,5 +1,6 @@
 package com.travelBill.splitBill.web;
 
+import com.travelBill.TravelBillException;
 import com.travelBill.splitBill.core.ClosedBillException;
 import com.travelBill.telegram.RollbarLogger;
 import org.springframework.http.HttpHeaders;
@@ -30,6 +31,14 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorResponse error = new ErrorResponse();
         error.message = "Internal Server error";
         return handleExceptionInternal(exception, error, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
+    }
+
+    @ExceptionHandler(TravelBillException.class)
+    public final ResponseEntity<Object> handleTravelBillException(Exception exception, WebRequest request) {
+        logError(exception, (ServletWebRequest) request);
+        ErrorResponse error = new ErrorResponse();
+        error.message = error.getMessage();
+        return handleExceptionInternal(exception, error, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
     @ExceptionHandler(ClosedBillException.class)

@@ -112,4 +112,8 @@ public class BillWebService {
                 .map(item -> modelMapper.map(item, ItemDto.class))
                 .collect(Collectors.toList());
     }
+
+    public Long invite(String inviteId, Long userId) {
+        return sbBillService.invite(inviteId, userId);
+    }
 }

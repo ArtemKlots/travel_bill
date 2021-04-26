@@ -12,6 +12,8 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import static java.util.Objects.isNull;
+
 @Service
 @Transactional
 public class SbBillService {
@@ -92,5 +94,17 @@ public class SbBillService {
         if (!bill.getOwner().getId().equals(userId)) throw new AccessDeniedException();
         if (!bill.getItems().isEmpty()) throw new TravelBillException("Could not delete bill with items");
         SBBillRepository.delete(bill);
+    }
+
+    public Long invite(String inviteId, Long userId) {
+        SbBill bill = SBBillRepository.getSbBillByInviteId(inviteId).orElseThrow(() -> new TravelBillException("Invite link invalid!"));
+        boolean isUserAlreadyMember = isNull(bill.getMembers().stream().filter(user -> user.getId().equals(userId)).findFirst().orElse(null));
+        if (isUserAlreadyMember) {
+            return bill.getId();
+        } else {
+            User user = userService.findById(userId);
+            bill.getMembers().add(user);
+            return SBBillRepository.save(bill).getId();
+        }
     }
 }

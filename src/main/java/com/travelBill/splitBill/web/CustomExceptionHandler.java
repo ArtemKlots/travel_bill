@@ -37,7 +37,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     public final ResponseEntity<Object> handleTravelBillException(Exception exception, WebRequest request) {
         logError(exception, (ServletWebRequest) request);
         ErrorResponse error = new ErrorResponse();
-        error.message = error.getMessage();
+        error.message = exception.getMessage();
         return handleExceptionInternal(exception, error, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 

@@ -33,7 +33,7 @@ public class SbBillService {
     }
 
     public List<SbBill> getAllBillsForUser(Long id) {
-        return this.SBBillRepository.getSbBillsByMembersId(id);
+        return this.SBBillRepository.getSbBillsByMembersIdOrderByCreatedAtDesc(id);
     }
 
 

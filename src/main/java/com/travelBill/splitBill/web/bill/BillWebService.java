@@ -95,6 +95,10 @@ public class BillWebService {
         return detailedBillDto;
     }
 
+    public void deleteBill(Long billId, Long userId) {
+        sbBillService.delete(billId, userId);
+    }
+
 
     private BillDto convertToDto(SbBill sbBill) {
         return modelMapper.map(sbBill, BillDto.class);

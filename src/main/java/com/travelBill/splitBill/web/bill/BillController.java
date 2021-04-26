@@ -36,6 +36,11 @@ public class BillController {
         return billWebService.setBillDetails(billId, body, userId);
     }
 
+    @DeleteMapping(value = "{billId}")
+    public void deleteBill(@PathVariable Long billId, @RequestAttribute Long userId) {
+        billWebService.deleteBill(billId, userId);
+    }
+
     @GetMapping(value = "{billId}/items")
     public List<ItemDto> getBillItems(@PathVariable Long billId, @RequestAttribute Long userId) {
         return billWebService.getBillItems(billId, userId);

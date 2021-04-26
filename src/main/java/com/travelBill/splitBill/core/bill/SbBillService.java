@@ -86,4 +86,10 @@ public class SbBillService {
         return SBBillRepository.save(bill);
     }
 
+    public void delete(Long billId, Long userId) {
+        SbBill bill = this.findById(billId);
+        if (!bill.getOwner().getId().equals(userId)) throw new AccessDeniedException();
+        if (!bill.getItems().isEmpty()) throw new TravelBillException("Could not delete bill with items");
+        SBBillRepository.delete(bill);
+    }
 }

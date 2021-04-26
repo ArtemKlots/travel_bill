@@ -23,6 +23,8 @@ public class DetailedBillDto {
 
     Long ownerId;
 
+    String inviteId;
+
     public Long getId() {
         return id;
     }
@@ -85,5 +87,13 @@ public class DetailedBillDto {
 
     public void setOwnerId(Long ownerId) {
         this.ownerId = ownerId;
+    }
+
+    public String getInviteId() {
+        return inviteId;
+    }
+
+    public void setInviteId(String inviteId) {
+        this.inviteId = inviteId;
     }
 }

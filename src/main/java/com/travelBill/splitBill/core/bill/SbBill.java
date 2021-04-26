@@ -55,6 +55,9 @@ public class SbBill {
     @Column
     private LocalDateTime closedAt;
 
+    @Column(unique = true, updatable = false, nullable = false)
+    private String inviteId;
+
     public Long getId() {
         return id;
     }
@@ -133,5 +136,13 @@ public class SbBill {
 
     public void setClosedAt(LocalDateTime closedAt) {
         this.closedAt = closedAt;
+    }
+
+    public String getInviteId() {
+        return inviteId;
+    }
+
+    public void setInviteId(String inviteId) {
+        this.inviteId = inviteId;
     }
 }

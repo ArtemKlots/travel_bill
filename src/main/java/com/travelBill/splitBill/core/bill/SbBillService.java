@@ -73,6 +73,7 @@ public class SbBillService {
         sbBill.setOpened(true);
         sbBill.setOwner(creator);
         sbBill.setMembers(Collections.singletonList(creator));
+        sbBill.setInviteId(UUID.randomUUID().toString());
         return save(sbBill, requesterId);
     }
 

@@ -1,8 +1,10 @@
 package com.travelBill.splitBill.core;
 
-public class AccessDeniedException extends RuntimeException {
+import com.travelBill.TravelBillException;
+
+public class AccessDeniedException extends TravelBillException {
     public AccessDeniedException() {
-        super();
+        super("Access denied");
     }
 
     public AccessDeniedException(String message) {

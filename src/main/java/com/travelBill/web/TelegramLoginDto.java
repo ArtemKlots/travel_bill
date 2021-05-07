@@ -5,6 +5,7 @@ public class TelegramLoginDto {
     private String firstName;
     private String lastName;
     private String username;
+    private String photoUrl;
     private String authDate;
     private String hash;
 
@@ -40,6 +41,14 @@ public class TelegramLoginDto {
         this.username = username;
     }
 
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
+
     public String getAuthDate() {
         return authDate;
     }
@@ -63,6 +72,7 @@ public class TelegramLoginDto {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", username='" + username + '\'' +
+                ", photoUrl='" + photoUrl + '\'' +
                 ", authDate='" + authDate + '\'' +
                 ", hash='" + hash + '\'' +
                 '}';

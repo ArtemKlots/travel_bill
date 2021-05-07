@@ -97,7 +97,7 @@ public class SbBillService {
     }
 
     public Long invite(String inviteId, Long userId) {
-        SbBill bill = SBBillRepository.getSbBillByInviteId(inviteId).orElseThrow(() -> new TravelBillException("Invite link invalid!"));
+        SbBill bill = SBBillRepository.getSbBillByInviteId(inviteId).orElseThrow(() -> new TravelBillException("Invite link is invalid!"));
         boolean isUserAlreadyMember = !isNull(bill.getMembers().stream().filter(user -> user.getId().equals(userId)).findFirst().orElse(null));
         if (isUserAlreadyMember) {
             return bill.getId();

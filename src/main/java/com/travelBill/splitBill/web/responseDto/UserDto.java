@@ -1,9 +1,11 @@
 package com.travelBill.splitBill.web.responseDto;
 
 public class UserDto {
-    Long id;
+    private Long id;
 
     private String userFullName;
+
+    private String photoUrl;
 
     public Long getId() {
         return id;
@@ -19,5 +21,13 @@ public class UserDto {
 
     public void setUserFullName(String userFullName) {
         this.userFullName = userFullName;
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 }

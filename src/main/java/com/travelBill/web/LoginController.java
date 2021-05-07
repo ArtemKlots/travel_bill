@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Objects;
 
 import static com.travelBill.web.LoginValidator.validate;
+import static java.util.Objects.nonNull;
 
 @RestController()
 public class LoginController {
@@ -42,7 +44,12 @@ public class LoginController {
         }
 
         User user = userService.findUserByTelegramId(telegramLoginDto.getId());
-        //TODO: change secret
+
+        if (nonNull(telegramLoginDto.getPhotoUrl()) && !Objects.equals(user.getPhotoUrl(), telegramLoginDto.getPhotoUrl())) {
+            user.setPhotoUrl(telegramLoginDto.getPhotoUrl());
+            user = userService.save(user);
+        }
+
         Algorithm algorithm = Algorithm.HMAC256(applicationConfiguration.getJwtSecret());
         return JWT.create()
                 .withIssuer("TravelBill")

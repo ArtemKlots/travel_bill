@@ -36,6 +36,9 @@ public class User {
     private Event currentEvent;
 
     @Column
+    private String photoUrl;
+
+    @Column
     @CreationTimestamp
     private LocalDateTime createdAt;
 
@@ -113,6 +116,14 @@ public class User {
         this.currentEvent = currentEvent;
     }
 
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -140,21 +151,13 @@ public class User {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof User)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(getId(), user.getId()) &&
-                Objects.equals(getFirstName(), user.getFirstName()) &&
-                Objects.equals(getLastName(), user.getLastName()) &&
-                Objects.equals(getEvents(), user.getEvents()) &&
-                Objects.equals(getTelegramId(), user.getTelegramId()) &&
-                Objects.equals(getCurrentEvent(), user.getCurrentEvent()) &&
-                Objects.equals(getCreatedAt(), user.getCreatedAt()) &&
-                Objects.equals(getUpdatedAt(), user.getUpdatedAt()) &&
-                Objects.equals(getLastActivity(), user.getLastActivity());
+        return id.equals(user.id) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(events, user.events) && telegramId.equals(user.telegramId) && Objects.equals(currentEvent, user.currentEvent) && Objects.equals(photoUrl, user.photoUrl) && Objects.equals(createdAt, user.createdAt) && Objects.equals(updatedAt, user.updatedAt) && Objects.equals(lastActivity, user.lastActivity);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getFirstName(), getLastName(), getEvents(), getTelegramId(), getCurrentEvent(), getCreatedAt(), getUpdatedAt(), getLastActivity());
+        return Objects.hash(id, firstName, lastName, events, telegramId, currentEvent, photoUrl, createdAt, updatedAt, lastActivity);
     }
 }

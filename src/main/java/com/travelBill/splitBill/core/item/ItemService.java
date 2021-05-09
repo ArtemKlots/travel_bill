@@ -20,7 +20,7 @@ import java.util.Objects;
 
 @Service
 @Transactional
-public class ItemWebService {
+public class ItemService {
     private final SbBillService sbBillService;
     //TODO: remove repository dependency from here and make closed bill chack in service
     private final AssignsRepository assigningRepository;
@@ -29,7 +29,7 @@ public class ItemWebService {
     private final ItemRepository itemRepository;
 
 
-    public ItemWebService(SbBillService sbBillService, AssignsRepository assigningRepository, UserService userService, ModelMapper modelMapper, ItemRepository itemRepository) {
+    public ItemService(SbBillService sbBillService, AssignsRepository assigningRepository, UserService userService, ModelMapper modelMapper, ItemRepository itemRepository) {
         this.sbBillService = sbBillService;
         this.assigningRepository = assigningRepository;
         this.userService = userService;

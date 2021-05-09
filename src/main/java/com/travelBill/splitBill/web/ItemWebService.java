@@ -3,6 +3,7 @@ package com.travelBill.splitBill.web;
 import com.travelBill.TravelBillException;
 import com.travelBill.api.core.user.User;
 import com.travelBill.api.core.user.UserService;
+import com.travelBill.splitBill.core.AccessDeniedException;
 import com.travelBill.splitBill.core.ClosedBillException;
 import com.travelBill.splitBill.core.assigning.Assign;
 import com.travelBill.splitBill.core.assigning.AssignsRepository;
@@ -14,8 +15,12 @@ import com.travelBill.splitBill.web.responseDto.AssignDto;
 import com.travelBill.splitBill.web.responseDto.ItemDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Objects;
 
 @Service
+@Transactional
 public class ItemWebService {
     private final ItemService itemService;
     private final SbBillService sbBillService;
@@ -42,7 +47,16 @@ public class ItemWebService {
     }
 
     public void delete(Long itemId, Long userId) {
-        // TODO: check access
+        Item item = itemService.findById(itemId);
+        SbBill bill = item.getBill();
+        if (!bill.isOpened()) {
+            throw new ClosedBillException();
+        }
+
+        if (!Objects.equals(bill.getOwner().getId(), userId)) {
+            throw new AccessDeniedException();
+        }
+
         itemService.deleteById(itemId);
     }
 

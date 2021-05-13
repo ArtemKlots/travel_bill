@@ -1,7 +1,9 @@
 package com.travelBill.config;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
@@ -35,6 +37,18 @@ public class ApplicationConfiguration {
     @Value("${ROLLBAR_ENVIRONMENT}")
     private String rollbarEnv;
 
+    @Value("${JWT_SECRET}")
+    @NotEmpty
+    private String jwtSecret;
+
+    @Value("${LOGIN_URL}")
+    @NotEmpty
+    private String loginUrl;
+
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
+    }
 
     public String getTelegramKey() {
         return telegramKey;
@@ -90,5 +104,21 @@ public class ApplicationConfiguration {
 
     public void setRollbarEnv(String rollbarEnv) {
         this.rollbarEnv = rollbarEnv;
+    }
+
+    public String getJwtSecret() {
+        return jwtSecret;
+    }
+
+    public void setJwtSecret(String jwtSecret) {
+        this.jwtSecret = jwtSecret;
+    }
+
+    public String getLoginUrl() {
+        return loginUrl;
+    }
+
+    public void setLoginUrl(String loginUrl) {
+        this.loginUrl = loginUrl;
     }
 }

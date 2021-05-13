@@ -1,4 +1,4 @@
-FROM java:openjdk-8-jdk
+FROM adoptopenjdk:15-jre
 
 WORKDIR /app
 

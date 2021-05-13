@@ -34,6 +34,10 @@ public class DebtService {
         return debtRepository.save(debt);
     }
 
+    public List<Debt> saveAll(List<Debt> debts) {
+        return debtRepository.saveAll(debts);
+    }
+
     public List<Debt> saveAll(List<Debt> debts, Event event) {
         debts.forEach(debt -> debt.setComment(String.format("Auto-calculated when event \"%s \" was closed", event.getTitle())));
         return debtRepository.saveAll(debts);

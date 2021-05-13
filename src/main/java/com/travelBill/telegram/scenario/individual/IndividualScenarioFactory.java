@@ -16,6 +16,7 @@ import com.travelBill.telegram.scenario.individual.event.close.CloseEventRequest
 import com.travelBill.telegram.scenario.individual.event.close.CloseEventRequestSubmitScenario;
 import com.travelBill.telegram.scenario.individual.event.totalSpent.ShowTotalSpentByEventScenario;
 import com.travelBill.telegram.scenario.navigation.GoBackScenario;
+import com.travelBill.telegram.scenario.splitBill.SplitBillScenarioFactory;
 import com.travelBill.telegram.user.state.UserState;
 import com.travelBill.telegram.user.state.UserStateService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,7 @@ public class IndividualScenarioFactory {
     private final UserStateService userStateService;
     private final RequestAmountScenario requestAmountScenario;
     private final ShowHistoryScenario showHistoryScenario;
+    private final SplitBillScenarioFactory splitBillScenarioFactory;
 
 
     @Autowired
@@ -75,7 +77,7 @@ public class IndividualScenarioFactory {
                                      SelectDebtorScenario selectDebtorScenario,
                                      GetAllContactsScenario getAllContactsScenario, SendMoneyScenario sendMoneyScenario,
                                      UserStateService userStateService,
-                                     RequestAmountScenario requestAmountScenario, ShowHistoryScenario showHistoryScenario) {
+                                     RequestAmountScenario requestAmountScenario, ShowHistoryScenario showHistoryScenario, SplitBillScenarioFactory splitBillScenarioFactory) {
         this.eventScenarioHelper = eventScenarioHelper;
         this.billScenarioHelper = billScenarioHelper;
         this.showEventsListScenario = showEventsListScenario;
@@ -97,6 +99,7 @@ public class IndividualScenarioFactory {
         this.userStateService = userStateService;
         this.requestAmountScenario = requestAmountScenario;
         this.showHistoryScenario = showHistoryScenario;
+        this.splitBillScenarioFactory = splitBillScenarioFactory;
     }
 
     public Scenario createScenario(Request request) throws ScenarioNotFoundException {
@@ -197,6 +200,10 @@ public class IndividualScenarioFactory {
 
         if (billScenarioHelper.isContribution(request) && userState != null && userState.getState() == SEND_MONEY) {
             selectedScenario = sendMoneyScenario;
+        }
+
+        if (isNull(selectedScenario)) {
+            selectedScenario = splitBillScenarioFactory.createScenario(request);
         }
 
         if (isNull(selectedScenario)) {

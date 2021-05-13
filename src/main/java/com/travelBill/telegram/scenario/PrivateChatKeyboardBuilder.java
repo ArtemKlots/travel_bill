@@ -4,6 +4,7 @@ import com.travelBill.telegram.driver.keyboard.reply.ReplyKeyboard;
 import com.travelBill.telegram.driver.keyboard.reply.ReplyKeyboardButton;
 import org.springframework.stereotype.Service;
 
+import static com.travelBill.Icons.BLACK_HEART;
 import static com.travelBill.telegram.UserCommand.*;
 
 @Service
@@ -20,12 +21,13 @@ public class PrivateChatKeyboardBuilder {
         ReplyKeyboardButton eventDebtsButton = new ReplyKeyboardButton().setText(EVENT_DEBTS);
         ReplyKeyboardButton deleteBillButton = new ReplyKeyboardButton().setText(DELETE_BILL);
         ReplyKeyboardButton showTotalButton = new ReplyKeyboardButton().setText(EVENT_STATISTIC);
+        ReplyKeyboardButton switchToSplitBill = new ReplyKeyboardButton().setText(BLACK_HEART + SWITCH_TO_SPLIT_BILL);
 
         ReplyKeyboardButton manageEvents = new ReplyKeyboardButton().setText(MANAGE_EVENTS);
 
         keyboard.addRow(sendMoneyButton, currentEventButton, switchEventButton);
         keyboard.addRow(deleteBillButton, showLastBillsButton, manageEvents);
-        keyboard.addRow(eventDebtsButton, showTotalButton);
+        keyboard.addRow(eventDebtsButton, showTotalButton, switchToSplitBill);
 
         return keyboard;
     }

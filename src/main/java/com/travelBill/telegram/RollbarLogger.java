@@ -13,6 +13,7 @@ public class RollbarLogger {
 
     RollbarLogger(ApplicationConfiguration applicationConfiguration) {
         try {
+            if (applicationConfiguration.getRollbarAccessKey().length() == 0) return;
             Config config = ConfigBuilder.withAccessToken(applicationConfiguration.getRollbarAccessKey())
                     .environment(applicationConfiguration.getRollbarEnv())
                     .build();
@@ -31,6 +32,12 @@ public class RollbarLogger {
     public void error(Exception e, String message) {
         if (rollbar != null) {
             rollbar.error(e, message);
+        }
+    }
+
+    public void error(Exception e) {
+        if (rollbar != null) {
+            rollbar.error(e);
         }
     }
 }

@@ -22,15 +22,22 @@ To configure database connection you should set up the following environment var
 * `ROLLBAR_ACCESS_KEY`
 * `ROLLBAR_ENVIRONMENT`
 
+### Auth 
+* `JWT_SECRET`
+* `LOGIN_URL` (e.g. http://your.domain:56789/login)
+
 
 ## Telegram
 
 To make bot to communicate with Telegram you should register your bot with @BotFather and set  `TELEGRAM_KEY` environment variable
 
-`TELEGRAM_BOT_MENTION` - used for sending direct link to bot in public events
+`TELEGRAM_BOT_MENTION` - used for sending direct link to bot in public events and for Telegram login
 
 ### Bot group policy
 
 To let the bot to access all the group messages, you have to use the @BotFather bot to set the Group Privacy off.
 
 By default, Group Privacy is enabled for bots. This setting has to be changed used the @BotFather bot >> Bot Settings >> Group Privacy >> Turn off
+
+### Linking your domain to the bot
+To enable the Telegram login you need to [set up](https://core.telegram.org/widgets/login#linking-your-domain-to-the-bot) your domain 

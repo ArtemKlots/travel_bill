@@ -20,4 +20,9 @@ public class UserCommand {
     public static final String SWITCH_TO_CLOSED_EVENT = SCROLL + " Switch to closed event";
     public static final String GO_BACK = LEFT_ARROW + " Back to the previous menu";
 
+    public static final String SWITCH_TO_SPLIT_BILL = "Split Bill";
+    public static final String SWITCH_TO_TRAVEL_BILL = "Travel Bill";
+
+    public static final String OPEN_WEB = "Open Web";
+
 }

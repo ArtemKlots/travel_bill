@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 @Service
 public class KeyboardVersionStorage {
     public LocalDateTime getPrivateKeyboardReleaseDate() {
-        return LocalDateTime.of(2020, 9, 30, 23, 59);
+        return LocalDateTime.of(2021, 5, 13, 23, 0);
     }
 
     public LocalDateTime getGroupKeyboardReleaseDate() {

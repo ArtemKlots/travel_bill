@@ -90,7 +90,7 @@ public class BillWebService {
         DetailedBillDto detailedBillDto = modelMapper.map(closedBill, DetailedBillDto.class);
         detailedBillDto.setDebts(debtsDto);
 
-        List<Debt> debtsWithoutOwner = debts.stream().filter(debt -> debt.getDebtor().getId().equals(closedBill.getOwner().getId())).collect(Collectors.toList());
+        List<Debt> debtsWithoutOwner = debts.stream().filter(debt -> !debt.getDebtor().getId().equals(closedBill.getOwner().getId())).collect(Collectors.toList());
         debtService.saveAll(debtsWithoutOwner);
         return detailedBillDto;
     }

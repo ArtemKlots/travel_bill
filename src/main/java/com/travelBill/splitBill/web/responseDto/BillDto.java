@@ -12,7 +12,9 @@ public class BillDto {
 
     private List<UserDto> members;
 
-    boolean isOpened;
+    private boolean isOpened;
+
+    private Long ownerId;
 
     public Long getId() {
         return id;
@@ -52,5 +54,13 @@ public class BillDto {
 
     public void setOpened(boolean opened) {
         isOpened = opened;
+    }
+
+    public Long getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
     }
 }

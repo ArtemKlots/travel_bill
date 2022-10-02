@@ -1,8 +1,9 @@
-package com.travelBill.telegram;
+package com.travelBill.telegram.bot;
 
 import com.travelBill.api.core.exceptions.AccessDeniedException;
 import com.travelBill.api.core.user.User;
 import com.travelBill.config.ApplicationConfiguration;
+import com.travelBill.RollbarLogger;
 import com.travelBill.telegram.driver.Request;
 import com.travelBill.telegram.driver.Response;
 import com.travelBill.telegram.driver.ResponseSendMessageMapper;
@@ -14,6 +15,7 @@ import com.travelBill.telegram.scenario.common.ScenarioNotFoundException;
 import com.travelBill.telegram.user.ActivityService;
 import com.travelBill.telegram.user.TelegramUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -23,7 +25,8 @@ import static com.rainerhahnekamp.sneakythrow.Sneaky.sneak;
 
 
 @Component
-public class TelegramBot extends TelegramLongPollingBot {
+@Conditional(IsPoolingCondition.class)
+public class TelegramLongPoolingBot extends TelegramLongPollingBot {
 
     private final TelegramUserService telegramUserService;
     private final ActivityService activityService;
@@ -32,11 +35,11 @@ public class TelegramBot extends TelegramLongPollingBot {
     private final RollbarLogger rollbarLogger;
 
     @Autowired
-    public TelegramBot(TelegramUserService telegramUserService,
-                       ActivityService activityService,
-                       ScenarioFactory scenarioFactory,
-                       ApplicationConfiguration applicationConfiguration,
-                       RollbarLogger rollbarLogger) {
+    public TelegramLongPoolingBot(TelegramUserService telegramUserService,
+                                  ActivityService activityService,
+                                  ScenarioFactory scenarioFactory,
+                                  ApplicationConfiguration applicationConfiguration,
+                                  RollbarLogger rollbarLogger) {
         this.telegramUserService = telegramUserService;
         this.activityService = activityService;
         this.scenarioFactory = scenarioFactory;

@@ -7,7 +7,7 @@ import com.travelBill.api.core.user.User;
 import com.travelBill.api.core.user.UserService;
 import com.travelBill.config.ApplicationConfiguration;
 import com.travelBill.splitBill.core.AccessDeniedException;
-import com.travelBill.telegram.RollbarLogger;
+import com.travelBill.RollbarLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

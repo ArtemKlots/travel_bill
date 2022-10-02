@@ -45,6 +45,10 @@ public class ApplicationConfiguration {
     @NotEmpty
     private String loginUrl;
 
+    @Value("${BOT_MODE}")
+    @NotEmpty
+    private String botMode;
+
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
@@ -120,5 +124,13 @@ public class ApplicationConfiguration {
 
     public void setLoginUrl(String loginUrl) {
         this.loginUrl = loginUrl;
+    }
+
+    public String getBotMode() {
+        return botMode;
+    }
+
+    public void setBotMode(String botMode) {
+        this.botMode = botMode;
     }
 }

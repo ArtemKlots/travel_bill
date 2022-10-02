@@ -29,9 +29,42 @@ To configure database connection you should set up the following environment var
 
 ## Telegram
 
+### Common
 To make bot to communicate with Telegram you should register your bot with @BotFather and set  `TELEGRAM_KEY` environment variable
 
 `TELEGRAM_BOT_MENTION` - used for sending direct link to bot in public events and for Telegram login
+
+### Bot configuration
+
+* `BOT_MODE` should be set as `POOLING` or `WEBHOOK`
+
+#### Webhook
+If `BOT_MODE` set as `WEBHOOK`, the following environment variables should be set:
+
+* `telegram.external-url` (e.g. ngrok proxy to localhost: https://9b13-176-67-14-211.ngrok.io -> localhost:8090)
+* `telegram.internal-url` (e.g. http://localhost:8090). It means that under the hood bot launch http proxy server on 8090 port. It will redirect telegram messages to TB API 
+
+### Shortcut to copy all env vars
+
+```
+BOT_MODE=WEBHOOK
+HEALTH_CHECK2_URL=
+HEALTH_CHECK_URL=
+JAWSDB_URL=
+JWT_SECRET=
+LIFECYCLE_URL=
+LOGIN_URL=
+ROLLBAR_ACCESS_KEY=
+ROLLBAR_ENVIRONMENT=dev
+SPRING_DATASOURCE_PASSWORD=
+SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/travelbill?reconnect\=true&useSSL\=false&serverTimezone\=UTC&allowPublicKeyRetrieval\=true
+SPRING_DATASOURCE_USERNAME=
+telegram.external-url=https://***.ngrok.io
+telegram.internal-url=http://localhost:8090
+TELEGRAM_BOT_MENTION=@travel_bill_bot
+TELEGRAM_KEY=
+TZ=Europe/Kiev
+```
 
 ### Bot group policy
 

@@ -52,6 +52,7 @@ public class AuthInterceptor implements HandlerInterceptor {
     private boolean isAuthRequired(HttpServletRequest request) {
         if (Objects.equals(request.getRequestURI(), "/ping")) return false;
         if (Objects.equals(request.getRequestURI(), "/login")) return false;
+        if (request.getRequestURI().startsWith("/tg-proxy")) return false;
 
         return true;
     }

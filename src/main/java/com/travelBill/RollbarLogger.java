@@ -1,4 +1,4 @@
-package com.travelBill.telegram;
+package com.travelBill;
 
 import com.rollbar.notifier.Rollbar;
 import com.rollbar.notifier.config.Config;

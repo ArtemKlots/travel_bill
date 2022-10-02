@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Objects;
 
 @Service
 public class LifecycleSupporter {
@@ -21,6 +22,9 @@ public class LifecycleSupporter {
 
     @Scheduled(fixedRate = 10 * 60 * 1000)
     public void resetLifecycle() {
+        String botMode = applicationConfiguration.getBotMode();
+        if (Objects.equals(botMode, "WEBHOOK")) return;
+
         try {
             URL url = new URL(applicationConfiguration.getLifecycleUrl());
             URLConnection connection = url.openConnection();

@@ -2,7 +2,7 @@ package com.travelBill.splitBill.web;
 
 import com.travelBill.TravelBillException;
 import com.travelBill.splitBill.core.ClosedBillException;
-import com.travelBill.telegram.RollbarLogger;
+import com.travelBill.RollbarLogger;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

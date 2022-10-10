@@ -1,8 +1,8 @@
 package com.travelBill.splitBill.web;
 
+import com.travelBill.RollbarLogger;
 import com.travelBill.TravelBillException;
 import com.travelBill.splitBill.core.ClosedBillException;
-import com.travelBill.RollbarLogger;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.stream.Collectors;
+import java.util.Scanner;
 
 @ControllerAdvice
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
@@ -62,7 +62,10 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         try {
             if ("POST".equalsIgnoreCase(r.getMethod()) || "PUT".equalsIgnoreCase(r.getMethod())) {
                 stringBuilder.append("\n");
-                stringBuilder.append(r.getReader().lines().collect(Collectors.joining(System.lineSeparator())));
+                // Next lines are identical, but getReader() can be called only once, and it is called somewhere under the hood,
+                // so the following exceptions is thrown > getinputstream() has already been called for this request.
+//                stringBuilder.append(r.getReader().lines().collect(Collectors.joining(System.lineSeparator())));
+                stringBuilder.append(new Scanner(r.getInputStream(), "UTF-8").useDelimiter("\\A"));
             }
         } catch (Exception e) {
             rollbarLogger.error(e, stringBuilder.toString());

@@ -34,7 +34,7 @@ public class TelegramProxyController {
 
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> responseEntity =
-                restTemplate.exchange(uri, method, new HttpEntity<Object>(body), String.class);
+                restTemplate.exchange(uri, method, body == null ? null : new HttpEntity<Object>(body) , String.class);
 
         return responseEntity.getBody();
     }

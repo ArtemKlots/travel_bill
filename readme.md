@@ -41,8 +41,10 @@ To make bot to communicate with Telegram you should register your bot with @BotF
 #### Webhook
 If `BOT_MODE` set as `WEBHOOK`, the following environment variables should be set:
 
-* `telegram.external-url` (e.g. ngrok proxy to localhost: https://9b13-176-67-14-211.ngrok.io -> localhost:8090)
+* `telegram.external-url` (e.g. ngrok proxy to localhost: https://9b13-176-67-14-211.ngrok.io -> localhost:8080)
 * `telegram.internal-url` (e.g. http://localhost:8090). It means that under the hood bot launch http proxy server on 8090 port. It will redirect telegram messages to TB API 
+
+For local development use `npx ngrok 8080` to start proxy
 
 ### Shortcut to copy all env vars
 

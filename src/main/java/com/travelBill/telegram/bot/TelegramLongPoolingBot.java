@@ -49,7 +49,14 @@ public class TelegramLongPoolingBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        Request request = new UpdateRequestMapper().mapTo(update);
+        Request request;
+        try {
+            request = new UpdateRequestMapper().mapTo(update);
+        } catch (Exception e) {
+            rollbarLogger.error(e, update.toString());
+            throw new RuntimeException("Unknown message");
+        }
+
         try {
             request.user = setupUser(update);
             Response response = scenarioFactory.createScenario(request).execute(request);

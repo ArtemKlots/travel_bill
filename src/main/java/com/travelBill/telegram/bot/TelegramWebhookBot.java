@@ -21,6 +21,9 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import static com.rainerhahnekamp.sneakythrow.Sneaky.sneak;
 
 @Component
@@ -32,6 +35,8 @@ public class TelegramWebhookBot extends org.telegram.telegrambots.bots.TelegramW
     private final ScenarioFactory scenarioFactory;
     private final ApplicationConfiguration applicationConfiguration;
     private final RollbarLogger rollbarLogger;
+
+    private final Set<Integer> receivedUpdates = new HashSet<>();
 
     @Autowired
     public TelegramWebhookBot(TelegramUserService telegramUserService,
@@ -57,7 +62,24 @@ public class TelegramWebhookBot extends org.telegram.telegrambots.bots.TelegramW
 
     @Override
     public BotApiMethod<?> onWebhookUpdateReceived(Update update) {
-        Request request = new UpdateRequestMapper().mapTo(update);
+        // Telegram can send duplicated messages in webhook mode. And these messages are basically empty -> case errors
+        // So, this is caching mechanism
+        // https://core.telegram.org/bots/api#update
+        if (receivedUpdates.contains(update.getUpdateId())) {
+            System.out.printf("Ignoring duplicated update #%s. (%s)%n", update.getUpdateId(), update.toString());
+            return null;
+        } else {
+            receivedUpdates.add(update.getUpdateId());
+        }
+
+        Request request;
+        try {
+            request = new UpdateRequestMapper().mapTo(update);
+        } catch (Exception e) {
+            rollbarLogger.error(e, update.toString());
+            throw new RuntimeException("Unknown message");
+        }
+
         try {
             request.user = setupUser(update);
             Response response = scenarioFactory.createScenario(request).execute(request);

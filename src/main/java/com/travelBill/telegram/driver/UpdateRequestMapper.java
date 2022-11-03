@@ -23,8 +23,13 @@ public class UpdateRequestMapper {
         Chat chat;
         if (update.hasMessage()) {
             chat = update.getMessage().getChat();
-        } else {
+        } else if (update.hasCallbackQuery()){
             chat = update.getCallbackQuery().getMessage().getChat();
+        } else if (update.hasMyChatMember()){
+            chat = update.getMyChatMember().getChat();
+        } else {
+            throw new IllegalArgumentException(("Something strange happened here again. update.getChatMember() === null," +
+                    " need investigation. Details:").concat(update.toString()));
         }
 
         return chat;
@@ -84,7 +89,9 @@ public class UpdateRequestMapper {
             return update.getCallbackQuery().getMessage().getMessageId();
         } else if (update.hasMessage()) {
             return update.getMessage().getMessageId();
-        } else throw new IllegalArgumentException();
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     public boolean isGroupChatCreated(Update update) {

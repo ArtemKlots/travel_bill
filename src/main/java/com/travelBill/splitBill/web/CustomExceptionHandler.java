@@ -51,6 +51,13 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
     private void logError(Exception exception, ServletWebRequest request) {
         exception.printStackTrace();
+
+        // TODO: This should be removed after caching fix is tested
+        if (exception.getMessage().contains("500 Internal Server Error: [no body]")) {
+            System.out.println("Ignoring error.");
+            return;
+        }
+
         StringBuilder stringBuilder = new StringBuilder();
         HttpServletRequest r = request.getRequest();
         stringBuilder.append(String.join(" ", r.getMethod(), r.getRequestURI(), " user: "));

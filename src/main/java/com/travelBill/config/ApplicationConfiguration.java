@@ -49,6 +49,18 @@ public class ApplicationConfiguration {
     @NotEmpty
     private String botMode;
 
+    @Value("${AWS_ACCESS_KEY}")
+    @NotEmpty
+    private String awsAccessKey;
+
+    @Value("${AWS_SECRET_ACCESS_KEY}")
+    @NotEmpty
+    private String awsSecretAccessKey;
+
+    @Value("${AWS_SNS_TOPIC}")
+    @NotEmpty
+    private String snsTopic;
+
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
@@ -132,5 +144,29 @@ public class ApplicationConfiguration {
 
     public void setBotMode(String botMode) {
         this.botMode = botMode;
+    }
+
+    public String getAwsAccessKey() {
+        return awsAccessKey;
+    }
+
+    public void setAwsAccessKey(String awsAccessKey) {
+        this.awsAccessKey = awsAccessKey;
+    }
+
+    public String getAwsSecretAccessKey() {
+        return awsSecretAccessKey;
+    }
+
+    public void setAwsSecretAccessKey(String awsSecretAccessKey) {
+        this.awsSecretAccessKey = awsSecretAccessKey;
+    }
+
+    public String getSnsTopic() {
+        return snsTopic;
+    }
+
+    public void setSnsTopic(String snsTopic) {
+        this.snsTopic = snsTopic;
     }
 }

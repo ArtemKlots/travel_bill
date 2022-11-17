@@ -46,6 +46,12 @@ If `BOT_MODE` set as `WEBHOOK`, the following environment variables should be se
 
 For local development use `npx ngrok 8080` to start proxy
 
+### AWS
+* `AWS_SQS_QUEUE` 
+* `AWS_ACCESS_KEY`
+* `AWS_SECRET_ACCESS_KEY`
+* `AWS_SNS_TOPIC`
+
 ### Shortcut to copy all env vars
 
 ```
@@ -66,6 +72,10 @@ telegram.internal-url=http://localhost:8090
 TELEGRAM_BOT_MENTION=@travel_bill_bot
 TELEGRAM_KEY=
 TZ=Europe/Kiev
+AWS_SQS_QUEUE=
+AWS_ACCESS_KEY=
+AWS_SECRET_ACCESS_KEY=
+AWS_SNS_TOPIC=
 ```
 
 ### Bot group policy

@@ -20,4 +20,18 @@ public class Request {
     public boolean hasCallbackQueryData() {
         return callbackQueryData != null;
     }
+
+    @Override
+    public String toString() {
+        return "Request{" +
+                "chatId=" + chatId +
+                ", message='" + message + '\'' +
+                ", callbackQueryData='" + callbackQueryData + '\'' +
+                ", messageId=" + messageId +
+                ", user=" + user +
+                ", chatType=" + chatType +
+                ", chatTitle='" + chatTitle + '\'' +
+                ", isGroupChatCreated=" + isGroupChatCreated +
+                '}';
+    }
 }

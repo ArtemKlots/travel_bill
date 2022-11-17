@@ -1,11 +1,14 @@
 package com.travelBill.telegram.scenario.individual.bill.add;
 
+import com.travelBill.RollbarLogger;
 import com.travelBill.api.core.bill.Bill;
 import com.travelBill.api.core.bill.BillService;
 import com.travelBill.api.core.event.Event;
 import com.travelBill.api.core.event.EventService;
 import com.travelBill.api.core.event.exceptions.ClosedEventException;
 import com.travelBill.api.core.user.User;
+import com.travelBill.sns.BillCreatedEvent;
+import com.travelBill.sns.EventManagerService;
 import com.travelBill.telegram.driver.BotApi;
 import com.travelBill.telegram.driver.Request;
 import com.travelBill.telegram.driver.Response;
@@ -24,11 +27,15 @@ public class AddBillScenario implements Scenario {
     private final BillService billService;
     private final EventService eventService;
     private final BotApi botApi;
+    private final EventManagerService eventManagerService;
+    private final RollbarLogger rollbarLogger;
 
-    public AddBillScenario(BillService billService, EventService eventService, BotApi botApi) {
+    public AddBillScenario(BillService billService, EventService eventService, BotApi botApi, EventManagerService eventManagerService, RollbarLogger rollbarLogger) {
         this.billService = billService;
         this.eventService = eventService;
         this.botApi = botApi;
+        this.eventManagerService = eventManagerService;
+        this.rollbarLogger = rollbarLogger;
     }
 
     @Override
@@ -41,9 +48,10 @@ public class AddBillScenario implements Scenario {
         Event event = eventService.findById(request.user.getCurrentEvent().getId());
         String textMessage = request.message;
         ResponseBuilder responseBuilder;
+        Bill bill;
 
         try {
-            Bill bill = createBillFromTextMessage(user, event, textMessage);
+            bill = createBillFromTextMessage(user, event, textMessage);
 
             responseBuilder = new AddBillSuccessResponseBuilder();
             ((AddBillSuccessResponseBuilder) responseBuilder).bill = bill;
@@ -55,6 +63,16 @@ public class AddBillScenario implements Scenario {
         } catch (Exception e) {
             responseBuilder = new AddBillFailResponseBuilder();
             e.printStackTrace();
+            return responseBuilder.build();
+        }
+
+        try {
+            BillCreatedEvent billCreatedEvent =
+                    new BillCreatedEvent(request.chatId, request.messageId, bill.getId(), event.getId(), user.getId(), bill.getPurpose());
+            this.eventManagerService.sendBillCreatedEvent("bill.created", billCreatedEvent);
+        } catch (Exception e) {
+            e.printStackTrace();
+            rollbarLogger.error(e, "Error on assigning tag: ".concat(request.toString()));
         }
 
         return responseBuilder.build();

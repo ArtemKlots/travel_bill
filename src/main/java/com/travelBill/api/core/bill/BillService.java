@@ -1,6 +1,7 @@
 package com.travelBill.api.core.bill;
 
 import com.travelBill.api.core.bill.statistic.CurrencyStatisticItem;
+import com.travelBill.api.core.bill.statistic.UserSpentStatisticItem;
 import com.travelBill.api.core.event.exceptions.ClosedEventException;
 import com.travelBill.api.core.exceptions.AccessDeniedException;
 import com.travelBill.api.core.user.User;
@@ -90,8 +91,25 @@ public class BillService {
 
     public List<CurrencyStatisticItem> showTotalSpentByEvent(Long eventId) {
         List<Bill> bills = billRepository.findByEventId(eventId);
-        List<String> currencies = bills.stream().map(Bill::getCurrency).distinct().collect(Collectors.toList());
+        return this.calculateStatisticForBills(bills);
+    }
 
+    public List<UserSpentStatisticItem> showSpentByPersonByEvent(Long eventId) {
+        List<Bill> bills = billRepository.findByEventId(eventId);
+        List<User> users = bills.stream().map(Bill::getUser).collect(Collectors.toList());
+
+        return users.stream()
+                .map(user -> {
+                    List<Bill> billsForUser = bills.stream().filter(bill -> bill.getUser().getId().equals(user.getId())).collect(Collectors.toList());
+                    List<CurrencyStatisticItem> userStatistic = this.calculateStatisticForBills(billsForUser);
+
+                    return new UserSpentStatisticItem(user, userStatistic);
+                })
+                .collect(Collectors.toList());
+    }
+
+    private List<CurrencyStatisticItem> calculateStatisticForBills(List<Bill> bills) {
+        List<String> currencies = bills.stream().map(Bill::getCurrency).distinct().collect(Collectors.toList());
         return currencies.stream()
                 .map(currency -> {
                     List<Bill> billsForCurrency = bills.stream().filter(bill -> bill.getCurrency().equals(currency)).collect(Collectors.toList());

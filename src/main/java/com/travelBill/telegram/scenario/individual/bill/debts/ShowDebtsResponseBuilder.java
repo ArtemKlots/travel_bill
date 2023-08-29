@@ -32,6 +32,12 @@ public class ShowDebtsResponseBuilder implements ResponseBuilder {
         StringBuffer report = new StringBuffer();
 
         if (debts.size() > 0) {
+            if (!event.isOpened()) {
+                report.append("\n");
+                report.append(RED_EXCLAMATION_MARK + "*DO NOT TRY TO FIND YOUR DEBTS HERE*" + RED_EXCLAMATION_MARK + " This section is only for historical reason.\n\nYou can find final debts in \"1:1 -> send money\" section");
+                report.append("\n");
+            }
+
             for (Map.Entry<User, List<Debt>> entry : debts.entrySet()) {
                 report.append(String.format("%s debts: \n",
                         entry.getKey().getFullName()));
@@ -43,7 +49,7 @@ public class ShowDebtsResponseBuilder implements ResponseBuilder {
             }
             if (!event.isOpened()) {
                 report.append("\n");
-                report.append(RED_EXCLAMATION_MARK + "*DO NOT TRY TO FIND YOUR DEBTS HERE!* This section is only for historical reason.\n\nYou can find final debts in \"1:1 -> send money\" section");
+                report.append(RED_EXCLAMATION_MARK + "*DO NOT TRY TO FIND YOUR DEBTS HERE*" + RED_EXCLAMATION_MARK + " This section is only for historical reason.\n\nYou can find final debts in \"1:1 -> send money\" section");
                 report.append("\n");
             }
         } else {

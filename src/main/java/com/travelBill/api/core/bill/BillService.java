@@ -96,7 +96,7 @@ public class BillService {
 
     public List<UserSpentStatisticItem> showSpentByPersonByEvent(Long eventId) {
         List<Bill> bills = billRepository.findByEventId(eventId);
-        List<User> users = bills.stream().map(Bill::getUser).collect(Collectors.toList());
+        List<User> users = bills.stream().map(Bill::getUser).distinct().collect(Collectors.toList());
 
         return users.stream()
                 .map(user -> {

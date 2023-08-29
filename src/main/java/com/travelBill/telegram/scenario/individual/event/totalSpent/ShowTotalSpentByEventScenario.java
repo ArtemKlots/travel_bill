@@ -39,7 +39,7 @@ public class ShowTotalSpentByEventScenario implements Scenario {
         if (totalStatistic.size() > 0) {
             String header = String.format("Total spends for event *%s*:\n", event.getTitle());
             String body = this.buildTotalStatisticBody(totalStatistic);
-            String userStatisticHeader = "\n\n User's total spends:\n";
+            String userStatisticHeader = "\n\nUser's total spends:\n";
             String userStatisticBody = this.buildUserStatisticBody(userStatistic);
 
             response.message = header + body + userStatisticHeader + userStatisticBody;
@@ -59,8 +59,7 @@ public class ShowTotalSpentByEventScenario implements Scenario {
         return statistic.stream()
                 .map(statisticItem -> {
                     String name = statisticItem.getUser().getFullName();
-                    String body = statisticItem.getStatistic()
-                            .stream()
+                    String body = statisticItem.getStatistic().stream()
                             .map(userStatisticItem -> String.format(" - %1.2f %s", userStatisticItem.amount, userStatisticItem.currency))
                             .collect(Collectors.joining("\n"));
                     return  String.format("%s:\n%s", name, body);

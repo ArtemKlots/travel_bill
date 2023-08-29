@@ -1,6 +1,7 @@
 package com.travelBill.telegram.scenario.individual.bill.debts;
 
 import com.travelBill.api.core.debt.Debt;
+import com.travelBill.api.core.event.Event;
 import com.travelBill.api.core.user.User;
 import com.travelBill.telegram.driver.Response;
 import com.travelBill.telegram.driver.ResponseBuilder;
@@ -12,6 +13,7 @@ import java.util.Map;
 public class ShowDebtsResponseBuilder implements ResponseBuilder {
     private static DecimalFormat decimalFormat = new DecimalFormat("#.##");
     public Map<User, List<Debt>> debts;
+    public Event event;
 
 
     @Override
@@ -34,6 +36,9 @@ public class ShowDebtsResponseBuilder implements ResponseBuilder {
                     report.append(String.format(" -- %s %s to %s \n", decimalFormat.format(debt.getAmount()), debt.getCurrency(), debt.getPayer().getFullName()));
                     report.append("\n");
                 });
+            }
+            if (!event.isOpened()) {
+                report.append("\nDO NOT TRY TO FIND YOUR DEBTS HERE! This section is only for historical reason.\n Final debts are in \"1:1 -> send money\" section\n");
             }
         } else {
             report.append("There are no debts between you");

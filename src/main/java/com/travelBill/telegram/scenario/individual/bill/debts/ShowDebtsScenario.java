@@ -42,6 +42,7 @@ public class ShowDebtsScenario implements Scenario {
 
         ShowDebtsResponseBuilder responseBuilder = new ShowDebtsResponseBuilder();
         responseBuilder.debts = debtsByDebtor;
+        responseBuilder.event = event;
 
         return responseBuilder.build();
     }

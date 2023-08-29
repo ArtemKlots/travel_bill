@@ -3,12 +3,15 @@ package com.travelBill.telegram.scenario.individual.bill.debts;
 import com.travelBill.api.core.debt.Debt;
 import com.travelBill.api.core.event.Event;
 import com.travelBill.api.core.user.User;
+import com.travelBill.telegram.driver.ParseMode;
 import com.travelBill.telegram.driver.Response;
 import com.travelBill.telegram.driver.ResponseBuilder;
 
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
+
+import static com.travelBill.Icons.RED_EXCLAMATION_MARK;
 
 public class ShowDebtsResponseBuilder implements ResponseBuilder {
     private static DecimalFormat decimalFormat = new DecimalFormat("#.##");
@@ -20,6 +23,7 @@ public class ShowDebtsResponseBuilder implements ResponseBuilder {
     public Response build() {
         Response response = new Response();
         response.message = getMessage();
+        response.parseMode = ParseMode.MARKDOWN;
         return response;
     }
 
@@ -38,7 +42,9 @@ public class ShowDebtsResponseBuilder implements ResponseBuilder {
                 });
             }
             if (!event.isOpened()) {
-                report.append("\nDO NOT TRY TO FIND YOUR DEBTS HERE! This section is only for historical reason.\n Final debts are in \"1:1 -> send money\" section\n");
+                report.append("\n");
+                report.append(RED_EXCLAMATION_MARK + "*DO NOT TRY TO FIND YOUR DEBTS HERE!* This section is only for historical reason.\n\nYou can find final debts in \"1:1 -> send money\" section");
+                report.append("\n");
             }
         } else {
             report.append("There are no debts between you");

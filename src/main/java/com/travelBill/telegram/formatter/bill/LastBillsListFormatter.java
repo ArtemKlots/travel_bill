@@ -11,7 +11,7 @@ public class LastBillsListFormatter implements BillListFormatter {
         StringBuilder stringBuilder = new StringBuilder(HEADER);
 
         for (Bill bill : bills) {
-            String row = String.format("%1.2f %s %s", bill.getAmount(), bill.getCurrency(), bill.getPurpose());
+            String row = String.format("%,.2f %s %s", bill.getAmount(), bill.getCurrency(), bill.getPurpose());
             stringBuilder.append(row).append("\n");
         }
 

@@ -51,7 +51,7 @@ public class ShowTotalSpentByEventScenario implements Scenario {
 
     private String buildTotalStatisticBody(List<CurrencyStatisticItem> statistic) {
         return statistic.stream()
-                .map(statisticItem -> String.format(" - %1.2f %s", statisticItem.amount, statisticItem.currency))
+                .map(statisticItem -> String.format(" - %,.2f %s", statisticItem.amount, statisticItem.currency))
                 .collect(Collectors.joining("\n"));
     }
 
@@ -60,7 +60,7 @@ public class ShowTotalSpentByEventScenario implements Scenario {
                 .map(statisticItem -> {
                     String name = statisticItem.getUser().getFullName();
                     String body = statisticItem.getStatistic().stream()
-                            .map(userStatisticItem -> String.format(" - %1.2f %s", userStatisticItem.amount, userStatisticItem.currency))
+                            .map(userStatisticItem -> String.format(" - %,.2f %s", userStatisticItem.amount, userStatisticItem.currency))
                             .collect(Collectors.joining("\n"));
                     return  String.format("%s:\n%s", name, body);
                 })

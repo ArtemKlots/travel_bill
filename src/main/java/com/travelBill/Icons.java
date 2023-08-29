@@ -12,4 +12,6 @@ public class Icons {
     public static final String BLACK_HEART = "\uD83D\uDDA4";
     public static final String GREEN_HEART = "\uD83D\uDC9A";
     public static final String GLOBBE_WITH_MERIDIANS = "\uD83C\uDF10";
+    public static final String RED_EXCLAMATION_MARK = "❗";
+    public static final String MONEY_MOUTH_FACE = "\uD83E\uDD11";
 }

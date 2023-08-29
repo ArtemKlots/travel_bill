@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.travelBill.Icons.GLOWING_STAR;
+import static com.travelBill.Icons.*;
 import static java.util.Objects.isNull;
 
 @Service
@@ -49,7 +49,8 @@ public class SelectDebtorScenario implements Scenario {
                 message = message.concat(fullName);
 
                 for (DebtSumDto dto : entry.getValue()) {
-                    message = message.concat(String.format("  %s \t%s\n", dto.getCurrency(), new DecimalFormat("#,###.00").format(dto.getAmount())));
+                    String hint = dto.getAmount() > 0 ? "owes you" + MONEY_MOUTH_FACE : "your debt" + RED_EXCLAMATION_MARK;
+                    message = message.concat(String.format("  %s \t%s (%s)\n", dto.getCurrency(), new DecimalFormat("#,###.00").format(dto.getAmount()), hint));
                 }
                 message = message.concat("\n");
 

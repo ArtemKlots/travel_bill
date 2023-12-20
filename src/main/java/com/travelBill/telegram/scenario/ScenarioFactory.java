@@ -6,6 +6,7 @@ import com.travelBill.telegram.driver.ChatType;
 import com.travelBill.telegram.driver.Request;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
 import com.travelBill.telegram.scenario.group.GroupScenarioFactory;
+import com.travelBill.telegram.scenario.group.IgnoreMessageScenario;
 import com.travelBill.telegram.scenario.individual.IndividualScenarioFactory;
 import org.springframework.stereotype.Service;
 
@@ -66,6 +67,14 @@ public class ScenarioFactory {
     private Scenario getScenarioForGroupChat(Request request) {
         Scenario scenario;
         Event event = eventService.findByTelegramChatId(request.chatId);
+
+        if (event.getId() == 30) {
+            // 23 - VikaShv. 28 - VikaB
+            if (request.user.getId() == 23 || request.user.getId() == 28) {
+                return new IgnoreMessageScenario();
+            }
+        }
+
         if (nonNull(event) && (isNull(event.getLastActivity()) || event.getLastActivity().isBefore(keyboardVersionStorage.getGroupKeyboardReleaseDate()))) {
             scenario = updateGroupKeyboardScenario;
         } else {

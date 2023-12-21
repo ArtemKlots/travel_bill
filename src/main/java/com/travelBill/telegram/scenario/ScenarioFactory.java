@@ -69,8 +69,8 @@ public class ScenarioFactory {
         Event event = eventService.findByTelegramChatId(request.chatId);
 
         if (nonNull(event) && event.getId() == 30) {
-            // 23 - VikaShv. 28 - VikaB
-            if (request.user.getId() == 23 || request.user.getId() == 28) {
+            // 23 - VikaShv. 29 - VikaB
+            if (request.user.getId() == 23 || request.user.getId() == 29) {
                 return new IgnoreMessageScenario();
             }
         }

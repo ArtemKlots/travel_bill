@@ -75,6 +75,7 @@ public class TelegramWebhookBot extends org.telegram.telegrambots.bots.TelegramW
         Request request;
         try {
             request = new UpdateRequestMapper().mapTo(update);
+            System.out.println(request);
         } catch (Exception e) {
             rollbarLogger.error(e, update.toString());
             throw new RuntimeException("Unknown message");

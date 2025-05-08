@@ -75,6 +75,13 @@ public class ScenarioFactory {
             }
         }
 
+        if (nonNull(event) && event.getId() == 32) {
+            // 1 - Artem
+            if (request.user.getId() == 1) {
+                return new IgnoreMessageScenario();
+            }
+        }
+
         if (nonNull(event) && (isNull(event.getLastActivity()) || event.getLastActivity().isBefore(keyboardVersionStorage.getGroupKeyboardReleaseDate()))) {
             scenario = updateGroupKeyboardScenario;
         } else {

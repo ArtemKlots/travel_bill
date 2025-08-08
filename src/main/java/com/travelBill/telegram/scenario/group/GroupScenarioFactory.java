@@ -1,5 +1,6 @@
 package com.travelBill.telegram.scenario.group;
 
+import com.travelBill.api.core.event.Event;
 import com.travelBill.telegram.driver.Request;
 import com.travelBill.telegram.scenario.common.scenario.EventScenarioHelper;
 import com.travelBill.telegram.scenario.common.scenario.Scenario;
@@ -26,12 +27,10 @@ public class GroupScenarioFactory {
         this.silentJoinEventScenario = silentJoinEventScenario;
     }
 
-    public Scenario createScenario(Request request) {
+    public Scenario createScenario(Request request, Event event) {
         Scenario selectedScenario = null;
 
-        // TODO: it can be made using switch/case
-
-        if (request.isGroupChatCreated) {
+        if (request.isGroupChatCreated || isNull(event)) {
             selectedScenario = createEventScenario;
         }
 

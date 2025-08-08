@@ -85,7 +85,7 @@ public class ScenarioFactory {
         if (nonNull(event) && (isNull(event.getLastActivity()) || event.getLastActivity().isBefore(keyboardVersionStorage.getGroupKeyboardReleaseDate()))) {
             scenario = updateGroupKeyboardScenario;
         } else {
-            scenario = groupScenarioFactory.createScenario(request);
+            scenario = groupScenarioFactory.createScenario(request, event);
         }
         return scenario;
     }

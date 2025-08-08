@@ -1,5 +1,6 @@
 package com.travelBill.heroku;
 
+import com.travelBill.RollbarLogger;
 import com.travelBill.config.ApplicationConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -14,10 +15,12 @@ import java.util.Objects;
 @Service
 public class LifecycleSupporter {
     private final ApplicationConfiguration applicationConfiguration;
+    private final RollbarLogger rollbarLogger;
 
     @Autowired
-    public LifecycleSupporter(ApplicationConfiguration applicationConfiguration) {
+    public LifecycleSupporter(ApplicationConfiguration applicationConfiguration, RollbarLogger rollbarLogger) {
         this.applicationConfiguration = applicationConfiguration;
+        this.rollbarLogger = rollbarLogger;
     }
 
     @Scheduled(fixedRate = 10 * 60 * 1000)
@@ -57,6 +60,15 @@ public class LifecycleSupporter {
                 InputStream is = connection.getInputStream();
                 is.close();
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Scheduled(fixedRate = 24 * 60 * 60 * 1000)
+    public void reportLogs() {
+        try {
+            rollbarLogger.log("Rollbar lifecycle log");
         } catch (Exception e) {
             e.printStackTrace();
         }

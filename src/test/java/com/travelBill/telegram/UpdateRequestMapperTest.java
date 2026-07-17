@@ -31,6 +31,7 @@ class UpdateRequestMapperTest {
     @Test
     void getChat_ShouldReturnCallbackMessageChat_WhenMessageIdIsAbsentAndCallbackIsPresent() {
         when(update.hasMessage()).thenReturn(false);
+        when(update.hasCallbackQuery()).thenReturn(true);
         when(update.getCallbackQuery()).thenReturn(callbackQuery);
         when(callbackQuery.getMessage()).thenReturn(message);
         when(message.getChat()).thenReturn(chat);

@@ -8,6 +8,7 @@ import com.travelBill.api.core.event.exceptions.MemberAlreadyInEventException;
 import com.travelBill.api.core.exceptions.AccessDeniedException;
 import com.travelBill.api.core.user.User;
 import com.travelBill.api.core.user.UserService;
+import com.travelBill.util.TextSanitizer;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -86,7 +87,7 @@ public class EventService {
 
     public Event save(String title, User creator, Long chatId) {
         Event event = new Event();
-        event.setTitle(title);
+        event.setTitle(TextSanitizer.stripSupplementaryCharacters(title));
         event.setOwner(creator);
         event.setTelegramChatId(chatId);
         event = save(event);

@@ -4,6 +4,7 @@ import com.travelBill.api.core.user.User;
 import com.travelBill.api.core.user.UserService;
 import com.travelBill.telegram.user.state.UserState;
 import com.travelBill.telegram.user.state.UserStateService;
+import com.travelBill.util.TextSanitizer;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -34,8 +35,8 @@ public class TelegramUserService {
     public User createFromTelegramUser(org.telegram.telegrambots.meta.api.objects.User telegramUser) {
         User newUser = new User();
         newUser.setTelegramId(telegramUser.getId());
-        newUser.setFirstName(telegramUser.getFirstName());
-        newUser.setLastName(telegramUser.getLastName());
+        newUser.setFirstName(TextSanitizer.stripSupplementaryCharacters(telegramUser.getFirstName()));
+        newUser.setLastName(TextSanitizer.stripSupplementaryCharacters(telegramUser.getLastName()));
         newUser.setLastActivity(LocalDateTime.now());
 
         User createdUser = userService.save(newUser);

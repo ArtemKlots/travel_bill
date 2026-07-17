@@ -29,8 +29,10 @@ public class ActivityService {
             userService.save(user);
         } else {
             Event event = eventService.findByTelegramChatId(request.chatId);
-            event.setLastActivity(LocalDateTime.now());
-            eventService.save(event);
+            if (event != null) {
+                event.setLastActivity(LocalDateTime.now());
+                eventService.save(event);
+            }
         }
     }
 }

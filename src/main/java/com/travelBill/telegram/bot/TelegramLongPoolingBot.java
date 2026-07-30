@@ -49,6 +49,11 @@ public class TelegramLongPoolingBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
+        if (update.hasEditedMessage()) {
+            System.out.printf("Ignoring edited message update #%s. (%s)%n", update.getUpdateId(), update.toString());
+            return;
+        }
+
         Request request;
         try {
             request = new UpdateRequestMapper().mapTo(update);

@@ -72,6 +72,11 @@ public class TelegramWebhookBot extends org.telegram.telegrambots.bots.TelegramW
             receivedUpdates.add(update.getUpdateId());
         }
 
+        if (update.hasEditedMessage()) {
+            System.out.printf("Ignoring edited message update #%s. (%s)%n", update.getUpdateId(), update.toString());
+            return null;
+        }
+
         Request request;
         try {
             request = new UpdateRequestMapper().mapTo(update);
